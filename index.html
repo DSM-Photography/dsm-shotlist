@@ -58,23 +58,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .bd{font-size:.79rem;font-weight:300;line-height:2;color:var(--muted);margin-bottom:.9rem}
 
 /* ABOUT */
-<section id="about">
-  <div class="about">
-    <div class="ab-imgs">
-      <div class="ab-main"><img src="assets/website-main-day.jpeg" style="width:100%;height:100%;object-fit:cover;" alt="Dayna McKenzie" /></div>
-      <div class="ab-accent"><img src="assets/website-accent-day.jpg" style="width:100%;height:100%;object-fit:cover;" alt="Behind the lens" /></div>
-    </div>
-    <div>
-      <p class="ey">The person behind the camera</p>
-      <h2 class="st">Scientist by training.<br>Artist <em>by nature.</em></h2>
-      <p class="bd">Hi, I'm Dayna — and yes, my day job involves cells and a microscope. But both science and photography have always had my heart, and honestly? They're not that different. Both are about looking closely at something and finding what's really there.</p>
-      <p class="bd">My love for photography has always been personal. It's about freezing a moment in time — and the beautiful thing is, everyone who sees that photo takes something different from it. Same image, a thousand perspectives. That's what hooked me.</p>
-      <p class="bd">I love art. I love creating. I love sharing in moments worth capturing.</p>
-      <div class="sig">— Dayna S. McKenzie</div>
-    </div>
-  </div>
-</section>
-  
+.about{padding:7rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:5.5rem;align-items:center;max-width:1280px;margin:0 auto}
+.ab-imgs{position:relative;height:500px}
+.ab-main{position:absolute;top:0;left:0;width:70%;height:76%;background:linear-gradient(145deg,var(--blush),#e8b0a0);display:flex;align-items:center;justify-content:center}
+.ab-accent{position:absolute;bottom:0;right:0;width:50%;height:50%;background:linear-gradient(145deg,var(--mint),#7ec8be);display:flex;align-items:center;justify-content:center;border:6px solid var(--warm)}
+.ph-txt{font-family:'Cormorant Garamond',serif;font-size:.68rem;letter-spacing:.1em;color:rgba(30,20,8,.28);text-transform:uppercase}
+.sig{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-style:italic;font-weight:300;color:var(--gold);margin-top:1.8rem}
+
 /* SERVICES */
 .svc-section{background:var(--cream);padding:7rem 5rem}
 .svc-hdr{text-align:center;margin-bottom:3.5rem}
@@ -193,7 +183,7 @@ footer{background:var(--dark);border-top:1px solid rgba(222,192,140,.1);padding:
 <section id="about">
   <div class="about">
     <div class="ab-imgs">
-      <div class="ab-main"><img src="assets/website-main-day.jpg" style="width:100%;height:100%;object-fit:cover;" alt="Dayna McKenzie" /></div>
+      <div class="ab-main"><span class="ph-txt">Your portrait here</span></div>
       <div class="ab-accent"><span class="ph-txt">Behind the lens</span></div>
     </div>
     <div>
