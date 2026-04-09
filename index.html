@@ -139,6 +139,64 @@ footer{background:var(--dark);border-top:1px solid rgba(222,192,140,.1);padding:
 .f-links a:hover{color:var(--gold)}
 
 @keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* DYNAMIC FORM ADDITIONS */
+.contact-outer{background:var(--dark);border-top:1px solid rgba(222,192,140,.1)}
+.contact-inner{padding:7rem 5rem;max-width:1280px;margin:0 auto}
+.con-header{margin-bottom:4rem}
+.con-header .ey{color:rgba(253,250,246,.35)}
+.con-header .ey::before{background:var(--gold)}
+.con-header .st{color:var(--warm)}
+.con-header .st em{color:var(--gold)}
+.con-header .bd{color:rgba(253,250,246,.4);max-width:520px}
+.con-info{margin-top:1.6rem;font-size:.75rem;font-weight:300;color:rgba(253,250,246,.35);line-height:2.4}
+.con-info a{color:var(--gold);text-decoration:none}
+.dyn-form{display:flex;flex-direction:column;gap:0}
+.fsec{margin-bottom:2rem}
+.fsec-rule{display:flex;align-items:center;gap:1rem;margin-bottom:1.4rem}
+.fsec-label{font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);white-space:nowrap;opacity:.7}
+.fsec-line{flex:1;height:1px;background:rgba(222,192,140,.18)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem 1.4rem}
+.f-full{grid-column:1/-1}
+.f-third{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem 1.4rem}
+.fg{display:flex;flex-direction:column;gap:.32rem;margin-bottom:1rem}
+.fl{font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(253,250,246,.38)}
+.fl .req{color:var(--gold);margin-left:2px}
+.fi,.fsel,.fta{width:100%;background:rgba(253,250,246,.04);border:1px solid rgba(222,192,140,.18);color:var(--warm);font-family:'Montserrat',sans-serif;font-size:.77rem;font-weight:300;padding:.7rem .9rem;outline:none;transition:border-color .2s,background .2s;appearance:none;-webkit-appearance:none;border-radius:0}
+.fi::placeholder,.fta::placeholder{color:rgba(253,250,246,.2)}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--gold);background:rgba(222,192,140,.07)}
+.fsel{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23dec08c'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .9rem center}
+.fsel option{background:#1a1810;color:var(--warm)}
+.fta{resize:vertical;min-height:90px;line-height:1.6}
+.fta.narrative{min-height:110px;background:rgba(253,250,246,.06);border-color:rgba(222,192,140,.25);font-size:.75rem;line-height:1.7}
+.date-sublabel{font-size:.45rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(253,250,246,.3);margin-bottom:.3rem}
+.fi-computed{width:100%;background:rgba(222,192,140,.08);border:1px solid rgba(222,192,140,.3);color:var(--gold);font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:400;padding:.7rem .9rem;font-style:italic}
+.pkg-custom-note{display:none;background:rgba(222,192,140,.07);border-left:2px solid rgba(222,192,140,.4);padding:.8rem 1rem;font-size:.7rem;font-weight:300;color:rgba(253,250,246,.5);line-height:1.7;font-style:italic;margin-top:.4rem}
+.pkg-custom-note.on{display:block}
+.check-group{display:flex;flex-wrap:wrap;gap:.6rem .9rem;margin-top:.2rem}
+.check-item{display:flex;align-items:center;gap:.5rem;cursor:pointer}
+.check-item input[type="checkbox"]{width:13px;height:13px;accent-color:var(--gold);cursor:pointer}
+.check-item span{font-size:.72rem;font-weight:300;color:rgba(253,250,246,.6)}
+.cross-toggle{background:rgba(168,219,210,.07);border:1px solid rgba(168,219,210,.22);padding:1rem 1.2rem;margin-top:.5rem;cursor:pointer}
+.cross-toggle label{display:flex;align-items:center;gap:.8rem;cursor:pointer;font-size:.72rem;font-weight:400;color:var(--mint)}
+.cross-toggle input[type="checkbox"]{width:14px;height:14px;accent-color:var(--mint)}
+.urgency{display:none;background:rgba(201,133,106,.15);border-left:3px solid #c9856a;padding:.6rem .9rem;font-size:.68rem;color:#c9856a;margin-top:.4rem;line-height:1.6}
+.dyn-section{display:none}
+.dyn-section.on{display:block}
+.dyn-group{display:none}
+.dyn-group.on{display:flex}
+.form-foot{margin-top:2.2rem;display:flex;flex-direction:column;align-items:flex-start;gap:.9rem}
+.btn-sub{padding:.9rem 2.8rem;background:var(--gold);color:var(--dark);font-family:'Montserrat',sans-serif;font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;border:none;cursor:pointer;transition:all .22s;font-weight:600}
+.btn-sub:hover{background:var(--goldl)}
+.btn-sub:disabled{opacity:.5;cursor:wait}
+.form-note{font-size:.65rem;font-weight:300;color:rgba(253,250,246,.28);font-style:italic}
+.success-state{display:none;text-align:center;padding:5rem 0}
+.success-mark{font-size:2.2rem;color:var(--gold);display:block;margin-bottom:1rem}
+.success-ref{font-size:.55rem;letter-spacing:.2em;color:var(--gold);margin-bottom:1rem;font-weight:500}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;color:var(--warm);margin-bottom:.8rem}
+.success-title em{font-style:italic;color:var(--gold)}
+.success-body{font-size:.77rem;font-weight:300;color:rgba(253,250,246,.45);line-height:1.9;max-width:420px;margin:0 auto}
+  
 </style>
 </head>
 <body>
@@ -304,138 +362,807 @@ footer{background:var(--dark);border-top:1px solid rgba(222,192,140,.1);padding:
 
 <!-- CONTACT -->
 <div id="contact" class="contact-outer">
-  <div class="contact-inner">
-    <div>
-      <p class="ey">Get in touch</p>
-      <h2 class="st">Let's start<br>a <em>conversation.</em></h2>
-      <p class="bd">General questions, collaborations, or not sure where to start — this is the right place. Fill out the form and I'll get back to you within 48 hours.</p>
-      <p class="bd">Ready to book a specific session? Select a service below and the form will guide you — or I'll direct you to the full booking page.</p>
-      <p class="con-note">"Good light + good vibes = great photos."</p>
-      <div class="con-info">
-        ✉ <a href="mailto:dsmphotography21@gmail.com">dsmphotography21@gmail.com</a><br>
-        📍 Miami, FL — available to travel<br>
-        📱 <a href="#">@DSM_Photography</a>
-      </div>
-    </div>
-
-    <form class="smart-form" onsubmit="return false;">
-      <div class="f-row">
-        <div class="fg">
-          <label class="fl">First name</label>
-          <input class="fi" type="text" placeholder="Jane" />
-        </div>
-        <div class="fg">
-          <label class="fl">Last name</label>
-          <input class="fi" type="text" placeholder="Smith" />
-        </div>
-      </div>
-      <div class="fg">
-        <label class="fl">Email</label>
-        <input class="fi" type="email" placeholder="jane@email.com" />
-      </div>
-      <div class="fg">
-        <label class="fl">What can I help you with?</label>
-        <select class="fsel" id="inquiry-type" onchange="handleType(this.value)">
-          <option value="">Select an option...</option>
-          <option value="general">General question</option>
-          <option value="events">Book an event</option>
-          <option value="booking">Book a session (portraits, headshots, lifestyle, etc.)</option>
-          <option value="wedding">Book a wedding or engagement</option>
-          <option value="realestate">Real estate photography</option>
-          <option value="other">Something else</option>
-        </select>
-      </div>
-
-      <!-- Booking redirect notice (events + booking + wedding) -->
-      <div class="booking-redirect" id="booking-redirect">
-        Ready to book? Head to the <a href="booking.html">full booking inquiry page</a> for the complete experience — service-specific questions, date availability, and everything else. Or fill out the message below and I'll reach out to get you started.
-      </div>
-
-      <!-- Extra fields per type -->
-      <div class="extra-fields" id="extra-fields">
-        <!-- Events -->
-        <div class="fg" id="ef-event-pkg">
-          <label class="fl">Interested package</label>
-          <select class="fsel">
-            <option value="">Select a package...</option>
-            <option>Essential — $350 (2 hrs, 75+ images)</option>
-            <option>Signature — $525 (2.5 hrs, 125+ images)</option>
-            <option>Premier — $750 (2.5 hrs + pre-event, 175+ images)</option>
-            <option>Not sure yet</option>
-          </select>
-        </div>
-        <div class="fg" id="ef-event-date">
-          <label class="fl">Event date</label>
-          <input class="fi" type="text" placeholder="e.g. June 14, 2026 or not confirmed yet" />
-        </div>
-        <div class="fg" id="ef-event-venue">
-          <label class="fl">Venue / location</label>
-          <input class="fi" type="text" placeholder="e.g. Downtown Miami, Holland & Knight" />
-        </div>
-
-        <!-- General booking -->
-        <div class="fg" id="ef-book-service">
-          <label class="fl">Service you're interested in</label>
-          <select class="fsel">
-            <option value="">Select...</option>
-            <option>Portraits</option>
-            <option>Headshots</option>
-            <option>Lifestyle</option>
-            <option>Maternity</option>
-            <option>Proposals</option>
-            <option>Not sure yet</option>
-          </select>
-        </div>
-        <div class="fg" id="ef-book-date">
-          <label class="fl">Approximate date</label>
-          <input class="fi" type="text" placeholder="e.g. Summer 2026 or flexible" />
-        </div>
-
-        <!-- Wedding -->
-        <div class="fg" id="ef-wed-date">
-          <label class="fl">Wedding / engagement date</label>
-          <input class="fi" type="text" placeholder="e.g. October 2026" />
-        </div>
-        <div class="fg" id="ef-wed-venue">
-          <label class="fl">Venue (if known)</label>
-          <input class="fi" type="text" placeholder="Location or venue name" />
-        </div>
-        <div class="fg" id="ef-wed-type">
-          <label class="fl">Type</label>
-          <select class="fsel">
-            <option value="">Select...</option>
-            <option>Engagement session</option>
-            <option>Wedding day</option>
-            <option>Both engagement + wedding</option>
-          </select>
-        </div>
-
-        <!-- Real estate -->
-        <div class="fg" id="ef-re-address">
-          <label class="fl">Property address or area</label>
-          <input class="fi" type="text" placeholder="e.g. Coral Gables, Miami Beach" />
-        </div>
-        <div class="fg" id="ef-re-type">
-          <label class="fl">Property type</label>
-          <select class="fsel">
-            <option value="">Select...</option>
-            <option>Residential</option>
-            <option>Commercial</option>
-            <option>Vacation rental / Airbnb</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="fg">
-        <label class="fl">Message</label>
-        <textarea class="fta" id="msg-field" placeholder="Tell me whatever you'd like me to know."></textarea>
-      </div>
-
-      <button class="btn-sub" type="submit">Send message →</button>
-    </form>
+<div class="contact-inner">
+<div class="con-header">
+  <p class="ey">Get in touch</p>
+  <h2 class="st">Let's start<br>a <em>conversation.</em></h2>
+  <p class="bd">Whether you're ready to book or just exploring — this is the right place. I'll be in touch within 48 hours.</p>
+  <div class="con-info">
+    ✉ <a href="mailto:dsmphotography21@gmail.com">dsmphotography21@gmail.com</a><br>
+    📍 Miami, FL — available to travel<br>
+    📱 <a href="#">@DSM_Photography</a>
   </div>
 </div>
 
+<div id="form-wrap">
+<form class="dyn-form" id="inquiry-form" novalidate>
+
+<!-- ABOUT YOU -->
+<div class="fsec">
+  <div class="fsec-rule"><span class="fsec-label">About You</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg"><label class="fl">First Name <span class="req">*</span></label><input class="fi" type="text" name="firstName" placeholder="First name" required/></div>
+    <div class="fg"><label class="fl">Last Name <span class="req">*</span></label><input class="fi" type="text" name="lastName" placeholder="Last name" required/></div>
+    <div class="fg"><label class="fl">Email <span class="req">*</span></label><input class="fi" type="email" name="email" placeholder="your@email.com" required/></div>
+    <div class="fg"><label class="fl">Phone (optional)</label><input class="fi" type="tel" name="phone" placeholder="(305) 000-0000"/></div>
+    <div class="fg"><label class="fl">Preferred Contact <span class="req">*</span></label>
+      <select class="fsel" name="preferredContact" required>
+        <option value="" disabled selected>Select...</option>
+        <option>Email</option><option>Phone call</option><option>Text message</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">How Did You Hear About Me? <span class="req">*</span></label>
+      <select class="fsel" name="howHeard" required>
+        <option value="" disabled selected>Select...</option>
+        <option>Instagram</option><option>Facebook</option><option>Google</option>
+        <option>Referred by a friend</option><option>Word of mouth</option><option>Other</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- INQUIRY TYPE -->
+<div class="fsec">
+  <div class="fsec-rule"><span class="fsec-label">What Brings You Here</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg f-full"><label class="fl">What Can I Help You With? <span class="req">*</span></label>
+      <select class="fsel" id="inquiry-type" name="inquiryType" required>
+        <option value="" disabled selected>Select an inquiry type...</option>
+        <option value="general">General question</option>
+        <option value="event">Event coverage</option>
+        <option value="session">Inquire about a session</option>
+        <option value="wedding">Inquire about wedding coverage</option>
+        <option value="realestate">Real estate photography</option>
+        <option value="other">Something else</option>
+      </select>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-session-type">
+      <label class="fl">What Type of Session? <span class="req">*</span></label>
+      <select class="fsel" id="session-type" name="sessionType">
+        <option value="" disabled selected>Select session type...</option>
+        <option value="portrait">Portraits</option>
+        <option value="headshot">Headshots</option>
+        <option value="lifestyle">Lifestyle</option>
+        <option value="maternity">Maternity</option>
+        <option value="engagement">Engagements</option>
+        <option value="proposal">Proposal</option>
+        <option value="creative">Creative / Experimental</option>
+        <option value="other-session">Other</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- GENERAL -->
+<div class="dyn-section fsec" id="sec-general">
+  <div class="fsec-rule"><span class="fsec-label">Your Question</span><div class="fsec-line"></div></div>
+  <div class="fg"><label class="fl">What's on your mind? <span class="req">*</span></label>
+    <textarea class="fta narrative" name="sessionNarrative" placeholder="Share as much detail as you'd like — no question is too small."></textarea>
+  </div>
+</div>
+
+<!-- EVENT -->
+<div class="dyn-section fsec" id="sec-event">
+  <div class="fsec-rule"><span class="fsec-label">Event Details</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg"><label class="fl">Event Date <span class="req">*</span></label>
+      <input class="fi" type="date" name="eventDate" id="event-date-input"/>
+      <div class="urgency" id="urg-event">This date is within 60 days — I'll prioritize your inquiry.</div>
+    </div>
+    <div class="fg"><label class="fl">Event Type <span class="req">*</span></label>
+      <select class="fsel" name="eventType">
+        <option value="" disabled selected>Select type...</option>
+        <option>Corporate reception / gala</option><option>Social celebration (birthday, retirement, etc.)</option>
+        <option>Nonprofit / charity event</option><option>Company party or team event</option>
+        <option>Product launch or brand event</option><option>Conference or seminar</option><option>Other</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Expected Guest Count</label><input class="fi" type="text" name="guestCount" placeholder="Approx. number of guests"/></div>
+    <div class="fg"><label class="fl">Venue Name &amp; City <span class="req">*</span></label><input class="fi" type="text" name="venue" placeholder="Venue name, Miami FL"/></div>
+    <div class="fg f-full">
+      <label class="fl">Package Interest</label>
+      <select class="fsel" name="packageInterest" onchange="handlePkg('event',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Essential &mdash; $350</option><option>Signature &mdash; $525</option>
+        <option>Premier &mdash; $750</option><option value="custom">Custom quote</option>
+        <option>Not sure yet</option>
+      </select>
+      <div class="pkg-custom-note" id="pkgnote-event">Custom packages are available for events that go beyond standard coverage — extended hours (3+), multiple rooms or venues within one event, a second shooter, same-day preview delivery, or destination events. Tell me what makes your event unique and I'll build something that fits.</div>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-pkg-event-custom">
+      <label class="fl">What makes your event unique?</label>
+      <textarea class="fta narrative" name="customQuoteDetails" placeholder="Extended hours, multiple rooms or locations, a second shooter, same-day delivery, destination logistics — anything that goes beyond a standard package."></textarea>
+    </div>
+    <div class="fg"><label class="fl">Add-Ons You're Considering</label><input class="fi" type="text" name="addOns" placeholder="e.g. expedited delivery, extra hour..."/></div>
+    <div class="fg f-full"><label class="fl">Tell me about your event <span class="req">*</span></label>
+      <textarea class="fta narrative" name="eventNarrative" placeholder="What's the occasion, what's the vibe, and what moments are most important to you?"></textarea>
+    </div>
+    <div class="fg f-full"><label class="fl">Specific shots or moments you have in mind</label>
+      <textarea class="fta narrative" name="specificShots" placeholder="Group photos, candids, decor details, a toast, a reveal — anything you know you want captured."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- PORTRAIT -->
+<div class="dyn-section fsec" id="sec-portrait">
+  <div class="fsec-rule"><span class="fsec-label">Portrait Session Details</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg"><label class="fl">Occasion <span class="req">*</span></label>
+      <select class="fsel" name="occasion">
+        <option value="" disabled selected>What's this for?</option>
+        <option>Just because — no occasion needed</option><option>Birthday</option>
+        <option>Anniversary</option><option>Graduation</option>
+        <option>Milestone (promotion, move, new chapter)</option><option>Family portrait</option>
+        <option>Mother's Day / Father's Day</option><option>Holiday</option>
+        <option>Personal rebrand</option><option>Other</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Number of Subjects</label><input class="fi" type="text" name="numSubjects" placeholder="Just me, or how many people?"/></div>
+    <div class="fg f-full">
+      <label class="fl">Preferred Dates <span class="req">*</span></label>
+      <div class="f-third" style="margin-top:.3rem">
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">First choice</p><input class="fi" type="date" name="date1" id="prt-date1"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Second choice (optional)</p><input class="fi" type="date" name="date2"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Third choice (optional)</p><input class="fi" type="date" name="date3"/></div>
+      </div>
+      <div class="urgency" id="urg-portrait" style="margin-top:.5rem">This date is within 60 days — I'll prioritize your inquiry.</div>
+    </div>
+    <div class="fg"><label class="fl">Preferred Time of Day</label>
+      <select class="fsel" name="timeOfDay">
+        <option value="" disabled selected>Select...</option>
+        <option>Golden hour (1 hr before sunset)</option><option>Morning / early light</option>
+        <option>Midday</option><option>Flexible — your recommendation</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Outfit Changes</label>
+      <select class="fsel" name="outfitChanges">
+        <option value="" disabled selected>Select...</option>
+        <option>1 outfit</option><option>2 outfits</option><option>3 outfits</option><option>Not sure yet</option>
+      </select>
+    </div>
+    <div class="fg f-full"><label class="fl">Location Preference</label>
+      <select class="fsel" name="locationPref" id="loc-portrait" onchange="handleLoc('portrait',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Beach / waterfront</option><option>Urban / city</option>
+        <option>Park / nature</option><option>Indoor / studio feel</option>
+        <option value="specific">I have a specific location in mind</option>
+        <option>Open to your suggestion</option>
+      </select>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-loc-portrait"><label class="fl">Where are you thinking?</label><input class="fi" type="text" name="specificLocation" placeholder="Name of the location or address"/></div>
+    <div class="fg f-full dyn-group" id="grp-loc-portrait-access"><label class="fl">Any access notes I should know?</label><input class="fi" type="text" name="locationAccess" placeholder="Parking, permissions needed, private property, entry instructions..."/></div>
+    <div class="fg f-full">
+      <label class="fl">Package Interest</label>
+      <select class="fsel" name="packageInterest" onchange="handlePkg('portrait',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Packages being finalized</option><option value="custom">Custom quote</option><option>Not sure yet</option>
+      </select>
+      <div class="pkg-custom-note" id="pkgnote-portrait">Custom packages work well for extended or multi-location portrait sessions, large groups, editorial-style work requiring significant post-production, or personal rebrand shoots that need a more tailored approach. Tell me what makes your project unique and I'll put something together.</div>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-pkg-portrait-custom"><label class="fl">What makes your project unique?</label><textarea class="fta narrative" name="customQuoteDetails" placeholder="Location count, group size, editorial scale, turnaround needs — anything that shapes the scope."></textarea></div>
+    <div class="fg f-full"><label class="fl">Tell me about the feel you're going for <span class="req">*</span></label>
+      <textarea class="fta narrative" name="sessionNarrative" placeholder="Mood, style, energy — editorial and dramatic? Soft and natural? Any inspiration images, photographers, films, or aesthetics you love?"></textarea>
+    </div>
+    <div class="fg f-full"><label class="fl">Specific shots or poses you have in mind</label>
+      <textarea class="fta narrative" name="specificShots" placeholder="A pose you've saved, a composition style, a vibe for a particular shot. Nothing is too small to mention."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- HEADSHOT -->
+<div class="dyn-section fsec" id="sec-headshot">
+  <div class="fsec-rule"><span class="fsec-label">Headshot Session Details</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg"><label class="fl">Intended Use <span class="req">*</span></label>
+      <select class="fsel" name="intendedUse">
+        <option value="" disabled selected>Select primary use...</option>
+        <option>LinkedIn / professional profile</option><option>Corporate website or directory</option>
+        <option>Acting or talent portfolio</option><option>Personal branding</option>
+        <option>General professional use</option><option>Not sure yet</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Number of Subjects</label><input class="fi" type="text" name="numSubjects" placeholder="Just you, or a team?"/></div>
+    <div class="fg f-full">
+      <label class="fl">Preferred Dates <span class="req">*</span></label>
+      <div class="f-third" style="margin-top:.3rem">
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">First choice</p><input class="fi" type="date" name="date1" id="hdt-date1"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Second choice (optional)</p><input class="fi" type="date" name="date2"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Third choice (optional)</p><input class="fi" type="date" name="date3"/></div>
+      </div>
+      <div class="urgency" id="urg-headshot" style="margin-top:.5rem">This date is within 60 days — I'll prioritize your inquiry.</div>
+    </div>
+    <div class="fg"><label class="fl">Preferred Time of Day</label>
+      <select class="fsel" name="timeOfDay">
+        <option value="" disabled selected>Select...</option>
+        <option>Morning / early light</option><option>Midday</option>
+        <option>Golden hour</option><option>Flexible — your recommendation</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Outfit Changes</label>
+      <select class="fsel" name="outfitChanges">
+        <option value="" disabled selected>Select...</option>
+        <option>1 outfit</option><option>2 outfits</option><option>3 outfits</option><option>Not sure yet</option>
+      </select>
+    </div>
+    <div class="fg f-full"><label class="fl">Location Preference</label>
+      <select class="fsel" name="locationPref" id="loc-headshot" onchange="handleLoc('headshot',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Clean / neutral background (indoor)</option><option>Environmental / contextual (office, outdoors)</option>
+        <option>Urban backdrop</option><option value="specific">I have a specific location in mind</option>
+        <option>Open to your suggestion</option>
+      </select>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-loc-headshot"><label class="fl">Where are you thinking?</label><input class="fi" type="text" name="specificLocation" placeholder="Name of the location or address"/></div>
+    <div class="fg f-full dyn-group" id="grp-loc-headshot-access"><label class="fl">Any access notes I should know?</label><input class="fi" type="text" name="locationAccess" placeholder="Parking, permissions needed, private property..."/></div>
+    <div class="fg f-full">
+      <label class="fl">Package Interest</label>
+      <select class="fsel" name="packageInterest" onchange="handlePkg('headshot',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Packages coming soon</option><option value="custom">Custom quote</option><option>Not sure yet</option>
+      </select>
+      <div class="pkg-custom-note" id="pkgnote-headshot">Custom packages work well for team headshot days (10+ people), multiple background setups, same-day turnaround, or volume shoots for full organizations. Tell me what makes your project unique and I'll put together a tailored option.</div>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-pkg-headshot-custom"><label class="fl">What makes your project unique?</label><textarea class="fta narrative" name="customQuoteDetails" placeholder="Team size, turnaround needs, setup requirements."></textarea></div>
+    <div class="fg f-full"><label class="fl">What impression do you want to make? <span class="req">*</span></label>
+      <textarea class="fta narrative" name="sessionNarrative" placeholder="What do you want people to feel when they see your photo? Tell me about you and the context where this image will live."></textarea>
+    </div>
+    <div class="fg f-full"><label class="fl">Specific looks, expressions, or framing in mind</label>
+      <textarea class="fta narrative" name="specificShots" placeholder="Reference shots, a particular angle or crop — anything that captures what you're envisioning."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- LIFESTYLE -->
+<div class="dyn-section fsec" id="sec-lifestyle">
+  <div class="fsec-rule"><span class="fsec-label">Lifestyle Session Details</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg"><label class="fl">Number of Subjects</label><input class="fi" type="text" name="numSubjects" placeholder="Just you, a couple, a family..."/></div>
+    <div class="fg"><label class="fl">Preferred Time of Day</label>
+      <select class="fsel" name="timeOfDay">
+        <option value="" disabled selected>Select...</option>
+        <option>Golden hour</option><option>Morning</option><option>Midday</option><option>Flexible</option>
+      </select>
+    </div>
+    <div class="fg f-full">
+      <label class="fl">Preferred Dates <span class="req">*</span></label>
+      <div class="f-third" style="margin-top:.3rem">
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">First choice</p><input class="fi" type="date" name="date1" id="lst-date1"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Second choice (optional)</p><input class="fi" type="date" name="date2"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Third choice (optional)</p><input class="fi" type="date" name="date3"/></div>
+      </div>
+      <div class="urgency" id="urg-lifestyle" style="margin-top:.5rem">This date is within 60 days — I'll prioritize your inquiry.</div>
+    </div>
+    <div class="fg"><label class="fl">Outfit Changes</label>
+      <select class="fsel" name="outfitChanges">
+        <option value="" disabled selected>Select...</option>
+        <option>1 outfit</option><option>2 outfits</option><option>3 outfits</option><option>Not sure yet</option>
+      </select>
+    </div>
+    <div class="fg f-full"><label class="fl">Location Preference</label>
+      <select class="fsel" name="locationPref" id="loc-lifestyle" onchange="handleLoc('lifestyle',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Beach / waterfront</option><option>Urban / city</option><option>Home / indoor</option>
+        <option>Park / nature</option><option value="specific">I have a specific place in mind</option>
+        <option>Open to your suggestion</option>
+      </select>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-loc-lifestyle"><label class="fl">Where are you thinking?</label><input class="fi" type="text" name="specificLocation" placeholder="Name of the location or address"/></div>
+    <div class="fg f-full dyn-group" id="grp-loc-lifestyle-access"><label class="fl">Any access notes I should know?</label><input class="fi" type="text" name="locationAccess" placeholder="Parking, permissions needed, private property..."/></div>
+    <div class="fg f-full">
+      <label class="fl">Package Interest</label>
+      <select class="fsel" name="packageInterest" onchange="handlePkg('lifestyle',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Packages coming soon</option><option value="custom">Custom quote</option><option>Not sure yet</option>
+      </select>
+      <div class="pkg-custom-note" id="pkgnote-lifestyle">Custom packages are a good fit for extended or documentary-style sessions — following someone through a full day, multi-location storytelling, or brand lifestyle shoots that go beyond a standard session. Tell me what makes your project unique.</div>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-pkg-lifestyle-custom"><label class="fl">What makes your project unique?</label><textarea class="fta narrative" name="customQuoteDetails" placeholder="Full-day coverage, multi-location arc, brand shoot scope — tell me what this actually is."></textarea></div>
+    <div class="fg f-full"><label class="fl">What story do you want to tell? <span class="req">*</span></label>
+      <textarea class="fta narrative" name="sessionNarrative" placeholder="Describe the setting, the people, the moments that matter most. What feeling do you want these photos to carry?"></textarea>
+    </div>
+    <div class="fg f-full"><label class="fl">Specific moments or shots in mind</label>
+      <textarea class="fta narrative" name="specificShots" placeholder="Anything you know you want — a specific activity, a particular interaction or frame."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- MATERNITY -->
+<div class="dyn-section fsec" id="sec-maternity">
+  <div class="fsec-rule"><span class="fsec-label">Maternity Session Details</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg"><label class="fl">Due Date</label><input class="fi" type="date" name="dueDate" id="mat-due"/></div>
+    <div class="fg"><label class="fl">Who Will Be in the Session?</label><input class="fi" type="text" name="numSubjects" placeholder="Solo, with partner, with children..."/></div>
+    <div class="fg f-full">
+      <label class="fl">Preferred Session Dates <span class="req">*</span></label>
+      <div class="f-third" style="margin-top:.3rem">
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">First choice</p><input class="fi" type="date" name="date1" id="mat-date1"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Second choice (optional)</p><input class="fi" type="date" name="date2" id="mat-date2"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Third choice (optional)</p><input class="fi" type="date" name="date3" id="mat-date3"/></div>
+      </div>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-mat-weeks">
+      <label class="fl">Gestational Age at Your Session</label>
+      <div class="fi-computed" id="mat-weeks-display">&mdash;</div>
+    </div>
+    <div class="urgency" id="urg-mat-overdue">This date is after your due date — are you interested in a newborn session instead?</div>
+    <div class="urgency" id="urg-mat-early">Maternity sessions are typically best between 28–36 weeks. Your first choice date may be earlier than ideal — we can discuss timing when I reach out.</div>
+    <div class="fg"><label class="fl">Preferred Time of Day</label>
+      <select class="fsel" name="timeOfDay">
+        <option value="" disabled selected>Select...</option>
+        <option>Golden hour</option><option>Morning</option><option>Midday</option><option>Flexible</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Outfit Changes</label>
+      <select class="fsel" name="outfitChanges">
+        <option value="" disabled selected>Select...</option>
+        <option>1 outfit</option><option>2 outfits</option><option>3 outfits</option><option>Not sure yet</option>
+      </select>
+    </div>
+    <div class="fg f-full"><label class="fl">Location Preference</label>
+      <select class="fsel" name="locationPref" id="loc-maternity" onchange="handleLoc('maternity',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Beach / waterfront</option><option>Park / nature</option>
+        <option>Home / indoor</option><option>Studio feel</option>
+        <option value="specific">I have a specific place in mind</option>
+        <option>Open to your suggestion</option>
+      </select>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-loc-maternity"><label class="fl">Where are you thinking?</label><input class="fi" type="text" name="specificLocation" placeholder="Name of the location or address"/></div>
+    <div class="fg f-full dyn-group" id="grp-loc-maternity-access"><label class="fl">Any access notes I should know?</label><input class="fi" type="text" name="locationAccess" placeholder="Parking, permissions needed, private property..."/></div>
+    <div class="fg f-full">
+      <label class="fl">Package Interest</label>
+      <select class="fsel" name="packageInterest" onchange="handlePkg('maternity',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Packages coming soon</option><option value="custom">Custom quote</option><option>Not sure yet</option>
+      </select>
+      <div class="pkg-custom-note" id="pkgnote-maternity">Custom packages are available for extended sessions, multi-location shoots, or maternity coverage that includes a partner, family, or children across multiple setups. Tell me what makes your vision unique.</div>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-pkg-maternity-custom"><label class="fl">What makes your project unique?</label><textarea class="fta narrative" name="customQuoteDetails" placeholder="Multiple locations, extended time, additional family members, special setup needs."></textarea></div>
+    <div class="fg f-full"><label class="fl">Tell me about your vision <span class="req">*</span></label>
+      <textarea class="fta narrative" name="sessionNarrative" placeholder="What feeling do you want these photos to carry? Any themes, meaningful locations, or elements you want woven in?"></textarea>
+    </div>
+    <div class="fg f-full"><label class="fl">Specific shots or moments in mind</label>
+      <textarea class="fta narrative" name="specificShots" placeholder="Belly profile shots, hands, partner interaction, children included, something symbolic — share everything."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ENGAGEMENT -->
+<div class="dyn-section fsec" id="sec-engagement">
+  <div class="fsec-rule"><span class="fsec-label">Engagement Session Details</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg"><label class="fl">Your Partner's Name <span class="req">*</span></label><input class="fi" type="text" name="partnerName" placeholder="Partner's first name"/></div>
+    <div class="fg"><label class="fl">Outfit Changes</label>
+      <select class="fsel" name="outfitChanges">
+        <option value="" disabled selected>Select...</option>
+        <option>1 outfit</option><option>2 outfits</option><option>Not sure yet</option>
+      </select>
+    </div>
+    <div class="fg f-full">
+      <label class="fl">Preferred Dates <span class="req">*</span></label>
+      <div class="f-third" style="margin-top:.3rem">
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">First choice</p><input class="fi" type="date" name="date1" id="eng-date1"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Second choice (optional)</p><input class="fi" type="date" name="date2"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Third choice (optional)</p><input class="fi" type="date" name="date3"/></div>
+      </div>
+      <div class="urgency" id="urg-engagement" style="margin-top:.5rem">This date is within 60 days — I'll prioritize your inquiry.</div>
+    </div>
+    <div class="fg"><label class="fl">Preferred Time of Day</label>
+      <select class="fsel" name="timeOfDay">
+        <option value="" disabled selected>Select...</option>
+        <option>Golden hour</option><option>Morning</option><option>Midday</option><option>Flexible</option>
+      </select>
+    </div>
+    <div class="fg f-full"><label class="fl">Location Preference</label>
+      <select class="fsel" name="locationPref" id="loc-engagement" onchange="handleLoc('engagement',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Beach / waterfront</option><option>Urban / city</option><option>Park / nature</option>
+        <option>Somewhere meaningful to us</option><option value="specific">I have a specific location in mind</option>
+        <option>Open to your suggestion</option>
+      </select>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-loc-engagement"><label class="fl">Where are you thinking?</label><input class="fi" type="text" name="specificLocation" placeholder="Name of the location or address"/></div>
+    <div class="fg f-full dyn-group" id="grp-loc-engagement-access"><label class="fl">Any access notes I should know?</label><input class="fi" type="text" name="locationAccess" placeholder="Parking, permissions needed, private property..."/></div>
+    <div class="fg f-full">
+      <label class="fl">Package Interest</label>
+      <select class="fsel" name="packageInterest" onchange="handlePkg('engagement',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Packages coming soon</option><option value="custom">Custom quote</option><option>Not sure yet</option>
+      </select>
+      <div class="pkg-custom-note" id="pkgnote-engagement">Custom packages are available for destination engagement sessions, unusually long or multi-location shoots, or creative concepts that need a more tailored approach. Tell me what makes your project unique.</div>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-pkg-engagement-custom"><label class="fl">What makes your project unique?</label><textarea class="fta narrative" name="customQuoteDetails" placeholder="Destination, duration, multi-location concept — anything beyond a standard session."></textarea></div>
+    <div class="fg f-full"><label class="fl">Tell me about you two <span class="req">*</span></label>
+      <textarea class="fta narrative" name="coupleStory" placeholder="How did you meet? What do you love doing together? What makes your dynamic yours?"></textarea>
+    </div>
+    <div class="fg f-full"><label class="fl">Specific shots or moments in mind</label>
+      <textarea class="fta narrative" name="specificShots" placeholder="Anything you've envisioned — a location within the location, an activity, a particular frame."></textarea>
+    </div>
+  </div>
+  <div class="cross-toggle"><label><input type="checkbox" id="add-wedding-check" name="addWedding" value="yes"/> I'm also interested in inquiring about wedding coverage</label></div>
+</div>
+
+<!-- PROPOSAL -->
+<div class="dyn-section fsec" id="sec-proposal">
+  <div class="fsec-rule"><span class="fsec-label">Proposal Coverage Details</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg"><label class="fl">Your Partner's Name <span class="req">*</span></label><input class="fi" type="text" name="partnerName" placeholder="Partner's first name"/></div>
+    <div class="fg">
+      <label class="fl">Proposal Date <span class="req">*</span></label>
+      <input class="fi" type="date" name="date1" id="prp-date1"/>
+      <div class="urgency" id="urg-proposal" style="margin-top:.4rem">This date is within 60 days — I'll prioritize your inquiry.</div>
+    </div>
+    <div class="fg"><label class="fl">Who Else Will Be Involved?</label>
+      <select class="fsel" name="whoInvolved">
+        <option value="" disabled selected>Select...</option>
+        <option>Just the two of us</option><option>Family members present</option>
+        <option>Friends present</option><option>Other vendors coordinating (florist, musician, etc.)</option>
+        <option>Multiple of the above</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Coverage Scope</label>
+      <select class="fsel" name="coverageScope">
+        <option value="" disabled selected>Select...</option>
+        <option>Proposal moment only</option><option>Moments leading up + the proposal</option>
+        <option>Proposal + celebration after</option><option>Full arc — before, during, and after</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Photographer Positioning</label>
+      <select class="fsel" name="photographerRole" id="photographer-role">
+        <option value="" disabled selected>Select...</option>
+        <option value="hidden">Fully hidden</option>
+        <option value="blending">Present but blending in</option>
+        <option value="cover">Pretending to be there for another reason</option>
+      </select>
+    </div>
+    <div class="fg dyn-group" id="grp-cover-story"><label class="fl">What's the cover story?</label><input class="fi" type="text" name="coverStory" placeholder="e.g. 'friend taking vacation photos'"/></div>
+    <div class="fg f-full"><label class="fl">Location</label>
+      <select class="fsel" name="locationPref" id="loc-proposal" onchange="handleLoc('proposal',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Beach / waterfront</option><option>Urban / city</option><option>Park / nature</option>
+        <option>Restaurant / venue</option><option value="specific">I have a specific location in mind</option>
+        <option>Open to your suggestion</option>
+      </select>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-loc-proposal"><label class="fl">Where are you thinking?</label><input class="fi" type="text" name="specificLocation" placeholder="Name of the location or address"/></div>
+    <div class="fg f-full dyn-group" id="grp-loc-proposal-access"><label class="fl">Any access notes I should know?</label><input class="fi" type="text" name="locationAccess" placeholder="Parking, permissions, private property, any coordination needed..."/></div>
+    <div class="fg f-full">
+      <label class="fl">Package Interest</label>
+      <select class="fsel" name="packageInterest" onchange="handlePkg('proposal',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Packages coming soon</option><option value="custom">Custom quote</option><option>Not sure yet</option>
+      </select>
+      <div class="pkg-custom-note" id="pkgnote-proposal">Custom packages make sense for coordination-heavy proposals — multiple vendor handoffs, destination proposals, or same-day turnaround on a highlight gallery. Tell me what makes your proposal unique.</div>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-pkg-proposal-custom"><label class="fl">What makes your project unique?</label><textarea class="fta narrative" name="customQuoteDetails" placeholder="Logistics, vendor coordination, destination, same-day turnaround — tell me what sets this apart."></textarea></div>
+    <div class="fg f-full"><label class="fl">Walk me through the plan <span class="req">*</span></label>
+      <textarea class="fta narrative" name="sessionNarrative" placeholder="Location, timing, how your partner will be positioned — the more I know, the better I can prepare to be invisible and perfectly placed."></textarea>
+    </div>
+    <div class="fg f-full"><label class="fl">Key moments you want captured</label>
+      <textarea class="fta narrative" name="specificShots" placeholder="The approach, the ring, the reaction, what happens right after — which moments are non-negotiable?"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- CREATIVE -->
+<div class="dyn-section fsec" id="sec-creative">
+  <div class="fsec-rule"><span class="fsec-label">Creative Session Details</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg"><label class="fl">What Are You Creating? <span class="req">*</span></label>
+      <select class="fsel" name="creativeType">
+        <option value="" disabled selected>Select...</option>
+        <option>Content for social media</option><option>Editorial or artistic project</option>
+        <option>Brand or product content</option><option>Personal creative exploration</option>
+        <option>Portfolio building</option><option>Collaboration / experimental</option><option>Other</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Number of Subjects</label><input class="fi" type="text" name="numSubjects" placeholder="Including yourself if self-directed"/></div>
+    <div class="fg f-full">
+      <label class="fl">Preferred Dates <span class="req">*</span></label>
+      <div class="f-third" style="margin-top:.3rem">
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">First choice</p><input class="fi" type="date" name="date1" id="cre-date1"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Second choice (optional)</p><input class="fi" type="date" name="date2"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Third choice (optional)</p><input class="fi" type="date" name="date3"/></div>
+      </div>
+      <div class="urgency" id="urg-creative" style="margin-top:.5rem">This date is within 60 days — I'll prioritize your inquiry.</div>
+    </div>
+    <div class="fg"><label class="fl">Outfit Changes</label>
+      <select class="fsel" name="outfitChanges">
+        <option value="" disabled selected>Select...</option>
+        <option>1</option><option>2</option><option>3+</option><option>Not sure yet</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Content Deadline (if any)</label><input class="fi" type="date" name="contentDeadline"/></div>
+    <div class="fg f-full"><label class="fl">Location Preference</label>
+      <select class="fsel" name="locationPref" id="loc-creative" onchange="handleLoc('creative',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Beach / waterfront</option><option>Urban / city</option>
+        <option>Indoor / controlled environment</option><option>Nature / organic setting</option>
+        <option value="specific">I have a specific place in mind</option>
+        <option>Open — let's figure it out together</option>
+      </select>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-loc-creative"><label class="fl">Where are you thinking?</label><input class="fi" type="text" name="specificLocation" placeholder="Name of the location or address"/></div>
+    <div class="fg f-full dyn-group" id="grp-loc-creative-access"><label class="fl">Any access notes I should know?</label><input class="fi" type="text" name="locationAccess" placeholder="Parking, permissions needed, private property..."/></div>
+    <div class="fg f-full">
+      <label class="fl">Package Interest</label>
+      <select class="fsel" name="packageInterest" onchange="handlePkg('creative',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Packages coming soon</option><option value="custom">Custom quote</option><option>Not sure yet</option>
+      </select>
+      <div class="pkg-custom-note" id="pkgnote-creative">Almost every creative project is its own thing. Multi-day shoots, collaborative editorials, brand campaigns, or experimental work with specific production needs — all of these are good candidates for a custom package. Tell me what makes your project unique.</div>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-pkg-creative-custom"><label class="fl">What makes your project unique?</label><textarea class="fta narrative" name="customQuoteDetails" placeholder="Scope, timeline, scale, production needs — tell me what this project actually is."></textarea></div>
+    <div class="fg f-full"><label class="fl">Tell me about your concept <span class="req">*</span></label>
+      <textarea class="fta narrative" name="sessionNarrative" placeholder="Half-formed ideas are completely welcome. What are you trying to make? Give me whatever you have — a single image, a color, a word, a vibe. We'll build from there."></textarea>
+    </div>
+    <div class="fg f-full"><label class="fl">Mood, aesthetic references, or inspiration</label>
+      <textarea class="fta narrative" name="moodReferences" placeholder="Photographers, films, artwork, textures, color palettes — anything that captures the direction you're moving toward."></textarea>
+    </div>
+    <div class="fg f-full"><label class="fl">Specific shots or compositions in mind</label>
+      <textarea class="fta narrative" name="specificShots" placeholder="Anything concrete you're envisioning — even if it's just a feeling for a particular frame."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- WEDDING -->
+<div class="dyn-section fsec" id="sec-wedding">
+  <div class="fsec-rule"><span class="fsec-label">Wedding Coverage Details</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg"><label class="fl">Your Partner's Name <span class="req">*</span></label><input class="fi" type="text" name="partnerName" placeholder="Partner's first name"/></div>
+    <div class="fg">
+      <label class="fl">Wedding Date <span class="req">*</span></label>
+      <input class="fi" type="date" name="date1" id="wed-date1"/>
+      <div class="urgency" id="urg-wedding" style="margin-top:.4rem">This date is within 60 days — I'll prioritize your inquiry.</div>
+    </div>
+    <div class="fg"><label class="fl">Season</label>
+      <select class="fsel" name="season">
+        <option value="" disabled selected>Select...</option>
+        <option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Indoor / Outdoor</label>
+      <select class="fsel" name="indoorOutdoor">
+        <option value="" disabled selected>Select...</option>
+        <option>Fully indoor</option><option>Fully outdoor</option><option>Both</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Color Palette / Vibe</label><input class="fi" type="text" name="colorPalette" placeholder="e.g. dusty rose and sage, black tie modern..."/></div>
+    <div class="fg"><label class="fl">Estimated Guest Count</label><input class="fi" type="text" name="guestCount" placeholder="Approximate number"/></div>
+    <div class="fg"><label class="fl">Wedding Party Size</label><input class="fi" type="text" name="weddingPartySize" placeholder="Total people in the wedding party"/></div>
+    <div class="fg"><label class="fl">Ceremony Start Time</label><input class="fi" type="time" name="ceremonyStart"/></div>
+    <div class="fg"><label class="fl">Ceremony Venue</label><input class="fi" type="text" name="ceremonyVenue" placeholder="Venue name and city"/></div>
+    <div class="fg"><label class="fl">Reception Venue</label><input class="fi" type="text" name="receptionVenue" placeholder="Same, or different venue and city"/></div>
+    <div class="fg"><label class="fl">Number of Locations</label><input class="fi" type="number" name="numLocations" placeholder="Getting ready, ceremony, reception..." min="1"/></div>
+    <div class="fg"><label class="fl">Separate Bridal Party Session?</label>
+      <select class="fsel" name="bridalPartySession">
+        <option value="" disabled selected>Select...</option>
+        <option>Yes</option><option>No</option><option>Not sure yet</option>
+      </select>
+    </div>
+    <div class="fg f-full"><label class="fl">Portions of the Day to Cover</label>
+      <div class="check-group">
+        <label class="check-item"><input type="checkbox" name="portionsCovered" value="Getting ready"/><span>Getting ready</span></label>
+        <label class="check-item"><input type="checkbox" name="portionsCovered" value="First look"/><span>First look</span></label>
+        <label class="check-item"><input type="checkbox" name="portionsCovered" value="Ceremony"/><span>Ceremony</span></label>
+        <label class="check-item"><input type="checkbox" name="portionsCovered" value="Cocktail hour"/><span>Cocktail hour</span></label>
+        <label class="check-item"><input type="checkbox" name="portionsCovered" value="Reception"/><span>Reception</span></label>
+        <label class="check-item"><input type="checkbox" name="portionsCovered" value="Send-off"/><span>Send-off</span></label>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Second Shooter Interest</label>
+      <select class="fsel" name="secondShooter">
+        <option value="" disabled selected>Select...</option>
+        <option>Yes, I'd like one</option><option>No</option><option>Not sure yet</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Do You Have a Videographer?</label>
+      <select class="fsel" name="hasVideographer">
+        <option value="" disabled selected>Select...</option>
+        <option>Yes</option><option>No</option><option>Still deciding</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Wedding Planner / Coordinator</label><input class="fi" type="text" name="coordinator" placeholder="Name, if applicable"/></div>
+    <div class="fg f-full">
+      <label class="fl">Package Interest</label>
+      <select class="fsel" name="packageInterest" onchange="handlePkg('wedding',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option value="custom">Custom quote</option>
+        <option>Coming soon</option>
+      </select>
+      <div class="pkg-custom-note" id="pkgnote-wedding">Custom packages are the norm rather than the exception for weddings. Common reasons include destination or multi-day coverage, multiple photographers, a same-day highlight gallery, or a day that doesn't fit a standard timeline. Tell me what makes your wedding unique.</div>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-pkg-wedding-custom"><label class="fl">What makes your wedding unique?</label><textarea class="fta narrative" name="customQuoteDetails" placeholder="Destination, multi-day, multiple photographers, a same-day gallery, a timeline that doesn't fit a standard package — tell me everything."></textarea></div>
+    <div class="fg f-full"><label class="fl">Tell me about your wedding vision <span class="req">*</span></label>
+      <textarea class="fta narrative" name="sessionNarrative" placeholder="The aesthetic, the venue vibe, the feeling you want the day to carry. What moments are you most excited about?"></textarea>
+    </div>
+    <div class="fg f-full"><label class="fl">Must-have shots and non-negotiables</label>
+      <textarea class="fta narrative" name="specificShots" placeholder="Portraits, family groupings, details (dress, rings, florals), moments — anything that's non-negotiable for you."></textarea>
+    </div>
+  </div>
+  <div class="cross-toggle"><label><input type="checkbox" id="add-engagement-check" name="addEngagement" value="yes"/> I'm also interested in adding an engagement session</label></div>
+</div>
+
+<!-- CROSS: engagement add-on -->
+<div class="dyn-section fsec" id="sec-cross-engagement">
+  <div class="fsec-rule"><span class="fsec-label" style="color:var(--mint)">Engagement Session Add-On</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg f-full">
+      <label class="fl">Preferred Engagement Dates</label>
+      <div class="f-third" style="margin-top:.3rem">
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">First choice</p><input class="fi" type="date" name="engDate1"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Second choice (optional)</p><input class="fi" type="date" name="engDate2"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Third choice (optional)</p><input class="fi" type="date" name="engDate3"/></div>
+      </div>
+    </div>
+    <div class="fg f-full"><label class="fl">Location Preference</label>
+      <select class="fsel" name="engLocationPref" id="loc-cross-eng" onchange="handleLoc('cross-eng',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Beach / waterfront</option><option>Urban / city</option><option>Park / nature</option>
+        <option>Somewhere meaningful to us</option><option value="specific">I have a specific location in mind</option>
+        <option>Open to your suggestion</option>
+      </select>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-loc-cross-eng"><label class="fl">Where are you thinking?</label><input class="fi" type="text" name="engSpecificLocation" placeholder="Name of the location or address"/></div>
+    <div class="fg f-full dyn-group" id="grp-loc-cross-eng-access"><label class="fl">Any access notes I should know?</label><input class="fi" type="text" name="engLocationAccess" placeholder="Parking, permissions, private property..."/></div>
+    <div class="fg f-full"><label class="fl">Tell me about you two</label>
+      <textarea class="fta narrative" name="coupleStory" placeholder="How you met, what you love doing together, what makes your dynamic yours."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- CROSS: wedding add-on -->
+<div class="dyn-section fsec" id="sec-cross-wedding">
+  <div class="fsec-rule"><span class="fsec-label" style="color:var(--mint)">Wedding Coverage Add-On</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg"><label class="fl">Wedding Date</label><input class="fi" type="date" name="weddingDate"/></div>
+    <div class="fg"><label class="fl">Ceremony Venue</label><input class="fi" type="text" name="ceremonyVenue" placeholder="Venue name and city"/></div>
+    <div class="fg f-full"><label class="fl">Tell me about your wedding vision</label>
+      <textarea class="fta narrative" name="weddingVisionCross" placeholder="Aesthetic, vibe, any details you want to share at this stage."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- REAL ESTATE -->
+<div class="dyn-section fsec" id="sec-realestate">
+  <div class="fsec-rule"><span class="fsec-label">Property Details</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg f-full"><label class="fl">Property Address <span class="req">*</span></label><input class="fi" type="text" name="propertyAddress" placeholder="Full address"/></div>
+    <div class="fg"><label class="fl">Property Type <span class="req">*</span></label>
+      <select class="fsel" name="propertyType">
+        <option value="" disabled selected>Select...</option>
+        <option>Residential</option><option>Commercial</option><option>Vacation rental</option>
+        <option>Land</option><option>Other</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Listing Status</label>
+      <select class="fsel" name="listingStatus">
+        <option value="" disabled selected>Select...</option>
+        <option>Active listing</option><option>Pre-market</option>
+        <option>Personal / non-listing use</option><option>Other</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Approximate Square Footage</label><input class="fi" type="text" name="sqFootage" placeholder="e.g. 1,800 sq ft"/></div>
+    <div class="fg"><label class="fl">Beds / Baths</label><input class="fi" type="text" name="bedsBaths" placeholder="e.g. 3 bed / 2 bath"/></div>
+    <div class="fg f-full">
+      <label class="fl">Preferred Shoot Dates <span class="req">*</span></label>
+      <div class="f-third" style="margin-top:.3rem">
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">First choice</p><input class="fi" type="date" name="date1" id="rst-date1"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Second choice (optional)</p><input class="fi" type="date" name="date2"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Third choice (optional)</p><input class="fi" type="date" name="date3"/></div>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Preferred Time of Day</label>
+      <select class="fsel" name="timeOfDay">
+        <option value="" disabled selected>Select...</option>
+        <option>Morning</option><option>Midday</option><option>Late afternoon</option>
+        <option>Twilight</option><option>Flexible</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Your Role</label>
+      <select class="fsel" name="clientRole">
+        <option value="" disabled selected>Select...</option>
+        <option>Listing agent</option><option>Homeowner</option>
+        <option>Property manager</option><option>Other</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Brokerage / Company (if agent)</label><input class="fi" type="text" name="brokerage" placeholder="Brokerage name"/></div>
+    <div class="fg">
+      <label class="fl">MLS Deadline (if applicable)</label>
+      <input class="fi" type="date" name="mlsDeadline" id="mls-deadline-input"/>
+      <div class="urgency" id="urg-mls" style="display:none">MLS deadline noted — I'll treat this as high priority.</div>
+    </div>
+    <div class="fg"><label class="fl">Staging Status</label>
+      <select class="fsel" name="stagingStatus">
+        <option value="" disabled selected>Select...</option>
+        <option>Fully staged</option><option>Partially staged</option>
+        <option>Vacant</option><option>Furnished as-is</option>
+      </select>
+    </div>
+    <div class="fg f-full"><label class="fl">Services Needed</label>
+      <div class="check-group">
+        <label class="check-item"><input type="checkbox" name="servicesNeeded" value="Interior"/><span>Interior</span></label>
+        <label class="check-item"><input type="checkbox" name="servicesNeeded" value="Exterior"/><span>Exterior</span></label>
+        <label class="check-item"><input type="checkbox" name="servicesNeeded" value="Aerial / drone"/><span>Aerial / drone</span></label>
+        <label class="check-item"><input type="checkbox" name="servicesNeeded" value="Twilight"/><span>Twilight</span></label>
+        <label class="check-item"><input type="checkbox" name="servicesNeeded" value="Virtual tour"/><span>Virtual tour</span></label>
+        <label class="check-item"><input type="checkbox" name="servicesNeeded" value="Floor plan"/><span>Floor plan</span></label>
+      </div>
+    </div>
+    <div class="fg f-full">
+      <label class="fl">Package Interest</label>
+      <select class="fsel" name="packageInterest" onchange="handlePkg('realestate',this.value)">
+        <option value="" disabled selected>Select...</option>
+        <option>Packages coming soon</option><option value="custom">Custom quote</option>
+      </select>
+      <div class="pkg-custom-note" id="pkgnote-realestate">Custom packages make sense for large commercial properties, multi-building portfolios, or luxury listings that need a full suite — interior, exterior, drone, twilight, and virtual tour all in one day. Tell me what makes your property unique.</div>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-pkg-realestate-custom"><label class="fl">What makes your project unique?</label><textarea class="fta narrative" name="customQuoteDetails" placeholder="Property size, scope of services, turnaround requirements."></textarea></div>
+    <div class="fg f-full"><label class="fl">Anything I should know about this property <span class="req">*</span></label>
+      <textarea class="fta narrative" name="sessionNarrative" placeholder="Features to highlight, access instructions, challenging lighting, occupied vs. vacant — anything that helps me prepare to shoot this property at its best."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- OTHER -->
+<div class="dyn-section fsec" id="sec-other">
+  <div class="fsec-rule"><span class="fsec-label">Tell Me More</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg f-full">
+      <label class="fl">Ideal Timeline or Dates</label>
+      <div class="f-third" style="margin-top:.3rem">
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">First choice (optional)</p><input class="fi" type="date" name="date1"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Second choice (optional)</p><input class="fi" type="date" name="date2"/></div>
+        <div class="fg" style="margin-bottom:0"><p class="date-sublabel">Third choice (optional)</p><input class="fi" type="date" name="date3"/></div>
+      </div>
+    </div>
+    <div class="fg f-full"><label class="fl">What are you looking for? <span class="req">*</span></label>
+      <textarea class="fta narrative" name="sessionNarrative" placeholder="Tell me everything — what you're envisioning, when you need it, and whatever else would help me understand what you're looking for."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- BUDGET -->
+<div class="dyn-section fsec" id="sec-budget">
+  <div class="fsec-rule"><span class="fsec-label">Budget</span><div class="fsec-line"></div></div>
+  <div class="f-row">
+    <div class="fg"><label class="fl">Approximate Budget Range</label>
+      <select class="fsel" name="budgetRange">
+        <option value="" disabled selected>Select...</option>
+        <option>Under $300</option><option>$300&ndash;$500</option><option>$500&ndash;$750</option>
+        <option>$750&ndash;$1,000</option><option>$1,000&ndash;$1,500</option><option>$1,500+</option>
+        <option>Flexible / not sure</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Is This a Hard Cap?</label>
+      <select class="fsel" id="hard-cap-select" name="hardBudgetCapSelect">
+        <option value="" disabled selected>Select...</option>
+        <option value="no">No &mdash; flexible within range</option>
+        <option value="yes">Yes &mdash; I cannot exceed this</option>
+      </select>
+    </div>
+    <div class="fg f-full dyn-group" id="grp-hard-cap"><label class="fl">What is your hard cap?</label><input class="fi" type="text" name="hardBudgetCap" placeholder="e.g. $600 maximum"/></div>
+  </div>
+</div>
+
+<!-- SUBMIT -->
+<div class="form-foot" id="form-foot" style="display:none">
+  <button type="submit" class="btn-sub" id="submit-btn">Send Inquiry &rarr;</button>
+  <p class="form-note">I'll be in touch within 48 hours. You'll receive a confirmation email with your inquiry summary.</p>
+</div>
+
+</form>
+</div>
+
+<div class="success-state" id="success-state">
+  <span class="success-mark">&#10022;</span>
+  <p class="success-ref" id="success-ref"></p>
+  <h2 class="success-title">Inquiry received &mdash;<br><em>talk soon.</em></h2>
+  <p class="success-body">Check your inbox for a confirmation with your inquiry summary attached. I'll be in touch within 48 hours.</p>
+</div>
+
+</div>
+</div>
 <!-- FOOTER -->
 <footer>
   <div class="f-logo">
@@ -450,45 +1177,42 @@ footer{background:var(--dark);border-top:1px solid rgba(222,192,140,.1);padding:
 </footer>
 
 <script>
-const allExtras = [
-  'ef-event-pkg','ef-event-date','ef-event-venue',
-  'ef-book-service','ef-book-date',
-  'ef-wed-date','ef-wed-venue','ef-wed-type',
-  'ef-re-address','ef-re-type'
-];
-
-const redirect = document.getElementById('booking-redirect');
-const msg = document.getElementById('msg-field');
-
-function handleType(val) {
-  // hide all extras
-  allExtras.forEach(id => document.getElementById(id).classList.remove('show'));
-  redirect.classList.remove('show');
-
-  const placeholders = {
-    general: 'What\'s on your mind? Happy to answer any questions.',
-    events: 'Tell me about your event — any details help.',
-    booking: 'Tell me about what you have in mind.',
-    wedding: 'Tell me about your day — venue, vibe, what matters most to you.',
-    realestate: 'Any other details about the property or shoot?',
-    other: 'Tell me whatever you\'d like me to know.'
-  };
-
-  msg.placeholder = placeholders[val] || 'Tell me whatever you\'d like me to know.';
-
-  if (val === 'events') {
-    ['ef-event-pkg','ef-event-date','ef-event-venue'].forEach(id => document.getElementById(id).classList.add('show'));
-    redirect.classList.add('show');
-  } else if (val === 'booking') {
-    ['ef-book-service','ef-book-date'].forEach(id => document.getElementById(id).classList.add('show'));
-    redirect.classList.add('show');
-  } else if (val === 'wedding') {
-    ['ef-wed-date','ef-wed-venue','ef-wed-type'].forEach(id => document.getElementById(id).classList.add('show'));
-    redirect.classList.add('show');
-  } else if (val === 'realestate') {
-    ['ef-re-address','ef-re-type'].forEach(id => document.getElementById(id).classList.add('show'));
-  }
-}
+function getNextSeq(){var n=parseInt(localStorage.getItem('dsm_inquiry_seq')||'999',10)+1;localStorage.setItem('dsm_inquiry_seq',String(n));return n;}
+function watchDate(inputId,noteId){var inp=document.getElementById(inputId);var note=document.getElementById(noteId);if(!inp||!note)return;inp.addEventListener('change',function(){var days=Math.ceil((new Date(inp.value)-new Date())/864e5);note.style.display=(!isNaN(days)&&days>0&&days<=60)?'block':'none';});}
+watchDate('event-date-input','urg-event');
+watchDate('prt-date1','urg-portrait');
+watchDate('hdt-date1','urg-headshot');
+watchDate('lst-date1','urg-lifestyle');
+watchDate('eng-date1','urg-engagement');
+watchDate('prp-date1','urg-proposal');
+watchDate('wed-date1','urg-wedding');
+watchDate('cre-date1','urg-creative');
+var mlsInp=document.getElementById('mls-deadline-input');
+if(mlsInp)mlsInp.addEventListener('change',function(){document.getElementById('urg-mls').style.display=mlsInp.value?'block':'none';});
+function trimLabel(w){if(w<=13)return'first trimester';if(w<=27)return'second trimester';if(w<=40)return'third trimester';return'past due date';}
+function calcMat(){var due=document.getElementById('mat-due');var s1=document.getElementById('mat-date1');var disp=document.getElementById('mat-weeks-display');var grp=document.getElementById('grp-mat-weeks');var urgO=document.getElementById('urg-mat-overdue');var urgE=document.getElementById('urg-mat-early');urgO.style.display='none';urgE.style.display='none';if(!due.value||!s1.value){grp.classList.remove('on');return;}var dueD=new Date(due.value);var sessD=new Date(s1.value);if(sessD>dueD){urgO.style.display='block';grp.classList.remove('on');return;}var conc=new Date(dueD);conc.setDate(conc.getDate()-280);var w=Math.round((sessD-conc)/(7*864e5));grp.classList.add('on');disp.textContent='Approximately '+w+' weeks ('+trimLabel(w)+')';if(w<20)urgE.style.display='block';}
+document.getElementById('mat-due').addEventListener('change',calcMat);
+document.getElementById('mat-date1').addEventListener('change',calcMat);
+function handleLoc(type,val){var isS=val==='specific';var g=document.getElementById('grp-loc-'+type);var ga=document.getElementById('grp-loc-'+type+'-access');if(g)g.classList.toggle('on',isS);if(ga)ga.classList.toggle('on',isS);}
+function handlePkg(type,val){var isC=val==='custom';var n=document.getElementById('pkgnote-'+type);var g=document.getElementById('grp-pkg-'+type+'-custom');if(n)n.classList.toggle('on',isC);if(g)g.classList.toggle('on',isC);}
+function hideAll(){document.querySelectorAll('.dyn-section').forEach(function(e){e.classList.remove('on');});document.querySelectorAll('.dyn-group').forEach(function(e){e.classList.remove('on');});document.getElementById('sec-budget').classList.remove('on');document.getElementById('form-foot').style.display='none';document.getElementById('sec-cross-engagement').classList.remove('on');document.getElementById('sec-cross-wedding').classList.remove('on');}
+function show(id){var e=document.getElementById(id);if(e)e.classList.add('on');}
+function showGrp(id){var e=document.getElementById(id);if(e)e.classList.add('on');}
+var typeSelect=document.getElementById('inquiry-type');
+var sessSelect=document.getElementById('session-type');
+typeSelect.addEventListener('change',function(){hideAll();var v=this.value;if(v==='general'){show('sec-general');document.getElementById('form-foot').style.display='flex';}if(v==='event'){show('sec-event');show('sec-budget');document.getElementById('form-foot').style.display='flex';}if(v==='session'){showGrp('grp-session-type');sessSelect.value='';}if(v==='wedding'){show('sec-wedding');show('sec-budget');document.getElementById('form-foot').style.display='flex';}if(v==='realestate'){show('sec-realestate');show('sec-budget');document.getElementById('form-foot').style.display='flex';}if(v==='other'){show('sec-other');show('sec-budget');document.getElementById('form-foot').style.display='flex';}});
+var sessMap={portrait:'sec-portrait',headshot:'sec-headshot',lifestyle:'sec-lifestyle',maternity:'sec-maternity',engagement:'sec-engagement',proposal:'sec-proposal',creative:'sec-creative','other-session':'sec-other'};
+sessSelect.addEventListener('change',function(){Object.values(sessMap).forEach(function(id){var e=document.getElementById(id);if(e)e.classList.remove('on');});document.getElementById('sec-cross-engagement').classList.remove('on');document.getElementById('sec-cross-wedding').classList.remove('on');document.getElementById('sec-budget').classList.remove('on');document.getElementById('form-foot').style.display='none';var id=sessMap[this.value];if(id){show(id);show('sec-budget');document.getElementById('form-foot').style.display='flex';}});
+var aec=document.getElementById('add-engagement-check');
+if(aec)aec.addEventListener('change',function(){document.getElementById('sec-cross-engagement').classList.toggle('on',this.checked);});
+var awc=document.getElementById('add-wedding-check');
+if(awc)awc.addEventListener('change',function(){document.getElementById('sec-cross-wedding').classList.toggle('on',this.checked);});
+var pr=document.getElementById('photographer-role');
+if(pr)pr.addEventListener('change',function(){document.getElementById('grp-cover-story').classList.toggle('on',this.value==='cover');});
+var hcs=document.getElementById('hard-cap-select');
+if(hcs)hcs.addEventListener('change',function(){document.getElementById('grp-hard-cap').classList.toggle('on',this.value==='yes');});
+function collect(){var form=document.getElementById('inquiry-form');var data={};var iType=typeSelect.value;var sType=sessSelect.value;data.inquiryType=(iType==='session')?sType:iType;form.querySelectorAll('input[name]:not([type="checkbox"])').forEach(function(el){if(el.offsetParent!==null&&data[el.name]===undefined)data[el.name]=el.value;});form.querySelectorAll('select[name]').forEach(function(el){if(el.offsetParent!==null&&data[el.name]===undefined)data[el.name]=el.value;});form.querySelectorAll('textarea[name]').forEach(function(el){if(el.offsetParent!==null&&data[el.name]===undefined)data[el.name]=el.value;});var checks={};form.querySelectorAll('input[type="checkbox"]:not(#add-wedding-check):not(#add-engagement-check)').forEach(function(el){if(el.checked){if(!checks[el.name])checks[el.name]=[];checks[el.name].push(el.value);}});Object.keys(checks).forEach(function(k){data[k]=checks[k].join(', ');});data.addEngagement=(document.getElementById('add-engagement-check')&&document.getElementById('add-engagement-check').checked)?'yes':'';data.addWedding=(document.getElementById('add-wedding-check')&&document.getElementById('add-wedding-check').checked)?'yes':'';var dates=[data.date1||'',data.date2||'',data.date3||''].filter(Boolean);if(dates.length)data.preferredDates=dates.join(' / ');delete data.date1;delete data.date2;delete data.date3;data.sequenceNumber=String(getNextSeq());return data;}
+document.getElementById('inquiry-form').addEventListener('submit',async function(e){e.preventDefault();var btn=document.getElementById('submit-btn');btn.disabled=true;btn.textContent='Sending...';var data=collect();try{var res=await fetch('/.netlify/functions/submit-inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});var result=await res.json();if(result.success){document.getElementById('form-wrap').style.display='none';document.getElementById('success-state').style.display='block';document.getElementById('success-ref').textContent=result.refNumber;document.getElementById('contact').scrollIntoView({behavior:'smooth'});}else{throw new Error(result.error||'Error');}}catch(err){btn.disabled=false;btn.textContent='Send Inquiry \u2192';alert('Something went wrong. Please email dsmphotography21@gmail.com directly.');}});
 </script>
 </body>
 </html>
