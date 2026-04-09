@@ -2,5 +2,12 @@
   functions = "netlify/functions"
   publish = "."
 
-[build.environment]
-  NODE_VERSION = "18"
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["netlify/functions/**"]
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"

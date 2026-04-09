@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — DSM Photography</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:       #dec08c;
+      --gold-light: #edddb0;
+      --gold-dim:   rgba(222,192,140,0.15);
+      --mint:       #a8dbd2;
+      --blush:      #f5d2c4;
+      --terra:      #c9856a;
+      --slate:      #8aabb5;
+      --taupe:      #b8a99a;
+      --dark:       #100f09;
+      --warm-white: #fdfaf6;
+      --muted:      #776a5f;
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --sans:       'Montserrat', sans-serif;
+    }
+
+    body {
+      background: var(--dark);
+      color: var(--warm-white);
+      font-family: var(--sans);
+      font-weight: 300;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── LAYOUT ── */
+    .page-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 72px 40px 80px;
+    }
+
+    /* ── HEADER ── */
+    .form-header {
+      margin-bottom: 52px;
+    }
+
+    .form-eyebrow {
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .form-title {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--warm-white);
+      margin-bottom: 16px;
+    }
+
+    .form-title em { font-style: italic; color: var(--gold); }
+
+    .form-subtitle {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(253,250,246,0.45);
+      line-height: 1.8;
+      max-width: 520px;
+    }
+
+    /* ── FORM SECTIONS ── */
+    .form-section {
+      margin-bottom: 40px;
+    }
+
+    .section-rule {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .section-rule-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    .section-rule-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(222,192,140,0.2);
+    }
+
+    /* ── GRID ── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 24px;
+    }
+
+    .col-full  { grid-column: 1 / -1; }
+    .col-left  { grid-column: 1; }
+    .col-right { grid-column: 2; }
+
+    /* ── FIELD ── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(253,250,246,0.45);
+    }
+
+    .field label .req { color: var(--gold); margin-left: 2px; }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      background: rgba(253,250,246,0.04);
+      border: 1px solid rgba(222,192,140,0.18);
+      color: var(--warm-white);
+      font-family: var(--sans);
+      font-size: 12.5px;
+      font-weight: 300;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder { color: rgba(253,250,246,0.18); }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--gold);
+      background: rgba(222,192,140,0.07);
+    }
+
+    .field select option { background: #1c1a12; }
+
+    .field textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '↓';
+      position: absolute;
+      right: 13px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      font-size: 11px;
+      pointer-events: none;
+    }
+
+    /* ── CHECKBOXES ── */
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 14px; height: 14px;
+      padding: 0;
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+
+    .checkbox-item span {
+      font-size: 11.5px;
+      font-weight: 300;
+      color: rgba(253,250,246,0.7);
+    }
+
+    /* ── CROSS-BOOKING TOGGLE ── */
+    .cross-book-toggle {
+      display: none;
+      background: rgba(168,219,210,0.08);
+      border: 1px solid rgba(168,219,210,0.25);
+      padding: 16px 20px;
+      margin-top: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .cross-book-toggle:hover { background: rgba(168,219,210,0.13); }
+
+    .cross-book-toggle label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 11.5px;
+      font-weight: 400;
+      color: var(--mint);
+    }
+
+    .cross-book-toggle input[type="checkbox"] {
+      width: 15px; height: 15px;
+      accent-color: var(--mint);
+    }
+
+    /* ── HIDDEN FIELD GROUPS ── */
+    .dynamic-group { display: none; }
+    .dynamic-group.visible { display: contents; }
+    .dynamic-section { display: none; }
+    .dynamic-section.visible { display: block; }
+
+    /* ── NARRATIVE FIELD STYLE ── */
+    .narrative-field textarea {
+      min-height: 110px;
+      background: rgba(253,250,246,0.06);
+      border-color: rgba(222,192,140,0.25);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    /* ── URGENCY NOTE ── */
+    .urgency-note {
+      display: none;
+      background: rgba(201,133,106,0.15);
+      border-left: 3px solid var(--terra);
+      padding: 10px 14px;
+      font-size: 11px;
+      color: var(--terra);
+      margin-top: 6px;
+    }
+
+    /* ── SUBMIT ── */
+    .form-footer {
+      margin-top: 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn-submit {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: var(--gold);
+      border: none;
+      padding: 16px 56px;
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+    }
+
+    .btn-submit:hover { background: var(--gold-light); }
+    .btn-submit:disabled { opacity: 0.5; cursor: wait; }
+
+    .form-note {
+      font-size: 10.5px;
+      font-weight: 300;
+      color: rgba(253,250,246,0.3);
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* ── SUCCESS STATE ── */
+    #success-state {
+      display: none;
+      text-align: center;
+      padding: 60px 0;
+    }
+
+    .success-mark {
+      font-size: 36px;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .success-ref {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .success-title {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--warm-white);
+      margin-bottom: 12px;
+    }
+
+    .success-title em { font-style: italic; color: var(--gold); }
+
+    .success-body {
+      font-size: 12.5px;
+      font-weight: 300;
+      color: rgba(253,250,246,0.5);
+      line-height: 1.8;
+      max-width: 440px;
+      margin: 0 auto 28px;
+    }
+
+    .btn-download {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: var(--gold);
+      padding: 13px 36px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .btn-download:hover { background: var(--gold-light); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .page-wrap { padding: 48px 24px 60px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .col-full, .col-left, .col-right { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <div class="form-header">
+    <p class="form-eyebrow">Get In Touch</p>
+    <h1 class="form-title">Let's start a<br><em>conversation.</em></h1>
+    <p class="form-subtitle">Whether you're ready to book or just exploring — this is the right place. I'll be in touch within 48 hours.</p>
+  </div>
+
+  <!-- FORM -->
+  <form id="inquiry-form" novalidate>
+
+    <!-- ── SECTION 1: WHO YOU ARE ── -->
+    <div class="form-section">
+      <div class="section-rule">
+        <span class="section-rule-label">About You</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>First Name <span class="req">*</span></label>
+          <input type="text" name="firstName" placeholder="First name" required />
+        </div>
+        <div class="field col-right">
+          <label>Last Name <span class="req">*</span></label>
+          <input type="text" name="lastName" placeholder="Last name" required />
+        </div>
+        <div class="field col-left">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" name="email" placeholder="your@email.com" required />
+        </div>
+        <div class="field col-right">
+          <label>Phone (optional)</label>
+          <input type="tel" name="phone" placeholder="(305) 000-0000" />
+        </div>
+        <div class="field col-left">
+          <label>Preferred Contact Method <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select name="preferredContact" required>
+              <option value="" disabled selected>Select...</option>
+              <option>Email</option>
+              <option>Phone call</option>
+              <option>Text message</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>How Did You Hear About Me? <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select name="howHeard" required>
+              <option value="" disabled selected>Select...</option>
+              <option>Instagram</option>
+              <option>Facebook</option>
+              <option>Google</option>
+              <option>Referred by a friend</option>
+              <option>Word of mouth</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 2: INQUIRY TYPE ── -->
+    <div class="form-section">
+      <div class="section-rule">
+        <span class="section-rule-label">What Brings You Here</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-full">
+          <label>What Can I Help You With? <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select name="inquiryType" id="inquiry-type" required>
+              <option value="" disabled selected>Select an inquiry type...</option>
+              <option value="general">General question</option>
+              <option value="event">Event coverage</option>
+              <option value="session">Inquire about a session</option>
+              <option value="wedding">Inquire about wedding coverage</option>
+              <option value="realestate">Real estate photography</option>
+              <option value="other">Something else</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Session sub-type -->
+        <div class="field col-full dynamic-group" id="group-session-type">
+          <label>What Type of Session? <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select name="sessionType" id="session-type">
+              <option value="" disabled selected>Select session type...</option>
+              <option value="portrait">Portraits</option>
+              <option value="headshot">Headshots</option>
+              <option value="lifestyle">Lifestyle</option>
+              <option value="maternity">Maternity</option>
+              <option value="engagement">Engagements</option>
+              <option value="proposal">Proposal</option>
+              <option value="creative">Creative / Experimental</option>
+              <option value="other-session">Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3: DYNAMIC DETAILS ── -->
+
+    <!-- GENERAL -->
+    <div class="form-section dynamic-section" id="section-general">
+      <div class="section-rule">
+        <span class="section-rule-label">Your Question</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-full narrative-field">
+          <label>What's on your mind? <span class="req">*</span></label>
+          <textarea name="sessionNarrative" placeholder="Share as much detail as you'd like — no question is too small."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENT -->
+    <div class="form-section dynamic-section" id="section-event">
+      <div class="section-rule">
+        <span class="section-rule-label">Event Details</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>Event Date <span class="req">*</span></label>
+          <input type="date" name="eventDate" id="event-date-input" />
+          <div class="urgency-note" id="urgency-event">This date is within 60 days — I'll prioritize your inquiry.</div>
+        </div>
+        <div class="field col-right">
+          <label>Event Type <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select name="eventType">
+              <option value="" disabled selected>Select type...</option>
+              <option>Corporate reception / gala</option>
+              <option>Social celebration (birthday, retirement, etc.)</option>
+              <option>Nonprofit / charity event</option>
+              <option>Company party or team event</option>
+              <option>Product launch or brand event</option>
+              <option>Conference or seminar</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-left">
+          <label>Expected Guest Count</label>
+          <input type="text" name="guestCount" placeholder="Approx. number of guests" />
+        </div>
+        <div class="field col-right">
+          <label>Venue Name & City <span class="req">*</span></label>
+          <input type="text" name="venue" placeholder="Venue name, Miami FL" />
+        </div>
+        <div class="field col-left">
+          <label>Package Interest</label>
+          <div class="select-wrap">
+            <select name="packageInterest">
+              <option value="" disabled selected>Select...</option>
+              <option>Essential — $350</option>
+              <option>Signature — $525</option>
+              <option>Premier — $750</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Add-Ons You're Considering</label>
+          <input type="text" name="addOns" placeholder="e.g. expedited delivery, extra hour..." />
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Tell me about your event <span class="req">*</span></label>
+          <textarea name="eventNarrative" placeholder="What's the occasion, what's the vibe, and what moments are most important for you to have captured? Who are the key people, what's the energy of the room — give me everything."></textarea>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Specific shots or moments you have in mind</label>
+          <textarea name="specificShots" placeholder="Group photos, candids, specific décor details, a toast, a reveal — anything you know you want captured."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- PORTRAIT -->
+    <div class="form-section dynamic-section" id="section-portrait">
+      <div class="section-rule">
+        <span class="section-rule-label">Portrait Session Details</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>Occasion <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select name="occasion">
+              <option value="" disabled selected>What's this for?</option>
+              <option>Just because — no occasion needed</option>
+              <option>Birthday</option>
+              <option>Anniversary</option>
+              <option>Graduation</option>
+              <option>Milestone (promotion, move, new chapter)</option>
+              <option>Family portrait</option>
+              <option>Mother's Day / Father's Day</option>
+              <option>Holiday</option>
+              <option>Personal rebrand</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Preferred Date(s) <span class="req">*</span></label>
+          <input type="text" name="preferredDates" placeholder="Give me 2–3 options if possible" />
+        </div>
+        <div class="field col-left">
+          <label>Preferred Time of Day</label>
+          <div class="select-wrap">
+            <select name="timeOfDay">
+              <option value="" disabled selected>Select...</option>
+              <option>Golden hour (1 hr before sunset)</option>
+              <option>Morning / early light</option>
+              <option>Midday</option>
+              <option>Flexible — your recommendation</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Location Preference</label>
+          <div class="select-wrap">
+            <select name="locationPref">
+              <option value="" disabled selected>Select...</option>
+              <option>Beach / waterfront</option>
+              <option>Urban / city</option>
+              <option>Park / nature</option>
+              <option>Indoor / studio feel</option>
+              <option>I have a specific location in mind</option>
+              <option>Open to your suggestion</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-left">
+          <label>Number of Subjects</label>
+          <input type="text" name="numSubjects" placeholder="Just me, or how many people?" />
+        </div>
+        <div class="field col-right">
+          <label>Outfit Changes</label>
+          <div class="select-wrap">
+            <select name="outfitChanges">
+              <option value="" disabled selected>Select...</option>
+              <option>1 outfit</option>
+              <option>2 outfits</option>
+              <option>3 outfits</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Tell me about the feel you're going for <span class="req">*</span></label>
+          <textarea name="sessionNarrative" placeholder="Mood, style, energy — are you going for something editorial and dramatic? Soft and natural? Joyful and candid? Any inspiration images, photographers, films, or aesthetics you love? The more I know, the more intentional I can be."></textarea>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Specific shots or poses you have in mind</label>
+          <textarea name="specificShots" placeholder="Anything specific you're envisioning — a pose you've saved, a composition style, a vibe for a particular shot. Nothing is too small to mention."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEADSHOT -->
+    <div class="form-section dynamic-section" id="section-headshot">
+      <div class="section-rule">
+        <span class="section-rule-label">Headshot Session Details</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>Intended Use <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select name="intendedUse">
+              <option value="" disabled selected>Select primary use...</option>
+              <option>LinkedIn / professional profile</option>
+              <option>Corporate website or directory</option>
+              <option>Acting or talent portfolio</option>
+              <option>Personal branding</option>
+              <option>General professional use</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Preferred Date(s) <span class="req">*</span></label>
+          <input type="text" name="preferredDates" placeholder="2–3 options if possible" />
+        </div>
+        <div class="field col-left">
+          <label>Preferred Time of Day</label>
+          <div class="select-wrap">
+            <select name="timeOfDay">
+              <option value="" disabled selected>Select...</option>
+              <option>Morning / early light</option>
+              <option>Midday</option>
+              <option>Golden hour</option>
+              <option>Flexible — your recommendation</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Location Preference</label>
+          <div class="select-wrap">
+            <select name="locationPref">
+              <option value="" disabled selected>Select...</option>
+              <option>Clean / neutral background (indoor)</option>
+              <option>Environmental / contextual (office, outdoors)</option>
+              <option>Urban backdrop</option>
+              <option>Open to your suggestion</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-left">
+          <label>Number of Subjects</label>
+          <input type="text" name="numSubjects" placeholder="Just you, or a team?" />
+        </div>
+        <div class="field col-right">
+          <label>Outfit Changes</label>
+          <div class="select-wrap">
+            <select name="outfitChanges">
+              <option value="" disabled selected>Select...</option>
+              <option>1 outfit</option>
+              <option>2 outfits</option>
+              <option>3 outfits</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>What impression do you want to make? <span class="req">*</span></label>
+          <textarea name="sessionNarrative" placeholder="What do you want people to feel when they see your photo? Approachable, authoritative, creative, warm, polished? Is there a specific context — an industry, an audience, a platform — where this photo will live? Tell me about you and what you're going for."></textarea>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Specific looks, expressions, or framing in mind</label>
+          <textarea name="specificShots" placeholder="Reference shots, photographers you admire, a particular angle or crop — anything that captures what you're envisioning."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIFESTYLE -->
+    <div class="form-section dynamic-section" id="section-lifestyle">
+      <div class="section-rule">
+        <span class="section-rule-label">Lifestyle Session Details</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>Preferred Date(s) <span class="req">*</span></label>
+          <input type="text" name="preferredDates" placeholder="2–3 options if possible" />
+        </div>
+        <div class="field col-right">
+          <label>Preferred Time of Day</label>
+          <div class="select-wrap">
+            <select name="timeOfDay">
+              <option value="" disabled selected>Select...</option>
+              <option>Golden hour</option>
+              <option>Morning</option>
+              <option>Midday</option>
+              <option>Flexible</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-left">
+          <label>Location Preference</label>
+          <div class="select-wrap">
+            <select name="locationPref">
+              <option value="" disabled selected>Select...</option>
+              <option>Beach / waterfront</option>
+              <option>Urban / city</option>
+              <option>Home / indoor</option>
+              <option>Park / nature</option>
+              <option>I have a specific place in mind</option>
+              <option>Open to your suggestion</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Number of Subjects</label>
+          <input type="text" name="numSubjects" placeholder="Just you, a couple, a family..." />
+        </div>
+        <div class="field col-left">
+          <label>Outfit Changes</label>
+          <div class="select-wrap">
+            <select name="outfitChanges">
+              <option value="" disabled selected>Select...</option>
+              <option>1 outfit</option>
+              <option>2 outfits</option>
+              <option>3 outfits</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>What story do you want to tell? <span class="req">*</span></label>
+          <textarea name="sessionNarrative" placeholder="Describe the setting, the people, the moments that matter most. Is this a morning coffee ritual, a family afternoon, a solo adventure? What feeling do you want these photos to carry — and who are they for?"></textarea>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Specific moments or shots in mind</label>
+          <textarea name="specificShots" placeholder="Anything you know you want — a specific activity, a location within the location, a particular interaction or frame."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- MATERNITY -->
+    <div class="form-section dynamic-section" id="section-maternity">
+      <div class="section-rule">
+        <span class="section-rule-label">Maternity Session Details</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>Due Date or Approximate Month</label>
+          <input type="text" name="dueDate" placeholder="e.g. August 2026" />
+        </div>
+        <div class="field col-right">
+          <label>Preferred Date(s) <span class="req">*</span></label>
+          <input type="text" name="preferredDates" placeholder="2–3 options if possible" />
+        </div>
+        <div class="field col-left">
+          <label>Preferred Time of Day</label>
+          <div class="select-wrap">
+            <select name="timeOfDay">
+              <option value="" disabled selected>Select...</option>
+              <option>Golden hour</option>
+              <option>Morning</option>
+              <option>Midday</option>
+              <option>Flexible</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Location Preference</label>
+          <div class="select-wrap">
+            <select name="locationPref">
+              <option value="" disabled selected>Select...</option>
+              <option>Beach / waterfront</option>
+              <option>Park / nature</option>
+              <option>Home / indoor</option>
+              <option>Studio feel</option>
+              <option>I have a specific place in mind</option>
+              <option>Open to your suggestion</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-left">
+          <label>Who Will Be in the Session?</label>
+          <input type="text" name="numSubjects" placeholder="Solo, with partner, with children..." />
+        </div>
+        <div class="field col-right">
+          <label>Outfit Changes</label>
+          <div class="select-wrap">
+            <select name="outfitChanges">
+              <option value="" disabled selected>Select...</option>
+              <option>1 outfit</option>
+              <option>2 outfits</option>
+              <option>3 outfits</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Tell me about your vision <span class="req">*</span></label>
+          <textarea name="sessionNarrative" placeholder="What feeling do you want these photos to carry? Any themes, meaningful locations, or elements you want woven in — a color palette, a piece of fabric, a place that matters? Is there a particular story you want this season of your life to tell?"></textarea>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Specific shots or moments in mind</label>
+          <textarea name="specificShots" placeholder="Anything you've envisioned — belly profile shots, hands, partner interaction, children included, something symbolic. Share everything."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENGAGEMENT -->
+    <div class="form-section dynamic-section" id="section-engagement">
+      <div class="section-rule">
+        <span class="section-rule-label">Engagement Session Details</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>Your Partner's Name <span class="req">*</span></label>
+          <input type="text" name="partnerName" placeholder="Partner's first name" />
+        </div>
+        <div class="field col-right">
+          <label>Preferred Date(s) <span class="req">*</span></label>
+          <input type="text" name="preferredDates" placeholder="2–3 options if possible" />
+        </div>
+        <div class="field col-left">
+          <label>Preferred Time of Day</label>
+          <div class="select-wrap">
+            <select name="timeOfDay">
+              <option value="" disabled selected>Select...</option>
+              <option>Golden hour</option>
+              <option>Morning</option>
+              <option>Midday</option>
+              <option>Flexible</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Location Preference</label>
+          <div class="select-wrap">
+            <select name="locationPref">
+              <option value="" disabled selected>Select...</option>
+              <option>Beach / waterfront</option>
+              <option>Urban / city</option>
+              <option>Park / nature</option>
+              <option>Somewhere meaningful to us</option>
+              <option>Open to your suggestion</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-left">
+          <label>Outfit Changes</label>
+          <div class="select-wrap">
+            <select name="outfitChanges">
+              <option value="" disabled selected>Select...</option>
+              <option>1 outfit</option>
+              <option>2 outfits</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Tell me about you two <span class="req">*</span></label>
+          <textarea name="coupleStory" placeholder="How did you meet? What do you love doing together? What makes your dynamic yours — are you playful, quiet and tender, adventurous, deeply silly? The more I know going in, the more I can capture what's actually real between you."></textarea>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Specific shots or moments in mind</label>
+          <textarea name="specificShots" placeholder="Anything you've envisioned — a location within the location, an activity, a particular frame or interaction you want captured."></textarea>
+        </div>
+      </div>
+      <!-- Cross-book: add wedding -->
+      <div class="cross-book-toggle" id="toggle-add-wedding" style="display:block; margin-top:16px;">
+        <label>
+          <input type="checkbox" id="add-wedding-check" name="addWedding" value="yes" />
+          I'm also interested in inquiring about wedding coverage
+        </label>
+      </div>
+    </div>
+
+    <!-- PROPOSAL -->
+    <div class="form-section dynamic-section" id="section-proposal">
+      <div class="section-rule">
+        <span class="section-rule-label">Proposal Coverage Details</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>Your Partner's Name <span class="req">*</span></label>
+          <input type="text" name="partnerName" placeholder="Partner's first name" />
+        </div>
+        <div class="field col-right">
+          <label>Proposal Date <span class="req">*</span></label>
+          <input type="date" name="sessionDate" id="proposal-date-input" />
+          <div class="urgency-note" id="urgency-proposal">This date is within 60 days — I'll prioritize your inquiry.</div>
+        </div>
+        <div class="field col-left">
+          <label>Who Else Will Be Involved?</label>
+          <div class="select-wrap">
+            <select name="whoInvolved">
+              <option value="" disabled selected>Select...</option>
+              <option>Just the two of us</option>
+              <option>Family members present</option>
+              <option>Friends present</option>
+              <option>Other vendors coordinating (florist, musician, etc.)</option>
+              <option>Multiple of the above</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Coverage Scope</label>
+          <div class="select-wrap">
+            <select name="coverageScope">
+              <option value="" disabled selected>Select...</option>
+              <option>Proposal moment only</option>
+              <option>Moments leading up + the proposal</option>
+              <option>Proposal + celebration after</option>
+              <option>Full arc — before, during, and after</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-left">
+          <label>Photographer Positioning</label>
+          <div class="select-wrap">
+            <select name="photographerRole" id="photographer-role">
+              <option value="" disabled selected>Select...</option>
+              <option value="hidden">Fully hidden</option>
+              <option value="blending">Present but blending in</option>
+              <option value="cover">Pretending to be there for another reason</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right dynamic-group" id="group-cover-story">
+          <label>What's the cover story?</label>
+          <input type="text" name="coverStory" placeholder="e.g. 'friend taking vacation photos'" />
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Walk me through the plan <span class="req">*</span></label>
+          <textarea name="sessionNarrative" placeholder="Share as much of the proposal plan as you're comfortable with — location, timing, how your partner will be positioned, anything that helps me understand the scene. The more I know, the better I can prepare to be invisible and perfectly placed."></textarea>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Key moments you want captured</label>
+          <textarea name="specificShots" placeholder="The approach, the ring, the reaction, what happens right after — which moments are non-negotiable for you?"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- CREATIVE -->
+    <div class="form-section dynamic-section" id="section-creative">
+      <div class="section-rule">
+        <span class="section-rule-label">Creative Session Details</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>What Are You Creating? <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select name="creativeType">
+              <option value="" disabled selected>Select...</option>
+              <option>Content for social media</option>
+              <option>Editorial or artistic project</option>
+              <option>Brand or product content</option>
+              <option>Personal creative exploration</option>
+              <option>Portfolio building</option>
+              <option>Collaboration / experimental</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Preferred Date(s) <span class="req">*</span></label>
+          <input type="text" name="preferredDates" placeholder="2–3 options if possible" />
+        </div>
+        <div class="field col-left">
+          <label>Location Preference</label>
+          <div class="select-wrap">
+            <select name="locationPref">
+              <option value="" disabled selected>Select...</option>
+              <option>Beach / waterfront</option>
+              <option>Urban / city</option>
+              <option>Indoor / controlled environment</option>
+              <option>Nature / organic setting</option>
+              <option>I have a specific place in mind</option>
+              <option>Open — let's figure it out together</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Number of Subjects</label>
+          <input type="text" name="numSubjects" placeholder="Including yourself if self-directed" />
+        </div>
+        <div class="field col-left">
+          <label>Outfit Changes</label>
+          <div class="select-wrap">
+            <select name="outfitChanges">
+              <option value="" disabled selected>Select...</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3+</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Content Deadline (if any)</label>
+          <input type="date" name="contentDeadline" />
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Tell me about your concept <span class="req">*</span></label>
+          <textarea name="sessionNarrative" placeholder="Half-formed ideas are completely welcome. What are you trying to make? What's the feeling, the question, the story? Give me whatever you have — a single image that inspired you, a color, a word, a vibe. We'll build from there."></textarea>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Mood, aesthetic references, or inspiration</label>
+          <textarea name="moodReferences" placeholder="Photographers, films, artwork, textures, color palettes, Instagram accounts — anything that captures the direction you're moving toward."></textarea>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Specific shots or compositions in mind</label>
+          <textarea name="specificShots" placeholder="Anything concrete you're envisioning — even if it's just a feeling for a particular frame."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEDDING -->
+    <div class="form-section dynamic-section" id="section-wedding">
+      <div class="section-rule">
+        <span class="section-rule-label">Wedding Coverage Details</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>Your Partner's Name <span class="req">*</span></label>
+          <input type="text" name="partnerName" placeholder="Partner's first name" />
+        </div>
+        <div class="field col-right">
+          <label>Wedding Date <span class="req">*</span></label>
+          <input type="date" name="weddingDate" id="wedding-date-input" />
+          <div class="urgency-note" id="urgency-wedding">This date is within 60 days — I'll prioritize your inquiry.</div>
+        </div>
+        <div class="field col-left">
+          <label>Season</label>
+          <div class="select-wrap">
+            <select name="season">
+              <option value="" disabled selected>Select...</option>
+              <option>Spring</option>
+              <option>Summer</option>
+              <option>Fall</option>
+              <option>Winter</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Indoor / Outdoor</label>
+          <div class="select-wrap">
+            <select name="indoorOutdoor">
+              <option value="" disabled selected>Select...</option>
+              <option>Fully indoor</option>
+              <option>Fully outdoor</option>
+              <option>Both (ceremony outdoor, reception indoor, etc.)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-left">
+          <label>Color Palette / Vibe</label>
+          <input type="text" name="colorPalette" placeholder="e.g. dusty rose and sage, black tie modern..." />
+        </div>
+        <div class="field col-right">
+          <label>Estimated Guest Count</label>
+          <input type="text" name="guestCount" placeholder="Approximate number" />
+        </div>
+        <div class="field col-left">
+          <label>Wedding Party Size</label>
+          <input type="text" name="weddingPartySize" placeholder="Total number in the wedding party" />
+        </div>
+        <div class="field col-right">
+          <label>Ceremony Start Time</label>
+          <input type="time" name="ceremonyStart" />
+        </div>
+        <div class="field col-left">
+          <label>Ceremony Venue</label>
+          <input type="text" name="ceremonyVenue" placeholder="Venue name and city" />
+        </div>
+        <div class="field col-right">
+          <label>Reception Venue</label>
+          <input type="text" name="receptionVenue" placeholder="Same, or different venue name and city" />
+        </div>
+        <div class="field col-left">
+          <label>Number of Locations / Venues</label>
+          <input type="number" name="numLocations" placeholder="Getting ready, ceremony, reception, etc." min="1" />
+        </div>
+        <div class="field col-right">
+          <label>Separate Bridal Party Session?</label>
+          <div class="select-wrap">
+            <select name="bridalPartySession">
+              <option value="" disabled selected>Select...</option>
+              <option>Yes</option>
+              <option>No</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-full">
+          <label>Portions of the Day to Cover</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="portionsCovered" value="Getting ready" /><span>Getting ready</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="portionsCovered" value="First look" /><span>First look</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="portionsCovered" value="Ceremony" /><span>Ceremony</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="portionsCovered" value="Cocktail hour" /><span>Cocktail hour</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="portionsCovered" value="Reception" /><span>Reception</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="portionsCovered" value="Send-off" /><span>Send-off</span></label>
+          </div>
+        </div>
+        <div class="field col-left">
+          <label>Second Shooter Interest</label>
+          <div class="select-wrap">
+            <select name="secondShooter">
+              <option value="" disabled selected>Select...</option>
+              <option>Yes, I'd like one</option>
+              <option>No</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Do You Have a Videographer?</label>
+          <div class="select-wrap">
+            <select name="hasVideographer">
+              <option value="" disabled selected>Select...</option>
+              <option>Yes</option>
+              <option>No</option>
+              <option>Still deciding</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-left">
+          <label>Wedding Planner / Coordinator</label>
+          <input type="text" name="coordinator" placeholder="Name, if applicable" />
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Tell me about your wedding vision <span class="req">*</span></label>
+          <textarea name="sessionNarrative" placeholder="The aesthetic, the venue vibe, the feeling you want the day to carry. What does your wedding look and feel like? What moments are you most excited about? What would you want your photographer to know going in — about you, your partner, your families, your day?"></textarea>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Must-have shots and non-negotiables</label>
+          <textarea name="specificShots" placeholder="Portraits, specific family groupings, details (dress, rings, florals, décor), moments — anything that's non-negotiable for you. The more specific, the better prepared I'll be."></textarea>
+        </div>
+      </div>
+      <!-- Cross-book: add engagement -->
+      <div class="cross-book-toggle" id="toggle-add-engagement" style="display:block; margin-top:16px;">
+        <label>
+          <input type="checkbox" id="add-engagement-check" name="addEngagement" value="yes" />
+          I'm also interested in adding an engagement session
+        </label>
+      </div>
+    </div>
+
+    <!-- CROSS-BOOK: ENGAGEMENT FIELDS (for wedding → add engagement) -->
+    <div class="form-section dynamic-section" id="section-cross-engagement">
+      <div class="section-rule">
+        <span class="section-rule-label" style="color: var(--mint);">Engagement Session Add-On</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>Preferred Engagement Date(s)</label>
+          <input type="text" name="engPreferredDates" placeholder="2–3 options if possible" />
+        </div>
+        <div class="field col-right">
+          <label>Location Preference</label>
+          <div class="select-wrap">
+            <select name="engLocationPref">
+              <option value="" disabled selected>Select...</option>
+              <option>Beach / waterfront</option>
+              <option>Urban / city</option>
+              <option>Park / nature</option>
+              <option>Somewhere meaningful to us</option>
+              <option>Open to your suggestion</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Tell me about you two</label>
+          <textarea name="coupleStory" placeholder="How you met, what you love doing together, what makes your dynamic yours. The more I know going in, the more I can capture what's actually real between you."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- CROSS-BOOK: WEDDING FIELDS (for engagement → add wedding) -->
+    <div class="form-section dynamic-section" id="section-cross-wedding">
+      <div class="section-rule">
+        <span class="section-rule-label" style="color: var(--mint);">Wedding Coverage Add-On</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>Wedding Date</label>
+          <input type="date" name="weddingDate" />
+        </div>
+        <div class="field col-right">
+          <label>Ceremony Venue</label>
+          <input type="text" name="ceremonyVenue" placeholder="Venue name and city" />
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Tell me about your wedding vision</label>
+          <textarea name="weddingVisionCross" placeholder="Aesthetic, vibe, any details you want to share at this stage — we can go deeper once we're in touch."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- REAL ESTATE -->
+    <div class="form-section dynamic-section" id="section-realestate">
+      <div class="section-rule">
+        <span class="section-rule-label">Property Details</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-full">
+          <label>Property Address <span class="req">*</span></label>
+          <input type="text" name="propertyAddress" placeholder="Full address" />
+        </div>
+        <div class="field col-left">
+          <label>Property Type <span class="req">*</span></label>
+          <div class="select-wrap">
+            <select name="propertyType">
+              <option value="" disabled selected>Select...</option>
+              <option>Residential</option>
+              <option>Commercial</option>
+              <option>Vacation rental</option>
+              <option>Land</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Listing Status</label>
+          <div class="select-wrap">
+            <select name="listingStatus">
+              <option value="" disabled selected>Select...</option>
+              <option>Active listing</option>
+              <option>Pre-market</option>
+              <option>Personal / non-listing use</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-left">
+          <label>Approximate Square Footage</label>
+          <input type="text" name="sqFootage" placeholder="e.g. 1,800 sq ft" />
+        </div>
+        <div class="field col-right">
+          <label>Beds / Baths</label>
+          <input type="text" name="bedsBaths" placeholder="e.g. 3 bed / 2 bath" />
+        </div>
+        <div class="field col-left">
+          <label>Preferred Shoot Date & Time <span class="req">*</span></label>
+          <input type="text" name="preferredDates" placeholder="Date and preferred time of day" />
+        </div>
+        <div class="field col-right">
+          <label>Your Role</label>
+          <div class="select-wrap">
+            <select name="clientRole">
+              <option value="" disabled selected>Select...</option>
+              <option>Listing agent</option>
+              <option>Homeowner</option>
+              <option>Property manager</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-left">
+          <label>Brokerage / Company (if agent)</label>
+          <input type="text" name="brokerage" placeholder="Brokerage name" />
+        </div>
+        <div class="field col-right">
+          <label>MLS Deadline (if applicable)</label>
+          <input type="date" name="mlsDeadline" id="mls-deadline-input" />
+          <div class="urgency-note" id="urgency-mls" style="display:none;">MLS deadline noted — I'll treat this as high priority.</div>
+        </div>
+        <div class="field col-left">
+          <label>Staging Status</label>
+          <div class="select-wrap">
+            <select name="stagingStatus">
+              <option value="" disabled selected>Select...</option>
+              <option>Fully staged</option>
+              <option>Partially staged</option>
+              <option>Vacant</option>
+              <option>Furnished as-is</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-full">
+          <label>Services Needed</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" name="servicesNeeded" value="Interior" /><span>Interior</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="servicesNeeded" value="Exterior" /><span>Exterior</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="servicesNeeded" value="Aerial / drone" /><span>Aerial / drone</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="servicesNeeded" value="Twilight" /><span>Twilight</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="servicesNeeded" value="Virtual tour" /><span>Virtual tour</span></label>
+            <label class="checkbox-item"><input type="checkbox" name="servicesNeeded" value="Floor plan" /><span>Floor plan</span></label>
+          </div>
+        </div>
+        <div class="field col-full narrative-field">
+          <label>Anything I should know about this property <span class="req">*</span></label>
+          <textarea name="sessionNarrative" placeholder="Architectural features to highlight, access instructions, challenging lighting situations, occupied vs. vacant, special requests from the seller — anything that helps me prepare to shoot this property at its best."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTHER -->
+    <div class="form-section dynamic-section" id="section-other">
+      <div class="section-rule">
+        <span class="section-rule-label">Tell Me More</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>Ideal Timeline or Date</label>
+          <input type="text" name="preferredDates" placeholder="When are you thinking?" />
+        </div>
+        <div class="field col-full narrative-field">
+          <label>What are you looking for? <span class="req">*</span></label>
+          <textarea name="sessionNarrative" placeholder="Tell me everything — what you're envisioning, when you need it, what you've already considered, and whatever else would help me understand what you're looking for. No such thing as too much detail."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BUDGET (shown for all except general) ── -->
+    <div class="form-section dynamic-section" id="section-budget">
+      <div class="section-rule">
+        <span class="section-rule-label">Budget</span>
+        <div class="section-rule-line"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field col-left">
+          <label>Approximate Budget Range</label>
+          <div class="select-wrap">
+            <select name="budgetRange">
+              <option value="" disabled selected>Select...</option>
+              <option>Under $300</option>
+              <option>$300–$500</option>
+              <option>$500–$750</option>
+              <option>$750–$1,000</option>
+              <option>$1,000–$1,500</option>
+              <option>$1,500+</option>
+              <option>Flexible / not sure</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-right">
+          <label>Is This a Hard Cap?</label>
+          <div class="select-wrap">
+            <select name="hardBudgetCapSelect" id="hard-cap-select">
+              <option value="" disabled selected>Select...</option>
+              <option value="no">No — flexible within range</option>
+              <option value="yes">Yes — I cannot exceed this</option>
+            </select>
+          </div>
+        </div>
+        <div class="field col-full dynamic-group" id="group-hard-cap-amount">
+          <label>What is your hard cap?</label>
+          <input type="text" name="hardBudgetCap" placeholder="e.g. $600 maximum" />
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SUBMIT ── -->
+    <div class="form-footer" id="form-footer" style="display:none;">
+      <button type="submit" class="btn-submit" id="submit-btn">Send Inquiry →</button>
+      <p class="form-note">I'll be in touch within 48 hours. You'll receive a confirmation email with your inquiry summary.</p>
+    </div>
+
+  </form>
+
+  <!-- SUCCESS STATE -->
+  <div id="success-state">
+    <span class="success-mark">✦</span>
+    <p class="success-ref" id="success-ref"></p>
+    <h2 class="success-title">Inquiry received —<br><em>talk soon.</em></h2>
+    <p class="success-body">I've got everything I need to get back to you. Check your inbox for a confirmation email with your inquiry summary attached. I'll be in touch within 48 hours.</p>
+    <button class="btn-download" id="btn-download-pdf" onclick="downloadClientPDF()">Download My Summary PDF</button>
+  </div>
+
+</div>
+
+<script>
+// ── SEQUENCE NUMBER ──────────────────────────────────────────────────────────
+function getNextSequence() {
+  const current = parseInt(localStorage.getItem('dsm_inquiry_seq') || '999', 10);
+  const next = current + 1;
+  localStorage.setItem('dsm_inquiry_seq', String(next));
+  return next;
+}
+
+// ── TYPE CODE MAP ────────────────────────────────────────────────────────────
+const TYPE_CODES = {
+  general: 'GEN', event: 'EVT',
+  portrait: 'PRT', headshot: 'HDT', lifestyle: 'LST',
+  maternity: 'MAT', engagement: 'ENG', proposal: 'PRP',
+  wedding: 'WED', creative: 'CRE',
+  realestate: 'RST', other: 'OTH',
+  'other-session': 'OTH',
+};
+
+// ── SHOW / HIDE HELPERS ──────────────────────────────────────────────────────
+function hideAll() {
+  document.querySelectorAll('.dynamic-section').forEach(el => el.classList.remove('visible'));
+  document.querySelectorAll('.dynamic-group').forEach(el => el.classList.remove('visible'));
+  document.getElementById('section-budget').classList.remove('visible');
+  document.getElementById('form-footer').style.display = 'none';
+  document.getElementById('section-cross-engagement').classList.remove('visible');
+  document.getElementById('section-cross-wedding').classList.remove('visible');
+}
+
+function show(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('visible');
+}
+
+function showGroup(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('visible');
+}
+
+// ── URGENCY CHECK ────────────────────────────────────────────────────────────
+function checkDateUrgency(inputId, noteId) {
+  const input = document.getElementById(inputId);
+  const note  = document.getElementById(noteId);
+  if (!input || !note) return;
+  input.addEventListener('change', () => {
+    const val = new Date(input.value);
+    const today = new Date();
+    const days = Math.ceil((val - today) / (1000*60*60*24));
+    note.style.display = (!isNaN(days) && days > 0 && days <= 60) ? 'block' : 'none';
+  });
+}
+
+checkDateUrgency('event-date-input',    'urgency-event');
+checkDateUrgency('wedding-date-input',  'urgency-wedding');
+checkDateUrgency('proposal-date-input', 'urgency-proposal');
+
+// MLS urgency (any date triggers it)
+const mlsInput = document.getElementById('mls-deadline-input');
+if (mlsInput) {
+  mlsInput.addEventListener('change', () => {
+    document.getElementById('urgency-mls').style.display = mlsInput.value ? 'block' : 'none';
+  });
+}
+
+// ── MAIN INQUIRY TYPE LOGIC ──────────────────────────────────────────────────
+const inquirySelect = document.getElementById('inquiry-type');
+const sessionSelect = document.getElementById('session-type');
+
+inquirySelect.addEventListener('change', function() {
+  hideAll();
+  const val = this.value;
+
+  if (val === 'general') {
+    show('section-general');
+    document.getElementById('form-footer').style.display = 'flex';
+  }
+
+  if (val === 'event') {
+    show('section-event');
+    show('section-budget');
+    document.getElementById('form-footer').style.display = 'flex';
+  }
+
+  if (val === 'session') {
+    showGroup('group-session-type');
+    sessionSelect.value = '';
+    // Session type select will drive the rest
+  }
+
+  if (val === 'wedding') {
+    show('section-wedding');
+    show('section-budget');
+    document.getElementById('form-footer').style.display = 'flex';
+  }
+
+  if (val === 'realestate') {
+    show('section-realestate');
+    show('section-budget');
+    document.getElementById('form-footer').style.display = 'flex';
+  }
+
+  if (val === 'other') {
+    show('section-other');
+    show('section-budget');
+    document.getElementById('form-footer').style.display = 'flex';
+  }
+});
+
+// ── SESSION SUB-TYPE LOGIC ───────────────────────────────────────────────────
+const sessionSectionMap = {
+  portrait:       'section-portrait',
+  headshot:       'section-headshot',
+  lifestyle:      'section-lifestyle',
+  maternity:      'section-maternity',
+  engagement:     'section-engagement',
+  proposal:       'section-proposal',
+  creative:       'section-creative',
+  'other-session':'section-other',
+};
+
+sessionSelect.addEventListener('change', function() {
+  // Hide all session sections first
+  Object.values(sessionSectionMap).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('visible');
+  });
+  document.getElementById('section-cross-engagement').classList.remove('visible');
+  document.getElementById('section-cross-wedding').classList.remove('visible');
+  document.getElementById('section-budget').classList.remove('visible');
+  document.getElementById('form-footer').style.display = 'none';
+
+  const val = this.value;
+  const sectionId = sessionSectionMap[val];
+  if (sectionId) {
+    show(sectionId);
+    show('section-budget');
+    document.getElementById('form-footer').style.display = 'flex';
+  }
+});
+
+// ── CROSS-BOOKING: WEDDING → ADD ENGAGEMENT ──────────────────────────────────
+const addEngagementCheck = document.getElementById('add-engagement-check');
+if (addEngagementCheck) {
+  addEngagementCheck.addEventListener('change', function() {
+    const section = document.getElementById('section-cross-engagement');
+    section.classList.toggle('visible', this.checked);
+  });
+}
+
+// ── CROSS-BOOKING: ENGAGEMENT → ADD WEDDING ──────────────────────────────────
+const addWeddingCheck = document.getElementById('add-wedding-check');
+if (addWeddingCheck) {
+  addWeddingCheck.addEventListener('change', function() {
+    const section = document.getElementById('section-cross-wedding');
+    section.classList.toggle('visible', this.checked);
+  });
+}
+
+// ── PHOTOGRAPHER ROLE → COVER STORY ─────────────────────────────────────────
+const photographerRole = document.getElementById('photographer-role');
+if (photographerRole) {
+  photographerRole.addEventListener('change', function() {
+    const group = document.getElementById('group-cover-story');
+    group.classList.toggle('visible', this.value === 'cover');
+  });
+}
+
+// ── HARD CAP ─────────────────────────────────────────────────────────────────
+const hardCapSelect = document.getElementById('hard-cap-select');
+if (hardCapSelect) {
+  hardCapSelect.addEventListener('change', function() {
+    const group = document.getElementById('group-hard-cap-amount');
+    group.classList.toggle('visible', this.value === 'yes');
+  });
+}
+
+// ── FORM DATA COLLECTION ─────────────────────────────────────────────────────
+function collectFormData() {
+  const form = document.getElementById('inquiry-form');
+  const data = {};
+
+  // Determine final inquiry type
+  const inquiryType = document.getElementById('inquiry-type').value;
+  const sessionType = document.getElementById('session-type').value;
+  data.inquiryType = (inquiryType === 'session') ? sessionType : inquiryType;
+
+  // All inputs
+  form.querySelectorAll('input[name]:not([type="checkbox"])').forEach(el => {
+    if (el.offsetParent !== null || el.type === 'hidden') {
+      if (data[el.name] === undefined) data[el.name] = el.value;
+    }
+  });
+
+  // Selects
+  form.querySelectorAll('select[name]').forEach(el => {
+    if (el.offsetParent !== null) {
+      if (data[el.name] === undefined) data[el.name] = el.value;
+    }
+  });
+
+  // Textareas
+  form.querySelectorAll('textarea[name]').forEach(el => {
+    if (el.offsetParent !== null) {
+      if (data[el.name] === undefined) data[el.name] = el.value;
+    }
+  });
+
+  // Checkboxes (multi)
+  const checkGroups = {};
+  form.querySelectorAll('input[type="checkbox"]:not([id="add-wedding-check"]):not([id="add-engagement-check"])').forEach(el => {
+    if (el.checked) {
+      if (!checkGroups[el.name]) checkGroups[el.name] = [];
+      checkGroups[el.name].push(el.value);
+    }
+  });
+  Object.entries(checkGroups).forEach(([k, v]) => { data[k] = v.join(', '); });
+
+  // Cross-booking flags
+  data.addEngagement = document.getElementById('add-engagement-check')?.checked ? 'yes' : '';
+  data.addWedding    = document.getElementById('add-wedding-check')?.checked    ? 'yes' : '';
+
+  data.sequenceNumber = String(getNextSequence());
+
+  return data;
+}
+
+// ── SUBMIT ───────────────────────────────────────────────────────────────────
+let lastRefNumber = '';
+let lastClientData = {};
+
+document.getElementById('inquiry-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  const data = collectFormData();
+  lastClientData = data;
+
+  try {
+    const res = await fetch('/.netlify/functions/submit-inquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+      lastRefNumber = result.refNumber;
+      document.getElementById('inquiry-form').style.display = 'none';
+      document.getElementById('success-state').style.display = 'block';
+      document.getElementById('success-ref').textContent = result.refNumber;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      throw new Error(result.error || 'Unknown error');
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Send Inquiry →';
+    alert('Something went wrong. Please email dsmphotography21@gmail.com directly.');
+  }
+});
+
+// ── CLIENT-SIDE PDF DOWNLOAD (summary) ───────────────────────────────────────
+// This generates a simple printable summary in a new window as fallback
+// The real beautiful PDF comes via email from SendGrid
+function downloadClientPDF() {
+  const d = lastClientData;
+  const ref = lastRefNumber;
+  const win = window.open('', '_blank');
+  win.document.write(`
+    <html><head><title>DSM Inquiry — ${ref}</title>
+    <style>
+      body { font-family: 'Georgia', serif; color: #100f09; background: #fdfaf6; padding: 48px; max-width: 680px; margin: 0 auto; }
+      h1 { font-size: 28px; font-weight: 300; margin-bottom: 4px; }
+      .gold { color: #dec08c; }
+      .ref { font-family: sans-serif; font-size: 11px; letter-spacing: 2px; color: #776a5f; margin-bottom: 32px; }
+      .section { margin-bottom: 24px; border-top: 1px solid #dec08c; padding-top: 14px; }
+      .label { font-family: sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #776a5f; margin-bottom: 2px; }
+      .value { font-size: 13px; margin-bottom: 12px; }
+      .note { font-family: sans-serif; font-size: 11px; color: #776a5f; margin-top: 32px; border-top: 1px solid #eee; padding-top: 16px; }
+      @media print { body { padding: 24px; } }
+    </style></head><body>
+    <h1>DSM <span class="gold">Photography</span></h1>
+    <p class="ref">INQUIRY CONFIRMATION · ${ref}</p>
+    <div class="section">
+      <div class="label">Name</div><div class="value">${d.firstName||''} ${d.lastName||''}</div>
+      <div class="label">Email</div><div class="value">${d.email||''}</div>
+      <div class="label">Inquiry Type</div><div class="value">${d.inquiryType||''}</div>
+      <div class="label">Date Submitted</div><div class="value">${new Date().toLocaleDateString('en-US',{dateStyle:'long'})}</div>
+    </div>
+    <div class="note">A full beautifully formatted copy has been sent to your email. I'll be in touch within 48 hours.<br><br><strong>Dayna S. McKenzie · DSM Photography</strong><br>dsmphotography21@gmail.com · @DSM_Photography</div>
+    <script>window.print();<\/script>
+    </body></html>
+  `);
+  win.document.close();
+}
+</script>
+
+</body>
+</html>
