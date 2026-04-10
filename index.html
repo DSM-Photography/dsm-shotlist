@@ -1325,9 +1325,9 @@ document.getElementById('inquiry-form').addEventListener('submit',async function
   var now=new Date();
   var refNumber='DSM-'+now.toISOString().slice(0,10).replace(/-/g,'')+'-'+typeCode+'-'+String(seq).padStart(4,'0');
 
-  // Generate and open PDF in new window (same pattern as shot list)
-  var pdfHtml=buildInquiryPdfHtml(data,refNumber,typeLabel,accentColor);
+ // Open PDF window synchronously (must happen before any await or browser blocks it)
   var pdfWin=window.open('','_blank','width=900,height=750');
+  var pdfHtml=buildInquiryPdfHtml(data,refNumber,typeLabel,accentColor);
   if(pdfWin){
     pdfWin.document.write(pdfHtml);
     pdfWin.document.close();
