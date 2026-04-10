@@ -3,6 +3,7 @@
 // Dayna receives: elegant section-grouped HTML intake document
 // Client receives: branded confirmation with reference number + next steps
 
+const sgMail = require('@sendgrid/mail');
 
 // ── Type maps ─────────────────────────────────────────────────
 const TYPE_CODE_MAP = {
@@ -235,19 +236,19 @@ function buildIntakeHtml(data, refNumber, typeLabel, accentColor, isUrgent, subm
 <div style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #ddd8d0;box-shadow:0 2px 16px rgba(0,0,0,.07);">
 
   <!-- HEADER -->
-  <div style="background:#100f09;padding:24px 28px 20px;">
-    <table style="width:100%;border-collapse:collapse;margin-bottom:14px;">
-      <tr>
-        <td style="font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:rgba(255,255,255,.35);vertical-align:middle;">Incoming Inquiry</td>
-        <td style="text-align:right;vertical-align:middle;">
-          <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:3px;">Reference</div>
-          <div style="font-size:11px;letter-spacing:.08em;color:#dec08c;font-family:monospace;">${esc(refNumber)}</div>
-          <div style="font-size:9px;color:rgba(255,255,255,.22);margin-top:3px;">${esc(submittedAt)}</div>
-        </td>
-      </tr>
-    </table>
-    <img src="${LOGO_B64}" alt="DSM Photography" style="height:48px;width:auto;display:block;margin-bottom:8px;"/>
-    <div style="font-size:10px;letter-spacing:.06em;color:rgba(255,255,255,.28);">Miami, FL &nbsp;&middot;&nbsp; dsmphotography21@gmail.com</div>
+  <div style="background:#100f09;padding:28px 28px 22px;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+      <div>
+        <div style="font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:6px;">Incoming Inquiry</div>
+        <div style="font-size:20px;letter-spacing:.12em;text-transform:uppercase;color:#dec08c;font-weight:300;">DSM Photography</div>
+        <div style="font-size:10px;letter-spacing:.06em;color:rgba(255,255,255,.28);margin-top:4px;">Miami, FL &nbsp;&middot;&nbsp; dsmphotography21@gmail.com</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:5px;">Reference</div>
+        <div style="font-size:12px;letter-spacing:.08em;color:#dec08c;font-family:monospace;">${esc(refNumber)}</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.22);margin-top:4px;">${esc(submittedAt)}</div>
+      </div>
+    </div>
   </div>
 
   ${urgentBanner}
