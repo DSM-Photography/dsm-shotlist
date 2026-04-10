@@ -2,10 +2,7 @@
 // Form POST handler — sends via SendGrid
 // Dayna receives: elegant section-grouped HTML intake document
 // Client receives: branded confirmation with reference number + next steps
-const fs = require('fs');
-const path = require('path');
-const LOGO_B64 = 'data:image/png;base64,' + fs.readFileSync(path.join(__dirname,'../assets/DSM_LOGOSaiFiles-01.png')).toString('base64');
-const sgMail = require('@sendgrid/mail');
+
 
 // ── Type maps ─────────────────────────────────────────────────
 const TYPE_CODE_MAP = {
