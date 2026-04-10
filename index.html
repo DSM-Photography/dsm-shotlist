@@ -1212,7 +1212,141 @@ if(pr)pr.addEventListener('change',function(){document.getElementById('grp-cover
 var hcs=document.getElementById('hard-cap-select');
 if(hcs)hcs.addEventListener('change',function(){document.getElementById('grp-hard-cap').classList.toggle('on',this.value==='yes');});
 function collect(){var form=document.getElementById('inquiry-form');var data={};var iType=typeSelect.value;var sType=sessSelect.value;data.inquiryType=(iType==='session')?sType:iType;form.querySelectorAll('input[name]:not([type="checkbox"])').forEach(function(el){if(el.offsetParent!==null&&data[el.name]===undefined)data[el.name]=el.value;});form.querySelectorAll('select[name]').forEach(function(el){if(el.offsetParent!==null&&data[el.name]===undefined)data[el.name]=el.value;});form.querySelectorAll('textarea[name]').forEach(function(el){if(el.offsetParent!==null&&data[el.name]===undefined)data[el.name]=el.value;});var checks={};form.querySelectorAll('input[type="checkbox"]:not(#add-wedding-check):not(#add-engagement-check)').forEach(function(el){if(el.checked){if(!checks[el.name])checks[el.name]=[];checks[el.name].push(el.value);}});Object.keys(checks).forEach(function(k){data[k]=checks[k].join(', ');});data.addEngagement=(document.getElementById('add-engagement-check')&&document.getElementById('add-engagement-check').checked)?'yes':'';data.addWedding=(document.getElementById('add-wedding-check')&&document.getElementById('add-wedding-check').checked)?'yes':'';var dates=[data.date1||'',data.date2||'',data.date3||''].filter(Boolean);if(dates.length)data.preferredDates=dates.join(' / ');delete data.date1;delete data.date2;delete data.date3;data.sequenceNumber=String(getNextSeq());return data;}
-document.getElementById('inquiry-form').addEventListener('submit',async function(e){e.preventDefault();var btn=document.getElementById('submit-btn');btn.disabled=true;btn.textContent='Sending...';var data=collect();try{var res=await fetch('/.netlify/functions/submit-inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});var result=await res.json();if(result.success){document.getElementById('form-wrap').style.display='none';document.getElementById('success-state').style.display='block';document.getElementById('success-ref').textContent=result.refNumber;document.getElementById('contact').scrollIntoView({behavior:'smooth'});}else{throw new Error(result.error||'Error');}}catch(err){btn.disabled=false;btn.textContent='Send Inquiry \u2192';alert('Something went wrong. Please email dsmphotography21@gmail.com directly.');}});
-</script>
+// ── PDF GENERATOR ────────────────────────────────────────────────────────────
+function buildInquiryPdfHtml(data, refNumber, typeLabel, accentColor) {
+  const SKIP = new Set(['inquiryType','sessionType','sequenceNumber',
+    'hardBudgetCapSelect','addEngagement','addWedding','_refNumber','_pdfBase64']);
+  function fmtLabel(k) {
+    return k.replace(/([A-Z])/g,' $1').replace(/^./,s=>s.toUpperCase()).trim();
+  }
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  const rows = Object.entries(data)
+    .filter(([k,v]) => !SKIP.has(k) && v && String(v).trim())
+    .map(([k,v]) => `<tr>
+      <td style="padding:6pt 10pt;font-family:'Josefin Sans',sans-serif;font-size:7pt;
+                 letter-spacing:.14em;text-transform:uppercase;color:#8a7d72;
+                 white-space:nowrap;vertical-align:top;border-bottom:.4pt solid #f0ebe4;
+                 width:130pt;">${esc(fmtLabel(k))}</td>
+      <td style="padding:6pt 10pt;font-size:9pt;color:#2c2418;vertical-align:top;
+                 border-bottom:.4pt solid #f0ebe4;line-height:1.6;">
+        ${esc(String(v)).replace(/\n/g,'<br>')}</td>
+    </tr>`).join('');
+
+  const now = new Date();
+  const stamp = now.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})
+    + ' at ' + now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+@page { margin:.65in; size:letter; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:9pt;color:#2c2418;background:white;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.header{background:#100f09;padding:20pt 28pt;display:flex;align-items:center;justify-content:space-between;margin-bottom:0;}
+.h-left{}
+.h-eyebrow{font-family:'Josefin Sans',sans-serif;font-size:6pt;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:4pt;}
+.h-title{font-family:'Josefin Sans',sans-serif;font-size:16pt;letter-spacing:.2em;text-transform:uppercase;color:#dec08c;}
+.h-right{text-align:right;}
+.h-ref{font-family:'Josefin Sans',sans-serif;font-size:7pt;letter-spacing:.18em;text-transform:uppercase;color:#8a7d72;}
+.h-refval{font-family:'Josefin Sans',sans-serif;font-size:9pt;letter-spacing:.12em;color:#dec08c;margin-top:3pt;}
+.badge-bar{padding:10pt 28pt;border-bottom:.5pt solid #ede8e0;}
+.badge{display:inline-block;background:ACCENTCOLOR;color:#100f09;font-family:'Josefin Sans',sans-serif;
+       font-size:7pt;letter-spacing:.18em;text-transform:uppercase;padding:4pt 12pt;font-weight:600;}
+.urgent{display:inline-block;background:#c9856a;color:#fff;font-family:'Josefin Sans',sans-serif;
+        font-size:7pt;letter-spacing:.18em;text-transform:uppercase;padding:4pt 12pt;margin-left:8pt;}
+table{width:100%;border-collapse:collapse;}
+.footer{position:fixed;bottom:0;left:0;right:0;background:white;border-top:.5pt solid #ede8e0;
+        padding:.15in .65in;font-family:'Josefin Sans',sans-serif;font-size:6pt;
+        letter-spacing:.16em;text-transform:uppercase;color:#b8a99a;text-align:center;}
+</style>
+</head><body>
+<div class="header">
+  <div class="h-left">
+    <div class="h-eyebrow">New Inquiry</div>
+    <div class="h-title">DSM Photography</div>
+  </div>
+  <div class="h-right">
+    <div class="h-ref">Reference Number</div>
+    <div class="h-refval">${esc(refNumber)}</div>
+  </div>
+</div>
+<div class="badge-bar">
+  <span class="badge" style="background:${accentColor};">${esc(typeLabel)}</span>
+</div>
+<table><tbody>${rows}</tbody></table>
+<div style="padding:10pt 28pt;font-family:'Josefin Sans',sans-serif;font-size:7pt;letter-spacing:.1em;color:#b8a99a;border-top:.4pt solid #ede8e0;margin-top:8pt;">
+  Submitted ${esc(stamp)}
+</div>
+<div class="footer">DSM Photography &middot; Miami, FL &middot; dsmphotography21@gmail.com</div>
+</body></html>`;
+}
+
+async function generatePdfBase64(htmlString) {
+  return new Promise((resolve) => {
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:8.5in;height:11in;border:none;';
+    document.body.appendChild(iframe);
+    iframe.contentDocument.open();
+    iframe.contentDocument.write(htmlString);
+    iframe.contentDocument.close();
+    // Give fonts a moment to load, then use the Print to PDF approach
+    // Since we can't directly get PDF bytes from the browser without a library,
+    // we'll open a print window and return null — the function handles missing PDF gracefully
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+      resolve(null); // browser can't produce base64 PDF natively without lib
+    }, 100);
+  });
+}
+
+// ── SUBMIT ───────────────────────────────────────────────────────────────────
+document.getElementById('inquiry-form').addEventListener('submit',async function(e){
+  e.preventDefault();
+  var btn=document.getElementById('submit-btn');
+  btn.disabled=true;btn.textContent='Sending...';
+  var data=collect();
+
+  // Resolve type info for PDF
+  var rawType=data.inquiryType||'general';
+  var typeCodeMap={event:'EVT',portrait:'PRT',headshot:'HDT',lifestyle:'LST',
+    maternity:'MAT',engagement:'ENG',proposal:'PRP',wedding:'WED',
+    creative:'CRE',realestate:'RST',general:'GEN',other:'OTH','other-session':'OTH'};
+  var typeLabelMap={EVT:'Event Coverage',PRT:'Portrait Session',HDT:'Headshot Session',
+    LST:'Lifestyle Session',MAT:'Maternity Session',ENG:'Engagement Session',
+    PRP:'Proposal Coverage',WED:'Wedding Coverage',CRE:'Creative Session',
+    RST:'Real Estate Photography',GEN:'General Inquiry',OTH:'Other Inquiry'};
+  var typeColorMap={EVT:'#dec08c',PRT:'#f5d2c4',HDT:'#f5d2c4',LST:'#f5d2c4',
+    MAT:'#f5d2c4',ENG:'#a8dbd2',PRP:'#a8dbd2',WED:'#a8dbd2',
+    CRE:'#c9856a',RST:'#8aabb5',GEN:'#b8a99a',OTH:'#b8a99a'};
+  var typeCode=typeCodeMap[rawType]||'OTH';
+  var typeLabel=typeLabelMap[typeCode]||'Inquiry';
+  var accentColor=typeColorMap[typeCode]||'#dec08c';
+  var seq=parseInt(data.sequenceNumber||'1000',10);
+  var now=new Date();
+  var refNumber='DSM-'+now.toISOString().slice(0,10).replace(/-/g,'')+'-'+typeCode+'-'+String(seq).padStart(4,'0');
+
+  // Generate and open PDF in new window (same pattern as shot list)
+  var pdfHtml=buildInquiryPdfHtml(data,refNumber,typeLabel,accentColor);
+  var pdfWin=window.open('','_blank','width=900,height=750');
+  if(pdfWin){
+    pdfWin.document.write(pdfHtml);
+    pdfWin.document.close();
+    pdfWin.onload=function(){setTimeout(function(){pdfWin.print();},400);};
+  }
+
+  try{
+    var res=await fetch('/.netlify/functions/submit-inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    var result=await res.json();
+    if(result.success){
+      document.getElementById('form-wrap').style.display='none';
+      document.getElementById('success-state').style.display='block';
+      document.getElementById('success-ref').textContent=result.refNumber;
+      document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+    }else{throw new Error(result.error||'Error');}
+  }catch(err){
+    btn.disabled=false;btn.textContent='Send Inquiry \u2192';
+    alert('Something went wrong. Please email dsmphotography21@gmail.com directly.');
+  }
+});
 </body>
 </html>
