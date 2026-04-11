@@ -515,8 +515,10 @@
 
   // Collect add-ons
   function getAddOns() {
-    return Array.from(document.querySelectorAll('.checkbox-label input:checked')).map(c => c.value).join(', ');
-  }
+  return Array.from(document.querySelectorAll('.checkbox-label input:checked')).map(c => {
+    return c.value && c.value !== 'on' ? c.value : c.closest('.checkbox-label').textContent.trim();
+  }).join(', ');
+}
 
   // Submit to Netlify function
   async function submitForm() {
