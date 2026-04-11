@@ -192,15 +192,15 @@
     .field { display: flex; flex-direction: column; gap: 8px; }
     .field label { font-size: 10.5px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); }
     .field label .req { color: var(--gold); }
-    .field input, .field select, .field textarea { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 300; color: var(--charcoal); background: white; border: 1px solid var(--border); padding: 13px 16px; outline: none; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; }
-    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); }
+    .field input:not([type="checkbox"]), .field select, .field textarea { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 300; color: var(--charcoal); background: white; border: 1px solid var(--border); padding: 13px 16px; outline: none; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; }
+    .field input:not([type="checkbox"]):focus, .field select:focus, .field textarea:focus { border-color: var(--gold); }
     .field textarea { resize: vertical; min-height: 100px; }
     .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A96E' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; cursor: pointer; }
     .field-hint { font-size: 11px; color: var(--light-text); line-height: 1.5; }
     .field-hint.urgent { color: #C97B6E; }
     .checkbox-group { display: flex; flex-direction: column; gap: 10px; }
     .checkbox-label { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--mid); cursor: pointer; }
-    .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--gold); cursor: pointer; flex-shrink: 0; padding: 0; pointer-events: auto; }
+    .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--gold); cursor: pointer; flex-shrink: 0; padding: 0; }
     .form-section-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; font-style: italic; color: var(--charcoal); margin-bottom: 20px; margin-top: 12px; grid-column: 1 / -1; }
     .form-divider { grid-column: 1 / -1; border: none; border-top: 1px solid var(--border); margin: 8px 0; }
     .submit-row { grid-column: 1 / -1; margin-top: 16px; display: flex; align-items: center; gap: 24px; }
@@ -488,13 +488,13 @@
       <a href="https://dsmphotolab.com/#about">About</a>
       <a href="https://dsmphotolab.com/portraits.html">Portraits</a>
       <a href="https://dsmphotolab.com/client-portal.html">Client Portal</a>
-      <a href="mailto:dsmphotography21@gmail.com">Email</a>
+      <a href="/cdn-cgi/l/email-protection#64001709140c0b100b031605140c1d5655240309050d084a070b09">Email</a>
     </div>
   </div>
   <p class="copy">© 2026 DSM Photography · Miami, FL</p>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Hamburger
   const ham = document.getElementById('hamburger');
   const mm = document.getElementById('mobileMenu');
@@ -515,10 +515,8 @@
 
   // Collect add-ons
   function getAddOns() {
-  return Array.from(document.querySelectorAll('.checkbox-label input:checked')).map(c => {
-    return c.value && c.value !== 'on' ? c.value : c.closest('.checkbox-label').textContent.trim();
-  }).join(', ');
-}
+    return Array.from(document.querySelectorAll('.checkbox-label input:checked')).map(c => c.value).join(', ');
+  }
 
   // Submit to Netlify function
   async function submitForm() {
@@ -574,10 +572,4 @@
         msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } else { throw new Error(result.error || 'Error'); }
     } catch(err) {
-      btn.disabled = false; btn.textContent = 'Send Inquiry →';
-      alert('Something went wrong. Please email dsmphotography21@gmail.com directly.');
-    }
-  }
-</script>
-</body>
-</html>
+      btn.disabled = false; btn.t
