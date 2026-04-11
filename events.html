@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Coverage — DSM Photography</title>
+  <link rel="icon" href="https://dsmphotolab.com/assets/DSM_LOGOSaiFiles-04.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold: #C9A96E; --gold-light: #E2C99A; --gold-pale: #F5EDD8;
+      --mint: #8FBCB2; --mint-light: #B8D8D3;
+      --blush: #E8C5B8; --blush-light: #F4DDD5;
+      --warm-white: #FDFAF6; --charcoal: #2C2C2C; --charcoal-deep: #1E1E1E;
+      --mid: #6B6560; --light-text: #9B9490;
+      --border: rgba(201,169,110,0.2); --border-dark: rgba(201,169,110,0.25);
+      --shadow: 0 4px 24px rgba(44,44,44,0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--warm-white); color: var(--charcoal); font-weight: 300; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 72px;
+      background: rgba(30,30,30,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-dark);
+    }
+    .nav-logo img { height: 48px; display: block; }
+    .nav-center { display: flex; align-items: center; gap: 8px; list-style: none; }
+    .nav-center > li { position: relative; }
+    .nav-center > li > a, .nav-center > li > span {
+      font-size: 10.5px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; text-decoration: none;
+      color: rgba(255,255,255,0.5); transition: color 0.2s;
+      padding: 8px 12px; display: block; cursor: pointer; white-space: nowrap;
+    }
+    .nav-center > li > a:hover, .nav-center > li > span:hover { color: var(--gold); }
+    .nav-center > li > a.disabled {
+      color: rgba(255,255,255,0.2); cursor: default; pointer-events: none;
+    }
+    /* dropdown */
+    .has-dropdown:hover .dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .dropdown {
+      position: absolute; top: calc(100% + 1px); left: 50%; transform: translateX(-50%) translateY(6px);
+      background: rgba(22,20,18,0.98); border: 1px solid var(--border-dark);
+      min-width: 200px; padding: 8px 0; opacity: 0; pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .dropdown a {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 18px; font-size: 10px; font-weight: 500; letter-spacing: 0.13em;
+      text-transform: uppercase; text-decoration: none;
+      color: rgba(255,255,255,0.55); transition: color 0.15s, background 0.15s;
+    }
+    .dropdown a:hover { color: var(--gold); background: rgba(201,169,110,0.06); }
+    .dropdown a.live { color: rgba(255,255,255,0.75); }
+    .dropdown a.live:hover { color: var(--gold); }
+    .dropdown a.soon { color: rgba(255,255,255,0.22); pointer-events: none; cursor: default; }
+    .dropdown-divider { height: 1px; background: var(--border-dark); margin: 6px 0; }
+    .soon-badge {
+      font-size: 8px; letter-spacing: 0.1em; color: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 2px;
+    }
+    .nav-cta {
+      font-size: 10.5px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; text-decoration: none;
+      color: var(--gold); border: 1px solid var(--gold);
+      padding: 9px 22px; transition: all 0.2s; white-space: nowrap;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--charcoal-deep); }
+    /* hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: rgba(255,255,255,0.6); transition: all 0.25s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .mobile-menu {
+      display: none; position: fixed; top: 72px; left: 0; right: 0; bottom: 0;
+      background: rgba(22,20,18,0.98); z-index: 199; overflow-y: auto;
+      padding: 32px 32px 64px; flex-direction: column; gap: 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mm-link {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+      text-decoration: none; color: rgba(255,255,255,0.6); padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06); display: block; transition: color 0.2s;
+    }
+    .mm-link:hover { color: var(--gold); }
+    .mm-link.disabled { color: rgba(255,255,255,0.2); pointer-events: none; }
+    .mm-section { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); padding: 20px 0 8px; opacity: 0.7; }
+    .mm-sub { font-size: 11px; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.45); padding: 10px 0 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; justify-content: space-between; align-items: center; }
+    .mm-sub.live { color: rgba(255,255,255,0.65); }
+    .mm-sub.soon { color: rgba(255,255,255,0.2); }
+    .mm-cta { display: inline-block; margin-top: 28px; font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; color: var(--gold); border: 1px solid var(--gold); padding: 13px 28px; transition: all 0.2s; }
+    .mm-cta:hover { background: var(--gold); color: var(--charcoal-deep); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--charcoal-deep); min-height: 65vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      position: relative; overflow: hidden;
+    }
+    .hero::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold); }
+    .hero-image-well { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .hero-image-well-inner { border: 1px solid rgba(201,169,110,0.08); width: calc(100% - 96px); height: calc(100% - 96px); }
+    .hero-content { position: relative; z-index: 2; padding: 100px 72px 64px; }
+    .hero-eyebrow {
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(20px, 2.4vw, 28px);
+      font-weight: 400; letter-spacing: 0.04em; color: white;
+      margin-bottom: 12px; display: block; animation: fadeUp 0.8s ease both;
+    }
+    .hero-eyebrow em { font-style: italic; color: var(--gold); }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4.5vw, 64px);
+      font-weight: 300; font-style: italic; color: rgba(255,255,255,0.5);
+      line-height: 1.1; margin-bottom: 40px; animation: fadeUp 0.8s ease 0.1s both;
+    }
+    .hero-meta { display: flex; align-items: center; gap: 48px; animation: fadeUp 0.8s ease 0.2s both; }
+    .hero-stat .num { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; color: var(--gold); line-height: 1; display: block; margin-bottom: 8px; }
+    .hero-stat .label { font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.35); display: block; }
+    .hero-meta-divider { width: 1px; height: 48px; background: rgba(255,255,255,0.1); }
+    .hero-cta { display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; color: var(--charcoal-deep); background: var(--gold); padding: 14px 32px; transition: background 0.2s; }
+    .hero-cta:hover { background: var(--gold-light); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── EDITORIAL ── */
+    .editorial { padding: 72px 72px 48px; max-width: 1100px; margin: 0 auto; }
+    .editorial-inner { max-width: 700px; }
+    .editorial p { font-family: 'Cormorant Garamond', serif; font-size: clamp(19px, 2.2vw, 24px); font-weight: 300; line-height: 1.75; color: var(--charcoal); }
+    .editorial p a { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(201,169,110,0.4); transition: opacity 0.2s; }
+    .editorial p a:hover { opacity: 0.7; }
+    .decorative-line { display: flex; align-items: center; gap: 24px; margin-top: 40px; }
+    .decorative-line .rule { flex: 1; height: 1px; background: var(--border); max-width: 80px; }
+    .decorative-line .phrase { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; font-weight: 300; color: var(--light-text); white-space: nowrap; }
+
+    /* ── SECTIONS ── */
+    .section { padding: 64px 72px; max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .section-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 3.5vw, 48px); font-weight: 300; color: var(--charcoal); line-height: 1.2; margin-bottom: 16px; }
+    .section-heading em { font-style: italic; color: var(--gold); }
+    .section-sub { font-size: 14px; color: var(--mid); line-height: 1.8; max-width: 540px; margin-bottom: 48px; }
+
+    /* ── PACKAGES ── */
+    .packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .package-card { border: 1px solid var(--border); padding: 40px 32px; background: white; position: relative; transition: box-shadow 0.2s, transform 0.2s; }
+    .package-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+    .package-card.featured { border-color: var(--gold); background: linear-gradient(160deg, #FEFCF7 0%, #FAF5E8 100%); }
+    .featured-tag { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--gold); color: white; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 5px 16px; white-space: nowrap; }
+    .pkg-name { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid); margin-bottom: 12px; margin-top: 16px; }
+    .pkg-price { font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 24px; }
+    .pkg-price span { font-size: 22px; vertical-align: top; margin-top: 10px; display: inline-block; }
+    .pkg-divider { width: 32px; height: 1px; background: var(--border); margin-bottom: 24px; }
+    .pkg-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .pkg-features li { font-size: 12.5px; color: var(--mid); line-height: 1.5; padding-left: 16px; position: relative; }
+    .pkg-features li::before { content: '—'; position: absolute; left: 0; color: var(--gold-light); font-size: 11px; }
+    .pkg-features li strong { color: var(--charcoal); font-weight: 500; }
+
+    /* ── ADD-ONS ── */
+    .addons-section { padding: 0 72px 64px; max-width: 1100px; margin: 0 auto; }
+    .addons-heading { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--charcoal); margin-bottom: 32px; }
+    .addons-heading em { font-style: italic; color: var(--gold); }
+    .addons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .addon-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 16px 20px; border: 1px solid var(--border); background: white; gap: 20px; }
+    .addon-info { flex: 1; }
+    .addon-name { font-size: 13px; font-weight: 500; color: var(--charcoal); margin-bottom: 3px; }
+    .addon-note { font-size: 11.5px; color: var(--light-text); line-height: 1.4; }
+    .addon-price { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: var(--gold); white-space: nowrap; flex-shrink: 0; }
+
+    /* ── FINE PRINT ── */
+    .fine-print { padding: 0 72px 40px; max-width: 1100px; margin: 0 auto; }
+    .fine-print-box { background: var(--gold-pale); border: 1px solid var(--border); padding: 32px 40px; }
+    .fine-print-box p { font-size: 12px; color: var(--mid); line-height: 1.9; margin-bottom: 8px; }
+    .fine-print-box p:last-child { margin-bottom: 0; }
+    .fine-print-box strong { color: var(--charcoal); font-weight: 500; }
+
+    /* ── DIVIDER ── */
+    .page-divider { max-width: 1100px; margin: 0 auto; padding: 0 72px; }
+    .page-divider hr { border: none; border-top: 1px solid var(--border); margin: 16px 0 64px; }
+
+    /* ── FORM ── */
+    .form-section { padding: 64px 72px 100px; max-width: 1100px; margin: 0 auto; }
+    .form-intro { margin-bottom: 48px; }
+    .form-intro h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 3.5vw, 48px); font-weight: 300; color: var(--charcoal); line-height: 1.15; margin-bottom: 16px; }
+    .form-intro h2 em { font-style: italic; color: var(--gold); }
+    .form-intro p { font-size: 14px; color: var(--mid); line-height: 1.8; max-width: 480px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-full { grid-column: 1 / -1; }
+    .field { display: flex; flex-direction: column; gap: 8px; }
+    .field label { font-size: 10.5px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); }
+    .field label .req { color: var(--gold); }
+    .field input, .field select, .field textarea { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 300; color: var(--charcoal); background: white; border: 1px solid var(--border); padding: 13px 16px; outline: none; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); }
+    .field textarea { resize: vertical; min-height: 100px; }
+    .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A96E' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; cursor: pointer; }
+    .field-hint { font-size: 11px; color: var(--light-text); line-height: 1.5; }
+    .field-hint.urgent { color: #C97B6E; }
+    .checkbox-group { display: flex; flex-direction: column; gap: 10px; }
+    .checkbox-label { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--mid); cursor: pointer; }
+    .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--gold); cursor: pointer; flex-shrink: 0; padding: 0; }
+    .form-section-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; font-style: italic; color: var(--charcoal); margin-bottom: 20px; margin-top: 12px; grid-column: 1 / -1; }
+    .form-divider { grid-column: 1 / -1; border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+    .submit-row { grid-column: 1 / -1; margin-top: 16px; display: flex; align-items: center; gap: 24px; }
+    .submit-btn { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: white; background: var(--charcoal-deep); border: none; padding: 16px 40px; cursor: pointer; transition: background 0.2s; }
+    .submit-btn:hover { background: var(--gold); }
+    .submit-btn:disabled { opacity: 0.5; cursor: wait; }
+    .submit-note { font-size: 11.5px; color: var(--light-text); line-height: 1.5; }
+    .success-msg { display: none; grid-column: 1/-1; background: var(--gold-pale); border: 1px solid var(--border); padding: 48px 40px; text-align: center; }
+    .success-msg .success-mark { font-size: 28px; color: var(--gold); display: block; margin-bottom: 16px; }
+    .success-msg .success-ref { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
+    .success-msg h3 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--charcoal); margin-bottom: 12px; }
+    .success-msg h3 em { font-style: italic; color: var(--gold); }
+    .success-msg p { font-size: 13px; color: var(--mid); line-height: 1.8; max-width: 420px; margin: 0 auto; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--charcoal-deep); padding: 48px 72px 36px; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; flex-wrap: wrap; }
+    footer img { height: 40px; filter: brightness(0) invert(1) opacity(0.6); }
+    .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+    .footer-links a { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.4); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--gold); }
+    footer .copy { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 36px; max-width: 1100px; margin-left: auto; margin-right: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .nav-center, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .hero-content { padding: 80px 24px 48px; }
+      .hero-meta { flex-wrap: wrap; gap: 24px; }
+      .editorial, .section, .addons-section, .fine-print, .form-section, .page-divider { padding-left: 24px; padding-right: 24px; }
+      footer { padding-left: 24px; padding-right: 24px; }
+      .packages-grid, .addons-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-full, .form-section-title, .form-divider, .submit-row, .success-msg { grid-column: 1; }
+      .decorative-line .phrase { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://dsmphotolab.com" class="nav-logo"><img src="https://dsmphotolab.com/assets/DSM_LOGOSaiFiles-04.png" alt="DSM Photography" /></a>
+  <ul class="nav-center">
+    <li><a href="https://dsmphotolab.com/#about">About</a></li>
+    <li class="has-dropdown">
+      <span>Services</span>
+      <div class="dropdown">
+        <a href="https://dsmphotolab.com/events.html" class="live">Events</a>
+        <a href="https://dsmphotolab.com/portraits.html" class="live">Portraits</a>
+        <div class="dropdown-divider"></div>
+        <a class="soon">Headshots <span class="soon-badge">Soon</span></a>
+        <a class="soon">Lifestyle <span class="soon-badge">Soon</span></a>
+        <a class="soon">Maternity <span class="soon-badge">Soon</span></a>
+        <a class="soon">Engagements <span class="soon-badge">Soon</span></a>
+        <a class="soon">Proposals <span class="soon-badge">Soon</span></a>
+        <a class="soon">Weddings <span class="soon-badge">Soon</span></a>
+        <a class="soon">Real Estate <span class="soon-badge">Soon</span></a>
+        <a class="soon">Fine Art <span class="soon-badge">Soon</span></a>
+      </div>
+    </li>
+    <li><a href="https://dsmphotolab.com/#portfolio">Portfolio</a></li>
+    <li><a href="https://dsmphotolab.com/prints.html" class="disabled">Prints</a></li>
+    <li><a href="https://dsmphotolab.com/client-portal.html">Client Portal</a></li>
+  </ul>
+  <a href="#inquire" class="nav-cta">Inquire</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="https://dsmphotolab.com/#about" class="mm-link">About</a>
+  <div class="mm-section">Services</div>
+  <a href="https://dsmphotolab.com/events.html" class="mm-sub live">Events</a>
+  <a href="https://dsmphotolab.com/portraits.html" class="mm-sub live">Portraits</a>
+  <a class="mm-sub soon">Headshots <span class="soon-badge">Soon</span></a>
+  <a class="mm-sub soon">Lifestyle <span class="soon-badge">Soon</span></a>
+  <a class="mm-sub soon">Maternity <span class="soon-badge">Soon</span></a>
+  <a class="mm-sub soon">Engagements <span class="soon-badge">Soon</span></a>
+  <a class="mm-sub soon">Proposals <span class="soon-badge">Soon</span></a>
+  <a class="mm-sub soon">Weddings <span class="soon-badge">Soon</span></a>
+  <a class="mm-sub soon">Real Estate <span class="soon-badge">Soon</span></a>
+  <a class="mm-sub soon">Fine Art <span class="soon-badge">Soon</span></a>
+  <a href="https://dsmphotolab.com/#portfolio" class="mm-link">Portfolio</a>
+  <a class="mm-link disabled">Prints — Coming Soon</a>
+  <a href="https://dsmphotolab.com/client-portal.html" class="mm-link">Client Portal</a>
+  <a href="#inquire" class="mm-cta" id="mmCta">Inquire</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-image-well"><div class="hero-image-well-inner"></div></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Event Coverage <em>&amp; Packages</em></span>
+    <h1 class="hero-title">Every gathering deserves a record.</h1>
+    <div class="hero-meta">
+      <div class="hero-stat">
+        <span class="num">75+</span>
+        <span class="label">Retouched images</span>
+      </div>
+      <div class="hero-meta-divider"></div>
+      <div class="hero-stat">
+        <span class="num">$350</span>
+        <span class="label">Starting at</span>
+      </div>
+      <div class="hero-meta-divider"></div>
+      <a href="#inquire" class="hero-cta">Inquire Now &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- EDITORIAL -->
+<div class="editorial">
+  <div class="editorial-inner">
+    <p>Event photography isn't about posed smiles and perfect lighting. It's about showing up to a room full of people and knowing where to be before the moment happens — the handshake, the laugh, the speech that lands, the look someone gives across the room. I cover corporate receptions, galas, social celebrations, product launches, nonprofit events, company parties, conferences, and more. <a href="#inquire">Fill out the inquiry form</a> to find out if I can cover your event.</p>
+    <div class="decorative-line">
+      <span class="rule"></span>
+      <span class="phrase">Every gathering has a story worth keeping.</span>
+      <span class="rule"></span>
+    </div>
+  </div>
+</div>
+
+<!-- PACKAGES -->
+<div class="section">
+  <p class="section-label">Coverage Packages</p>
+  <h2 class="section-heading">Choose your <em>level of coverage.</em></h2>
+  <p class="section-sub">All packages include lighting and color correction, a private PASS gallery, and high-resolution downloads. Standard delivery is 7 business days from gallery selection.</p>
+  <div class="packages-grid">
+    <div class="package-card">
+      <p class="pkg-name">Essential</p>
+      <div class="pkg-price"><span>$</span>350</div>
+      <div class="pkg-divider"></div>
+      <ul class="pkg-features">
+        <li><strong>2 hours</strong> of coverage</li>
+        <li><strong>75+ retouched images</strong></li>
+        <li>Lighting &amp; color correction</li>
+        <li>Private PASS gallery</li>
+        <li>High-resolution downloads</li>
+        <li>Standard 7-business-day delivery</li>
+      </ul>
+    </div>
+    <div class="package-card featured">
+      <div class="featured-tag">Recommended</div>
+      <p class="pkg-name">Signature</p>
+      <div class="pkg-price"><span>$</span>525</div>
+      <div class="pkg-divider"></div>
+      <ul class="pkg-features">
+        <li><strong>2.5 hours</strong> of coverage</li>
+        <li><strong>125+ retouched images</strong></li>
+        <li>Lighting &amp; color correction</li>
+        <li>Private PASS gallery</li>
+        <li>High-resolution downloads</li>
+        <li>Standard 7-business-day delivery</li>
+      </ul>
+    </div>
+    <div class="package-card">
+      <p class="pkg-name">Premier</p>
+      <div class="pkg-price"><span>$</span>750</div>
+      <div class="pkg-divider"></div>
+      <ul class="pkg-features">
+        <li><strong>2.5 hrs + 30 min pre-event</strong></li>
+        <li><strong>175+ retouched images</strong></li>
+        <li>Lighting &amp; color correction</li>
+        <li>Up to 3 group photo sessions</li>
+        <li>Private PASS gallery</li>
+        <li>High-resolution downloads</li>
+        <li>Printed thank-you card set (4x6, mailed)</li>
+        <li>Standard 7-business-day delivery</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ADD-ONS -->
+<div class="addons-section">
+  <h3 class="addons-heading">A la carte <em>add-ons</em></h3>
+  <div class="addons-grid">
+    <div class="addon-row"><div class="addon-info"><p class="addon-name">Expedited Delivery — 5 Business Days</p></div><p class="addon-price">+ $100</p></div>
+    <div class="addon-row"><div class="addon-info"><p class="addon-name">Expedited Delivery — 48 Hours</p></div><p class="addon-price">+ $200</p></div>
+    <div class="addon-row"><div class="addon-info"><p class="addon-name">Additional Coverage Hour</p></div><p class="addon-price">+ $150</p></div>
+    <div class="addon-row"><div class="addon-info"><p class="addon-name">Additional Retouched Images</p><p class="addon-note">+25 images per add-on</p></div><p class="addon-price">+ $75</p></div>
+    <div class="addon-row"><div class="addon-info"><p class="addon-name">Group Photo Session</p><p class="addon-note">Up to 3 groupings — Essential &amp; Signature only</p></div><p class="addon-price">+ $75</p></div>
+    <div class="addon-row"><div class="addon-info"><p class="addon-name">Additional Group Groupings</p><p class="addon-note">Beyond included or purchased groupings</p></div><p class="addon-price">+ $20 each</p></div>
+    <div class="addon-row"><div class="addon-info"><p class="addon-name">Print Release Letter</p></div><p class="addon-price">+ $25</p></div>
+    <div class="addon-row"><div class="addon-info"><p class="addon-name">Licensed Commercial Use</p><p class="addon-note">Paid ads &amp; revenue-generating campaigns only</p></div><p class="addon-price">+ $40</p></div>
+    <div class="addon-row"><div class="addon-info"><p class="addon-name">Print + Commercial Bundle</p><p class="addon-note">Print release &amp; commercial license — save $10</p></div><p class="addon-price">+ $55</p></div>
+  </div>
+</div>
+
+<!-- FINE PRINT -->
+<div class="fine-print">
+  <div class="fine-print-box">
+    <p><strong>Deposit &amp; Payment:</strong> A 50% deposit is required to confirm your booking, due within 48 hours of signing. Remaining balance due 7 days prior to the event.</p>
+    <p><strong>Delivery:</strong> Delivery window begins upon receipt of confirmed image selections. Image minimums are guaranteed regardless of client selection count.</p>
+    <p><strong>Travel:</strong> All packages include one photographer. Travel fees apply beyond 30 miles from Miami, FL — $0.75/mile round trip. Bookings beyond 60 miles quoted individually.</p>
+    <p><strong>Custom coverage:</strong> Custom packages are available for events that go beyond standard coverage — extended hours (3+), multiple rooms or venues, a second shooter, same-day preview delivery, or destination events.</p>
+  </div>
+</div>
+
+<div class="page-divider"><hr /></div>
+
+<!-- INQUIRY FORM -->
+<div class="form-section" id="inquire">
+  <div class="form-intro">
+    <p class="section-label">Event Inquiry</p>
+    <h2>Let's talk about <em>your event.</em></h2>
+    <p>Tell me the details and I'll follow up within 48 hours with availability and next steps.</p>
+  </div>
+  <div class="form-grid" id="formWrap">
+    <p class="form-section-title">About You</p>
+    <div class="field"><label>First Name <span class="req">*</span></label><input type="text" id="firstName" placeholder="First name" /></div>
+    <div class="field"><label>Last Name <span class="req">*</span></label><input type="text" id="lastName" placeholder="Last name" /></div>
+    <div class="field"><label>Email <span class="req">*</span></label><input type="email" id="email" placeholder="your@email.com" /></div>
+    <div class="field"><label>Phone (optional)</label><input type="tel" id="phone" placeholder="(305) 000-0000" /></div>
+    <div class="field"><label>Preferred Contact <span class="req">*</span></label>
+      <select id="preferredContact"><option value="">Select...</option><option>Email</option><option>Phone call</option><option>Text message</option></select>
+    </div>
+    <div class="field"><label>How did you hear about me? <span class="req">*</span></label>
+      <select id="howHeard"><option value="">Select...</option><option>Instagram</option><option>Facebook</option><option>Google</option><option>Referred by a friend</option><option>Word of mouth</option><option>Other</option></select>
+    </div>
+
+    <hr class="form-divider" />
+    <p class="form-section-title">Event Details</p>
+    <div class="field">
+      <label>Event Date <span class="req">*</span></label>
+      <input type="date" id="eventDate" />
+      <span class="field-hint urgent" id="urgentNote" style="display:none">This date is within 60 days — I'll prioritize your inquiry.</span>
+    </div>
+    <div class="field"><label>Event Type <span class="req">*</span></label>
+      <select id="eventType"><option value="">Select type...</option><option>Corporate reception / gala</option><option>Social celebration (birthday, retirement, etc.)</option><option>Nonprofit / charity event</option><option>Company party or team event</option><option>Product launch or brand event</option><option>Conference or seminar</option><option>Other</option></select>
+    </div>
+    <div class="field"><label>Expected Guest Count</label><input type="number" id="guestCount" placeholder="Approximate number" min="0" /></div>
+    <div class="field"><label>Venue Name &amp; City <span class="req">*</span></label><input type="text" id="venue" placeholder="Venue name, city" /></div>
+
+    <hr class="form-divider" />
+    <p class="form-section-title">Coverage &amp; Package</p>
+    <div class="field"><label>Package Interest</label>
+      <select id="packageInterest" onchange="toggleCustom()"><option value="">Select...</option><option>Essential — $350</option><option>Signature — $525</option><option>Premier — $750</option><option value="custom">Custom quote</option><option>Not sure yet</option></select>
+    </div>
+    <div class="field"><label>Add-Ons You're Considering</label>
+      <div class="checkbox-group">
+        <label class="checkbox-label"><input type="checkbox" value="expedited-5day" /> Expedited Delivery (5 business days) — +$100</label>
+        <label class="checkbox-label"><input type="checkbox" value="expedited-48hr" /> Expedited Delivery (48 hours) — +$200</label>
+        <label class="checkbox-label"><input type="checkbox" value="extra-hour" /> Additional Coverage Hour — +$150</label>
+        <label class="checkbox-label"><input type="checkbox" value="extra-images" /> Additional Retouched Images (+25) — +$75</label>
+        <label class="checkbox-label"><input type="checkbox" value="group-session" /> Group Photo Session — +$75</label>
+        <label class="checkbox-label"><input type="checkbox" value="print-release" /> Print Release Letter — +$25</label>
+        <label class="checkbox-label"><input type="checkbox" value="commercial" /> Licensed Commercial Use — +$40</label>
+        <label class="checkbox-label"><input type="checkbox" value="print-commercial" /> Print + Commercial Bundle — +$55</label>
+      </div>
+    </div>
+    <div class="field form-full" id="customWrap" style="display:none">
+      <label>What makes your event unique?</label>
+      <textarea id="customNote" placeholder="Extended hours, multiple spaces, specific access requirements..." rows="3"></textarea>
+    </div>
+
+    <hr class="form-divider" />
+    <p class="form-section-title">Tell Me More</p>
+    <div class="field form-full"><label>Tell me about your event <span class="req">*</span></label><textarea id="eventDesc" placeholder="Who's celebrating, what's the occasion, what's the vibe? Any must-have moments?" rows="4"></textarea></div>
+    <div class="field form-full"><label>Specific shots or moments you have in mind</label><textarea id="shotList" placeholder="Speeches, awards, team photos, decor details — anything you don't want me to miss." rows="3"></textarea></div>
+
+    <div class="submit-row">
+      <button class="submit-btn" id="submitBtn" onclick="submitForm()">Send Inquiry &rarr;</button>
+      <p class="submit-note">I'll be in touch within 48 hours.<br />You'll receive a confirmation email with your inquiry summary.</p>
+    </div>
+
+    <div class="success-msg" id="successMsg">
+      <span class="success-mark">&#10022;</span>
+      <p class="success-ref" id="successRef"></p>
+      <h3>Inquiry received — <em>talk soon.</em></h3>
+      <p>Check your inbox for a confirmation email. I'll be in touch within 48 hours.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <img src="https://dsmphotolab.com/assets/DSM_LOGOSaiFiles-01.png" alt="DSM Photography" />
+    <div class="footer-links">
+      <a href="https://dsmphotolab.com/#about">About</a>
+      <a href="https://dsmphotolab.com/portraits.html">Portraits</a>
+      <a href="https://dsmphotolab.com/client-portal.html">Client Portal</a>
+      <a href="mailto:dsmphotography21@gmail.com">Email</a>
+    </div>
+  </div>
+  <p class="copy">© 2026 DSM Photography · Miami, FL</p>
+</footer>
+
+<script>
+  // Hamburger
+  const ham = document.getElementById('hamburger');
+  const mm = document.getElementById('mobileMenu');
+  ham.addEventListener('click', () => { ham.classList.toggle('open'); mm.classList.toggle('open'); });
+  document.getElementById('mmCta').addEventListener('click', () => { ham.classList.remove('open'); mm.classList.remove('open'); });
+
+  // Urgent date
+  document.getElementById('eventDate').addEventListener('change', function() {
+    const diff = (new Date(this.value) - new Date()) / (1000*60*60*24);
+    document.getElementById('urgentNote').style.display = diff > 0 && diff <= 60 ? 'block' : 'none';
+  });
+
+  // Custom note toggle
+  function toggleCustom() {
+    document.getElementById('customWrap').style.display =
+      document.getElementById('packageInterest').value === 'custom' ? 'flex' : 'none';
+  }
+
+  // Collect add-ons
+  function getAddOns() {
+    return Array.from(document.querySelectorAll('.checkbox-label input:checked')).map(c => c.value).join(', ');
+  }
+
+  // Submit to Netlify function
+  async function submitForm() {
+    const required = ['firstName','lastName','email','preferredContact','howHeard','eventDate','eventType','venue','eventDesc'];
+    let valid = true;
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el || !el.value.trim()) { if(el) el.style.borderColor = '#C97B6E'; valid = false; }
+      else el.style.borderColor = '';
+    });
+    if (!valid) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true; btn.textContent = 'Sending...';
+
+    const seq = parseInt(localStorage.getItem('dsm_inquiry_seq') || '1000', 10) + 1;
+    localStorage.setItem('dsm_inquiry_seq', String(seq));
+    const now = new Date();
+    const refNumber = 'DSM-' + now.toISOString().slice(0,10).replace(/-/g,'') + '-EVT-' + String(seq).padStart(4,'0');
+
+    const data = {
+      inquiryType: 'event',
+      firstName: document.getElementById('firstName').value,
+      lastName: document.getElementById('lastName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      preferredContact: document.getElementById('preferredContact').value,
+      howHeard: document.getElementById('howHeard').value,
+      eventDate: document.getElementById('eventDate').value,
+      eventType: document.getElementById('eventType').value,
+      guestCount: document.getElementById('guestCount').value,
+      venue: document.getElementById('venue').value,
+      packageInterest: document.getElementById('packageInterest').value,
+      addOns: getAddOns(),
+      customQuoteDetails: document.getElementById('customNote').value,
+      eventNarrative: document.getElementById('eventDesc').value,
+      specificShots: document.getElementById('shotList').value,
+      sequenceNumber: String(seq),
+    };
+
+    try {
+      const res = await fetch('/.netlify/functions/submit-inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      if (result.success) {
+        document.querySelector('.submit-row').style.display = 'none';
+        const msg = document.getElementById('successMsg');
+        document.getElementById('successRef').textContent = result.refNumber || refNumber;
+        msg.style.display = 'block';
+        msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else { throw new Error(result.error || 'Error'); }
+    } catch(err) {
+      btn.disabled = false; btn.textContent = 'Send Inquiry →';
+      alert('Something went wrong. Please email dsmphotography21@gmail.com directly.');
+    }
+  }
+</script>
+</body>
+</html>
