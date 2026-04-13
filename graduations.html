@@ -6,6 +6,7 @@
   <title>Graduation Sessions | DSM Photography</title>
   <link rel="icon" type="image/png" href="assets/DSM_LOGOSaiFiles-04.png" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/nav.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -34,172 +35,7 @@
       overflow-x: hidden;
     }
 
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 0 48px;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(253,250,246,0.96);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo img { height: 44px; width: auto; }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 36px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--charcoal);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--gold); }
-
-    .nav-links .coming-soon {
-      color: var(--light-text);
-      pointer-events: none;
-    }
-
-    .nav-dropdown { position: relative; }
-    .nav-dropdown > a { cursor: pointer; }
-
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 16px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 12px 0;
-      min-width: 200px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-      z-index: 200;
-    }
-
-    .nav-dropdown::before {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      height: 20px;
-    }
-
-    .nav-dropdown:hover .dropdown-menu { display: block; }
-
-    .dropdown-menu a {
-      display: block;
-      padding: 10px 20px;
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      color: var(--charcoal);
-      text-decoration: none;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .dropdown-menu a:hover { background: var(--gold-pale); color: var(--gold); }
-
-    .dropdown-menu .soon {
-      color: var(--light-text);
-      pointer-events: none;
-      cursor: default;
-    }
-
-    .dropdown-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 8px 0;
-    }
-
-    .nav-cta {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--warm-white);
-      background: var(--gold);
-      border: none;
-      padding: 10px 24px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s;
-      border-radius: 2px;
-    }
-
-    .nav-cta:hover { background: var(--gold-light); }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-    }
-
-    .hamburger span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--charcoal);
-      transition: all 0.3s;
-    }
-
-    .mobile-menu {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: var(--warm-white);
-      z-index: 99;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 32px;
-    }
-
-    .mobile-menu.open { display: flex; }
-
-    .mobile-menu a {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 400;
-      color: var(--charcoal);
-      text-decoration: none;
-      letter-spacing: 0.04em;
-      transition: color 0.2s;
-    }
-
-    .mobile-menu a:hover { color: var(--gold); }
-
-    .mobile-close {
-      position: absolute;
-      top: 24px;
-      right: 24px;
-      font-size: 28px;
-      cursor: pointer;
-      color: var(--charcoal);
-      background: none;
-      border: none;
-    }
+  
 
     /* HERO */
     .hero {
@@ -1022,7 +858,8 @@
 
     @media (max-width: 768px) {
       nav { padding: 0 24px; }
-      .nav-links, .nav-cta { display: none; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
       .hamburger { display: flex; }
       .hero-content { padding: 40px 24px; }
       .packages-section, .fine-print { padding: 60px 24px; }
@@ -1037,52 +874,7 @@
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">
-      <a href="index.html"><img src="assets/DSM_LOGOSaiFiles-04.png" alt="DSM Photography" /></a>
-    </div>
-    <ul class="nav-links">
-      <li><a href="index.html#about">About</a></li>
-      <li class="nav-dropdown">
-        <a href="services.html">Services</a>
-        <div class="dropdown-menu">
-          <a href="events.html">Events</a>
-          <a href="portraits.html">Portraits</a>
-          <a href="graduations.html" style="color:var(--gold);">Graduations</a>
-          <div class="dropdown-divider"></div>
-          <a class="soon">Headshots</a>
-          <a class="soon">Lifestyle</a>
-          <a class="soon">Maternity</a>
-          <a class="soon">Engagements</a>
-          <a class="soon">Proposals</a>
-          <a class="soon">Weddings</a>
-          <a class="soon">Real Estate</a>
-          <a class="soon">Fine Art</a>
-        </div>
-      </li>
-      <li><a href="index.html#portfolio">Portfolio</a></li>
-      <li><a href="prints.html" class="coming-soon">Prints</a></li>
-      <li><a href="client-portal.html">Client Portal</a></li>
-    </ul>
-    <a href="#inquire" class="nav-cta">Inquire</a>
-    <div class="hamburger" onclick="toggleMenu()">
-      <span></span><span></span><span></span>
-    </div>
-  </nav>
-
-<!-- MOBILE MENU -->
-  <div class="mobile-menu" id="mobileMenu">
-    <button class="mobile-close" onclick="toggleMenu()">&#x2715;</button>
-    <a href="index.html#about" onclick="toggleMenu()">About</a>
-    <a href="services.html" onclick="toggleMenu()">Services</a>
-    <a href="portraits.html" onclick="toggleMenu()" style="font-size:20px; color:var(--mid);">Portraits</a>
-    <a href="graduations.html" onclick="toggleMenu()" style="font-size:20px; color:var(--gold);">Graduations</a>
-    <a href="events.html" onclick="toggleMenu()" style="font-size:20px; color:var(--mid);">Events</a>
-    <a href="index.html#portfolio" onclick="toggleMenu()">Portfolio</a>
-    <a href="client-portal.html" onclick="toggleMenu()">Client Portal</a>
-    <a href="#inquire" onclick="toggleMenu()" style="color:var(--gold);">Inquire</a>
-  </div>
+  <div id="nav-placeholder"></div>
 
   <!-- SEASONAL BANNER -->
   <div class="seasonal-banner" style="margin-top:72px;">
@@ -1564,9 +1356,6 @@
   </footer>
 
   <script>
-    function toggleMenu() {
-      document.getElementById('mobileMenu').classList.toggle('open');
-    }
 
     function toggleGraduateFields() {
       const val = document.getElementById('inquiryFor').value;
@@ -1662,6 +1451,6 @@
       }
     }
   </script>
-
+<script src="/nav.js"></script>
 </body>
 </html>
