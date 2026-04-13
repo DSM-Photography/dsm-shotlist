@@ -42,7 +42,9 @@ nav{position:fixed;top:32px;left:0;right:0;z-index:200;display:flex;align-items:
 .nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
 .mobile-nav{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--warm);z-index:199;overflow-y:auto;padding:100px 32px 64px;flex-direction:column}
 .mobile-nav.open{display:flex}
-.mn-link{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:var(--text);padding:14px 0;border-bottom:1px solid var(--border);display:block;transition:color .2s}
+.mn-link{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:var(--text);padding:14px 0;border-bottom:1px solid var(--border);display:block;transition:color .2s} 
+.mn-indent{padding-left:20px;font-size:.58rem;color:var(--muted);border-bottom:1px solid rgba(222,192,140,.08)} 
+.mn-indent:hover{color:var(--gold)}
 .mn-link:hover{color:var(--gold)}
 .mn-disabled{color:rgba(30,20,8,.25);pointer-events:none}
 .mn-section{font-size:.48rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);padding:20px 0 8px;opacity:.8}
@@ -274,24 +276,15 @@ footer{background:var(--dark);border-top:1px solid rgba(222,192,140,.1);padding:
 </nav>
 
 <div class="mobile-nav" id="mobileNav">
-  <a href="#about" class="mn-link">About</a>
-  <div class="mn-section">Services</div>
-  <a href="events.html" class="mn-sub mn-live">Events</a>
-  <a href="portraits.html" class="mn-sub mn-live">Portraits</a>
-  <a href="graduations.html" class="mn-sub mn-live">Graduations</a>
-  <a href="services.html" class="mn-sub mn-live">Services</a>
-  <a class="mn-sub mn-soon">Headshots <span class="dd-badge">Soon</span></a>
-  <a class="mn-sub mn-soon">Lifestyle <span class="dd-badge">Soon</span></a>
-  <a class="mn-sub mn-soon">Maternity <span class="dd-badge">Soon</span></a>
-  <a class="mn-sub mn-soon">Engagements <span class="dd-badge">Soon</span></a>
-  <a class="mn-sub mn-soon">Proposals <span class="dd-badge">Soon</span></a>
-  <a class="mn-sub mn-soon">Weddings <span class="dd-badge">Soon</span></a>
-  <a class="mn-sub mn-soon">Real Estate <span class="dd-badge">Soon</span></a>
-  <a class="mn-sub mn-soon">Fine Art <span class="dd-badge">Soon</span></a>
-  <a href="#portfolio" class="mn-link">Portfolio</a>
-  <a class="mn-link mn-disabled">Prints — Coming Soon</a>
-  <a href="client-portal.html" class="mn-link">Client Portal</a>
-  <a href="#contact" class="mn-cta">Inquire</a>
+  <a href="#about" class="mn-link" onclick="closeMobileNav()">About</a>
+  <a href="services.html" class="mn-link" onclick="closeMobileNav()">Services</a>
+  <a href="portraits.html" class="mn-link mn-indent" onclick="closeMobileNav()">Portraits</a>
+  <a href="graduations.html" class="mn-link mn-indent" onclick="closeMobileNav()">Graduations</a>
+  <a href="events.html" class="mn-link mn-indent" onclick="closeMobileNav()">Events</a>
+  <a href="#portfolio" class="mn-link" onclick="closeMobileNav()">Portfolio</a>
+  <a class="mn-link mn-disabled">Prints</a>
+  <a href="client-portal.html" class="mn-link" onclick="closeMobileNav()">Client Portal</a>
+  <a href="#contact" class="mn-cta" onclick="closeMobileNav()">Inquire</a>
 </div>
 
 <!-- ANNOUNCEMENT BAR
@@ -1396,16 +1389,14 @@ document.getElementById('inquiry-form').addEventListener('submit',async function
 // Hamburger
 var navHam=document.getElementById('navHamburger');
 var mobileNav=document.getElementById('mobileNav');
+function closeMobileNav(){
+  navHam.classList.remove('open');
+  mobileNav.classList.remove('open');
+}
 if(navHam&&mobileNav){
   navHam.addEventListener('click',function(){
     navHam.classList.toggle('open');
     mobileNav.classList.toggle('open');
-  });
-  mobileNav.querySelectorAll('.mn-link,.mn-sub,.mn-cta').forEach(function(el){
-    el.addEventListener('click',function(){
-      navHam.classList.remove('open');
-      mobileNav.classList.remove('open');
-    });
   });
 }
 </script>
