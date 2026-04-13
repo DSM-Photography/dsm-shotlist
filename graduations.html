@@ -407,26 +407,27 @@
     /* GALLERY */
     .gallery-section {
       padding: 0 60px 48px;
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
     /*
-      Layout:
-      [  back shot  ] [ portrait ] [ portrait ] [ portrait ]
-      [  back shot  ] [———————— horizontal/landscape ————————]
+      Layout (5 columns, 2 rows):
+      [ grad-01 ] [ grad-03 ] [ grad-06 ] [ grad-02 ] [ grad-05 ]
+      [ grad-01 ] [————————— grad-04 ————————————————] [ grad-05 ]
 
-      4 columns, 2 rows.
-      Back shot: col 1, rows 1-2
-      Three portraits: cols 2-4, row 1
-      Horizontal: cols 2-4, row 2
+      col 1: grad-01, rows 1-2 (tall portrait, left anchor)
+      col 2: grad-03, row 1
+      col 3: grad-06, row 1
+      col 4: grad-02, row 1
+      cols 2-4: grad-04, row 2 (landscape)
+      col 5: grad-05, rows 1-2 (tall portrait, right anchor)
     */
     .gallery-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
       grid-template-rows: auto auto;
       gap: 10px;
-      align-items: start;
     }
 
     .gallery-item {
@@ -436,50 +437,66 @@
 
     .gallery-item img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
       display: block;
       transition: transform 0.4s ease;
     }
 
     .gallery-item:hover img { transform: scale(1.02); }
 
-    /* Back/walkway shot — col 1, spans both rows */
+    /* grad-01 — col 1, spans both rows */
     .gallery-item:nth-child(1) {
       grid-column: 1;
       grid-row: 1 / 3;
     }
+    .gallery-item:nth-child(1) img { object-position: center top; }
 
-    /* The back shot needs a fixed height so row 2 aligns at the bottom */
-    .gallery-item:nth-child(1) img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    /* grad-03 — col 2, row 1 */
+    .gallery-item:nth-child(2) {
+      grid-column: 2;
+      grid-row: 1;
     }
+    .gallery-item:nth-child(2) img { object-position: center top; }
 
-    /* Three portrait shots — cols 2, 3, 4, row 1 */
-    .gallery-item:nth-child(2) { grid-column: 2; grid-row: 1; }
-    .gallery-item:nth-child(3) { grid-column: 3; grid-row: 1; }
-    .gallery-item:nth-child(4) { grid-column: 4; grid-row: 1; }
+    /* grad-06 — col 3, row 1 */
+    .gallery-item:nth-child(3) {
+      grid-column: 3;
+      grid-row: 1;
+    }
+    .gallery-item:nth-child(3) img { object-position: center top; }
 
-    /* Horizontal shot — cols 2-4, row 2 */
+    /* grad-02 — col 4, row 1 */
+    .gallery-item:nth-child(4) {
+      grid-column: 4;
+      grid-row: 1;
+    }
+    .gallery-item:nth-child(4) img { object-position: center top; }
+
+    /* grad-04 landscape — cols 2-4, row 2 */
     .gallery-item:nth-child(5) {
       grid-column: 2 / 5;
       grid-row: 2;
     }
+    .gallery-item:nth-child(5) img { object-fit: cover; object-position: center center; }
+
+    /* grad-05 — col 5, spans both rows */
+    .gallery-item:nth-child(6) {
+      grid-column: 5;
+      grid-row: 1 / 3;
+    }
+    .gallery-item:nth-child(6) img { object-position: center top; }
 
     @media (max-width: 768px) {
       .gallery-section { padding: 0 24px 48px; }
       .gallery-grid {
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto auto;
         gap: 8px;
+        grid-template-rows: auto;
       }
-      .gallery-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
-      .gallery-item:nth-child(1) img { height: auto; }
-      .gallery-item:nth-child(2) { grid-column: 1; grid-row: 2; }
-      .gallery-item:nth-child(3) { grid-column: 2; grid-row: 2; }
-      .gallery-item:nth-child(4) { grid-column: 1; grid-row: 3; }
-      .gallery-item:nth-child(5) { grid-column: 2 / 4; grid-row: 4; }
+      .gallery-item { grid-column: auto !important; grid-row: auto !important; }
+      .gallery-item img { height: 220px; }
+      .gallery-item:nth-child(5) img { height: 180px; }
     }
 
     /* SCROLL INDICATOR */
@@ -1114,30 +1131,32 @@
   </section>
 
   <!-- GALLERY
-       Image order:
-       1. grad-01.jpg — back/walkway shot (col 1, full height)
-       2. grad-06.jpg — arms crossed (col 2, row 1)
-       3. grad-03.jpg — fountain smiling (col 3, row 1)
-       4. grad-05.jpg — fountain winking (col 4, row 1)
-       5. grad-02.jpg — seated editorial/horizontal (cols 2-4, row 2)
-       Note: grad-04.jpg (A&M sign) not used in this layout — save for portfolio
+       1. grad-01 — back/walkway (col 1, full height left anchor)
+       2. grad-03 — fountain smiling (col 2, row 1)
+       3. grad-06 — arms crossed (col 3, row 1)
+       4. grad-02 — fountain winking (col 4, row 1)
+       5. grad-04 — landscape A&M sign (cols 2-4, row 2)
+       6. grad-05 — seated on wall (col 5, full height right anchor)
   -->
   <section class="gallery-section">
     <div class="gallery-grid">
       <div class="gallery-item">
-        <img src="assets/gallery/grad-01.jpg" alt="Graduation session — campus walkway" />
+        <img src="assets/gallery/grad-01.jpg" alt="Graduation session" />
       </div>
       <div class="gallery-item">
-        <img src="assets/gallery/grad-06.jpg" alt="Graduation session — arms crossed portrait" />
+        <img src="assets/gallery/grad-03.jpg" alt="Graduation session" />
       </div>
       <div class="gallery-item">
-        <img src="assets/gallery/grad-03.jpg" alt="Graduation session — fountain portrait" />
+        <img src="assets/gallery/grad-06.jpg" alt="Graduation session" />
       </div>
       <div class="gallery-item">
-        <img src="assets/gallery/grad-05.jpg" alt="Graduation session — smiling portrait" />
+        <img src="assets/gallery/grad-02.jpg" alt="Graduation session" />
       </div>
       <div class="gallery-item">
-        <img src="assets/gallery/grad-02.jpg" alt="Graduation session — seated editorial" />
+        <img src="assets/gallery/grad-04.jpg" alt="Graduation session" />
+      </div>
+      <div class="gallery-item">
+        <img src="assets/gallery/grad-05.jpg" alt="Graduation session" />
       </div>
     </div>
   </section>
