@@ -6,6 +6,7 @@
   <title>Event Coverage — DSM Photography</title>
   <link rel="icon" href="https://dsmphotolab.com/assets/DSM_LOGOSaiFiles-04.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/nav.css" />
   <style>
     :root {
       --gold: #C9A96E; --gold-light: #E2C99A; --gold-pale: #F5EDD8;
@@ -150,7 +151,8 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       nav { padding: 0 24px; }
-      .nav-center, .nav-cta { display: none; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
       .hamburger { display: flex; }
       .hero-content { padding: 80px 24px 48px; }
       .hero-meta { flex-wrap: wrap; gap: 24px; }
@@ -442,4 +444,12 @@
         msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } else { throw new Error(result.error || 'Error'); }
     } catch(err) {
-      btn.disabled = false; btn.t
+     btn.disabled = false;
+      btn.textContent = 'Send Inquiry →';
+      alert('Something went wrong. Please try again or email me directly.');
+    }
+  }
+</script>
+<script src="/nav.js"></script>
+</body>
+</html>
