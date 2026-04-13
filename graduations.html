@@ -404,6 +404,67 @@
       letter-spacing: 0.02em;
     }
 
+    /* GALLERY */
+    .gallery-section {
+      padding: 0 40px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 12px;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      background: var(--gold-pale);
+      position: relative;
+    }
+
+    /* First image spans 2 rows — tall hero shot */
+    .gallery-item:nth-child(1) {
+      grid-row: span 2;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .gallery-item:nth-child(1) img {
+      min-height: 500px;
+    }
+
+    .gallery-item:not(:nth-child(1)) img {
+      min-height: 240px;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.03);
+    }
+
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .gallery-item:nth-child(1) {
+        grid-row: span 1;
+        grid-column: span 2;
+      }
+      .gallery-item:nth-child(1) img {
+        min-height: 280px;
+      }
+      .gallery-item:not(:nth-child(1)) img {
+        min-height: 180px;
+      }
+    }
+
     /* PACKAGES */
     .packages-section {
       padding: 80px 40px;
@@ -988,6 +1049,30 @@
     <p>Every graduation is its own milestone. Pre-K or PhD, cap and gown or cap and tassel, on a campus stage or in a backyard full of people who love you, these moments deserve to be documented with the same care you brought to getting here. Sessions are available across Miami-Dade, Broward, and Palm Beach counties, on location or on campus, built around whoever is celebrating and however they want to show up.</p>
     <div class="editorial-rule"></div>
     <p class="editorial-tagline">The first record of who you became.</p>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery-section">
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="assets/gallery/grad-01.jpg" alt="Graduation session — campus walkway" />
+      </div>
+      <div class="gallery-item">
+        <img src="assets/gallery/grad-02.jpg" alt="Graduation session — seated portrait" />
+      </div>
+      <div class="gallery-item">
+        <img src="assets/gallery/grad-03.jpg" alt="Graduation session — close-up portrait" />
+      </div>
+      <div class="gallery-item">
+        <img src="assets/gallery/grad-04.jpg" alt="Graduation session — campus sign" />
+      </div>
+      <div class="gallery-item">
+        <img src="assets/gallery/grad-05.jpg" alt="Graduation session — fountain portrait" />
+      </div>
+      <div class="gallery-item">
+        <img src="assets/gallery/grad-06.jpg" alt="Graduation session — arms crossed portrait" />
+      </div>
+    </div>
   </section>
 
   <!-- PACKAGES -->
