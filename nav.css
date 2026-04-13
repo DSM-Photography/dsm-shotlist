@@ -2,6 +2,12 @@
    DSM Photography — Shared Nav Styles
    nav.css | Linked from every page
    To update nav styles site-wide: edit this file only.
+
+   VARIANTS:
+   Default — light warm-white nav (portraits, graduations, home, services)
+   nav.dark — dark charcoal nav (events)
+   Apply by adding class="dark" to the <nav> element via nav.html,
+   OR by adding <body class="nav-dark"> on pages that need it.
    ============================================================ */
 
 :root {
@@ -18,9 +24,10 @@
   --mid: #6B6560;
   --light-text: #9B9490;
   --border: rgba(201,169,110,0.2);
+  --border-dark: rgba(201,169,110,0.25);
 }
 
-/* NAV */
+/* ── BASE NAV (light) ── */
 nav {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -33,13 +40,22 @@ nav {
   background: rgba(253,250,246,0.96);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
+  transition: background 0.3s, border-color 0.3s;
 }
 
+/* ── DARK VARIANT ── */
+nav.dark {
+  background: rgba(30,30,30,0.97);
+  border-bottom-color: var(--border-dark);
+}
+
+/* ── LOGO ── */
 .nav-logo img {
   height: 44px;
   width: auto;
 }
 
+/* ── LINKS ── */
 .nav-links {
   display: flex;
   align-items: center;
@@ -58,7 +74,12 @@ nav {
   transition: color 0.2s;
 }
 
+nav.dark .nav-links a {
+  color: rgba(255,255,255,0.55);
+}
+
 .nav-links a:hover { color: var(--gold); }
+nav.dark .nav-links a:hover { color: var(--gold); }
 
 .nav-links a.active { color: var(--gold); }
 
@@ -73,7 +94,11 @@ nav {
   text-decoration: none;
 }
 
-/* DROPDOWN */
+nav.dark .nav-links .coming-soon {
+  color: rgba(255,255,255,0.2);
+}
+
+/* ── DROPDOWN ── */
 .nav-dropdown { position: relative; }
 .nav-dropdown > a { cursor: pointer; }
 
@@ -90,6 +115,12 @@ nav {
   min-width: 200px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.08);
   z-index: 200;
+}
+
+nav.dark .dropdown-menu {
+  background: rgba(22,20,18,0.98);
+  border-color: var(--border-dark);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.32);
 }
 
 /* Hover bridge — prevents dropdown from closing when
@@ -119,8 +150,18 @@ nav {
   transition: background 0.15s, color 0.15s;
 }
 
+nav.dark .dropdown-menu a,
+nav.dark .dropdown-menu span {
+  color: rgba(255,255,255,0.55);
+}
+
 .dropdown-menu a:hover {
   background: var(--gold-pale);
+  color: var(--gold);
+}
+
+nav.dark .dropdown-menu a:hover {
+  background: rgba(201,169,110,0.08);
   color: var(--gold);
 }
 
@@ -130,13 +171,21 @@ nav {
   cursor: default;
 }
 
+nav.dark .dropdown-menu .soon {
+  color: rgba(255,255,255,0.2);
+}
+
 .dropdown-divider {
   height: 1px;
   background: var(--border);
   margin: 8px 0;
 }
 
-/* CTA BUTTON */
+nav.dark .dropdown-divider {
+  background: var(--border-dark);
+}
+
+/* ── CTA BUTTON ── */
 .nav-cta {
   font-family: 'Montserrat', sans-serif;
   font-size: 11px;
@@ -153,15 +202,29 @@ nav {
   border-radius: 2px;
 }
 
-.nav-cta:hover { background: var(--gold-light); }
+nav.dark .nav-cta {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 0;
+}
 
-/* HAMBURGER */
+.nav-cta:hover { background: var(--gold-light); color: var(--charcoal-deep); }
+
+nav.dark .nav-cta:hover {
+  background: var(--gold);
+  color: var(--charcoal-deep);
+}
+
+/* ── HAMBURGER ── */
 .hamburger {
   display: none;
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
   padding: 4px;
+  background: none;
+  border: none;
 }
 
 .hamburger span {
@@ -172,7 +235,15 @@ nav {
   transition: all 0.3s;
 }
 
-/* MOBILE MENU */
+nav.dark .hamburger span {
+  background: rgba(255,255,255,0.6);
+}
+
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── MOBILE MENU ── */
 .mobile-menu {
   display: none;
   position: fixed;
@@ -187,6 +258,11 @@ nav {
 
 .mobile-menu.open { display: flex; }
 
+/* Dark mobile menu — used when nav.dark is active */
+.mobile-menu.dark-menu {
+  background: rgba(22,20,18,0.98);
+}
+
 .mobile-menu a {
   font-family: 'Cormorant Garamond', serif;
   font-size: 28px;
@@ -197,7 +273,12 @@ nav {
   transition: color 0.2s;
 }
 
+.mobile-menu.dark-menu a {
+  color: rgba(255,255,255,0.7);
+}
+
 .mobile-menu a:hover { color: var(--gold); }
+.mobile-menu.dark-menu a:hover { color: var(--gold); }
 
 .mobile-close {
   position: absolute;
@@ -210,7 +291,11 @@ nav {
   border: none;
 }
 
-/* RESPONSIVE */
+.mobile-menu.dark-menu .mobile-close {
+  color: rgba(255,255,255,0.6);
+}
+
+/* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   nav { padding: 0 24px; }
   .nav-links { display: none; }
