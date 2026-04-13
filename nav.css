@@ -1,0 +1,219 @@
+/* ============================================================
+   DSM Photography — Shared Nav Styles
+   nav.css | Linked from every page
+   To update nav styles site-wide: edit this file only.
+   ============================================================ */
+
+:root {
+  --gold: #C9A96E;
+  --gold-light: #E2C99A;
+  --gold-pale: #F5EDD8;
+  --mint: #8FBCB2;
+  --mint-light: #B8D8D3;
+  --blush: #E8C5B8;
+  --blush-light: #F4DDD5;
+  --warm-white: #FDFAF6;
+  --charcoal: #2C2C2C;
+  --charcoal-deep: #1E1E1E;
+  --mid: #6B6560;
+  --light-text: #9B9490;
+  --border: rgba(201,169,110,0.2);
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 48px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(253,250,246,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo img {
+  height: 44px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--gold); }
+
+.nav-links a.active { color: var(--gold); }
+
+.nav-links .coming-soon {
+  color: var(--light-text);
+  pointer-events: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+/* DROPDOWN */
+.nav-dropdown { position: relative; }
+.nav-dropdown > a { cursor: pointer; }
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 16px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 0;
+  min-width: 200px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  z-index: 200;
+}
+
+/* Hover bridge — prevents dropdown from closing when
+   cursor moves from nav item into dropdown panel */
+.nav-dropdown::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 20px;
+}
+
+.nav-dropdown:hover .dropdown-menu { display: block; }
+
+.dropdown-menu a,
+.dropdown-menu span {
+  display: block;
+  padding: 10px 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.dropdown-menu a:hover {
+  background: var(--gold-pale);
+  color: var(--gold);
+}
+
+.dropdown-menu .soon {
+  color: var(--light-text);
+  pointer-events: none;
+  cursor: default;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0;
+}
+
+/* CTA BUTTON */
+.nav-cta {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--warm-white);
+  background: var(--gold);
+  border: none;
+  padding: 10px 24px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+  border-radius: 2px;
+}
+
+.nav-cta:hover { background: var(--gold-light); }
+
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--charcoal);
+  transition: all 0.3s;
+}
+
+/* MOBILE MENU */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--warm-white);
+  z-index: 99;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.mobile-menu.open { display: flex; }
+
+.mobile-menu a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--charcoal);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+
+.mobile-menu a:hover { color: var(--gold); }
+
+.mobile-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  font-size: 28px;
+  cursor: pointer;
+  color: var(--charcoal);
+  background: none;
+  border: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .nav-cta { display: none; }
+  .hamburger { display: flex; }
+}
