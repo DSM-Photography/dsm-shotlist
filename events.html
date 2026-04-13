@@ -7,6 +7,7 @@
   <link rel="icon" href="https://dsmphotolab.com/assets/DSM_LOGOSaiFiles-04.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/nav.css" />
+  <link rel="stylesheet" href="/footer.css" />
   <style>
     :root {
       --gold: #C9A96E; --gold-light: #E2C99A; --gold-pale: #F5EDD8;
@@ -138,16 +139,7 @@
     .success-msg h3 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--charcoal); margin-bottom: 12px; }
     .success-msg h3 em { font-style: italic; color: var(--gold); }
     .success-msg p { font-size: 13px; color: var(--mid); line-height: 1.8; max-width: 420px; margin: 0 auto; }
-
-    /* ── FOOTER ── */
-    footer { background: var(--charcoal-deep); padding: 48px 72px 36px; }
-    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; flex-wrap: wrap; }
-    footer img { height: 40px; filter: brightness(0) invert(1) opacity(0.6); }
-    .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
-    .footer-links a { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.4); transition: color 0.2s; }
-    .footer-links a:hover { color: var(--gold); }
-    footer .copy { font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 36px; max-width: 1100px; margin-left: auto; margin-right: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); }
-
+    
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       nav { padding: 0 24px; }
@@ -358,18 +350,7 @@
 </div>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <img src="https://dsmphotolab.com/assets/DSM_LOGOSaiFiles-01.png" alt="DSM Photography" />
-    <div class="footer-links">
-      <a href="https://dsmphotolab.com/#about">About</a>
-      <a href="https://dsmphotolab.com/portraits.html">Portraits</a>
-      <a href="https://dsmphotolab.com/client-portal.html">Client Portal</a>
-      <a href="/cdn-cgi/l/email-protection#64001709140c0b100b031605140c1d5655240309050d084a070b09">Email</a>
-    </div>
-  </div>
-  <p class="copy">© 2026 DSM Photography · Miami, FL</p>
-</footer>
+<div id="footer-placeholder"></div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
  
@@ -451,5 +432,6 @@
   }
 </script>
 <script src="/nav.js"></script>
+<script src="/footer.js"></script>
 </body>
 </html>
