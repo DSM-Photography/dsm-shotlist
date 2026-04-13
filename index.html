@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DSM Photography — Miami</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/nav.css" />
 <style>
+nav { top: 32px; }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --gold:#dec08c;--goldl:#f4d7a4;--goldp:#faf3e6;
@@ -17,39 +19,6 @@
 }
 html{scroll-behavior:smooth}
 body{font-family:'Montserrat',sans-serif;background:var(--warm);color:var(--text);overflow-x:hidden}
-nav{position:fixed;top:32px;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0.4rem 3.5rem;background:rgba(253,250,246,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.nav-logo img{height:90px;width:auto;display:block}
-.nav-links{display:flex;gap:2.2rem;list-style:none}
-.nav-links a{font-size:.59rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text);font-weight:700;text-decoration:none;transition:color .2s}
-.nav-cta{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;padding:.65rem 1.8rem;border:2px solid var(--dark);color:#fff;background:var(--dark);text-decoration:none;transition:all .2s;font-weight:700;box-shadow:0 2px 12px rgba(0,0,0,0.18)}
-.nav-cta:hover{background:var(--gold);border-color:var(--gold);color:var(--dark)}
-.has-dropdown{position:relative}
-.has-dropdown>span{font-size:.59rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text);font-weight:700;cursor:pointer;transition:color .2s;padding:.2rem 0}
-.has-dropdown:hover>span{color:var(--gold)}
-.dropdown{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(6px);background:rgba(253,250,246,0.99);border:1px solid var(--border);min-width:190px;padding:6px 0;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:300;box-shadow:0 4px 24px rgba(44,44,44,0.08)}
-.has-dropdown:hover .dropdown{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0)} .has-dropdown>.dropdown::before{content:'';position:absolute;top:-12px;left:0;right:0;height:12px}
-.dropdown a{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:color .15s,background .15s}
-.dropdown a:hover{color:var(--gold);background:var(--goldp)}
-.dropdown a.dd-live{color:var(--text)}
-.dropdown a.dd-soon{color:rgba(30,20,8,.2);pointer-events:none;cursor:default}
-.dd-divider{height:1px;background:var(--border);margin:4px 0}
-.dd-badge{font-size:.45rem;letter-spacing:.1em;color:rgba(30,20,8,.2);border:1px solid rgba(222,192,140,.3);padding:1px 5px;border-radius:2px}
-.nav-disabled{color:rgba(30,20,8,.25)!important;cursor:default;pointer-events:none}
-.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
-.nav-hamburger span{display:block;width:22px;height:1.5px;background:var(--text);transition:all .25s}
-.nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
-.nav-hamburger.open span:nth-child(2){opacity:0}
-.nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
-.mobile-nav{display:none;position:fixed;inset:0;background:var(--warm);z-index:199;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-.mobile-nav.open{display:flex}
-.mn-link{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;letter-spacing:.04em;text-decoration:none;color:var(--text);padding:8px 0;transition:color .2s;text-align:center}
-.mn-link:hover{color:var(--gold)}
-.mn-disabled{color:rgba(30,20,8,.25);pointer-events:none}
-.mn-indent{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;font-style:italic;letter-spacing:.04em;text-decoration:none;color:var(--muted);padding:4px 0;transition:color .2s;text-align:center}
-.mn-indent:hover{color:var(--gold)}
-.mn-cta{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;letter-spacing:.04em;text-decoration:none;color:var(--gold);padding:8px 0;transition:color .2s;text-align:center}
-.mn-cta:hover{opacity:.7}
-@media(max-width:768px){.nav-hamburger{display:flex}.nav-links{display:none!important}.nav-cta{display:none}}
 .hero{min-height:100vh;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2rem 3rem;text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 42%,rgba(222,192,140,.07) 0%,transparent 70%);pointer-events:none}
 .hero-logo{width:min(400px,68vw);height:auto;display:block;margin:0 auto -3rem;animation:fu .8s ease both}
@@ -240,47 +209,8 @@ footer{background:var(--dark);border-top:1px solid rgba(222,192,140,.1);padding:
 </head>
 <body>
 
-<nav>
-  <a href="#" class="nav-logo"><img src="assets/DSM_LOGOSaiFiles-04.png" alt="DSM Photography"/></a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li class="has-dropdown">
-      <a href="services.html">Services</a>
-      <div class="dropdown">
-        <a href="portraits.html" class="dd-live">Portraits</a>
-        <a href="graduations.html" class="dd-live">Graduations</a>
-        <a href="events.html" class="dd-live">Events</a>
-        <div class="dd-divider"></div>
-        <a class="dd-soon">Headshots <span class="dd-badge">Soon</span></a>
-        <a class="dd-soon">Lifestyle <span class="dd-badge">Soon</span></a>
-        <a class="dd-soon">Maternity <span class="dd-badge">Soon</span></a>
-        <a class="dd-soon">Engagements <span class="dd-badge">Soon</span></a>
-        <a class="dd-soon">Proposals <span class="dd-badge">Soon</span></a>
-        <a class="dd-soon">Weddings <span class="dd-badge">Soon</span></a>
-        <a class="dd-soon">Real Estate <span class="dd-badge">Soon</span></a>
-        <a class="dd-soon">Fine Art <span class="dd-badge">Soon</span></a>
-      </div>
-    </li>
-    <li><a href="#portfolio">Portfolio</a></li>
-    <li><a class="nav-disabled">Prints</a></li>
-    <li><a href="client-portal.html">Client Portal</a></li>
-  </ul>
-  <a href="#contact" class="nav-cta">Inquire</a>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
 
-<div class="mobile-nav" id="mobileNav">
-  <a href="#about" class="mn-link" onclick="closeMobileNav()">About</a>
-  <a href="services.html" class="mn-link" onclick="closeMobileNav()">Services</a>
-  <a href="portraits.html" class="mn-indent" onclick="closeMobileNav()">Portraits</a>
-  <a href="graduations.html" class="mn-indent" onclick="closeMobileNav()">Graduations</a>
-  <a href="events.html" class="mn-indent" onclick="closeMobileNav()">Events</a>
-  <a href="#portfolio" class="mn-link" onclick="closeMobileNav()">Portfolio</a>
-  <a href="client-portal.html" class="mn-link" onclick="closeMobileNav()">Client Portal</a>
-  <a href="#contact" class="mn-cta" onclick="closeMobileNav()">Inquire</a>
-</div>
+<div id="nav-placeholder"></div>
 
 <!-- ANNOUNCEMENT BAR
      Update the text inside .marquee-content when running a new special.
@@ -1189,7 +1119,7 @@ footer{background:var(--dark);border-top:1px solid rgba(222,192,140,.1);padding:
   <div class="f-logo"><img src="assets/DSM_LOGOSaiFiles-01.png" alt="DSM Photography"/></div>
   <span class="f-copy">&copy; 2026 DSM Photography &middot; Miami, FL</span>
   <ul class="f-links">
-    <li><a href="https://instagram.com/DSM_Photography" target="_blank">Instagram</a></li>"
+    <li><a href="https://instagram.com/DSM_Photography" target="_blank">Instagram</a></li>
     <li><a href="#">Facebook</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -1381,19 +1311,8 @@ document.getElementById('inquiry-form').addEventListener('submit',async function
   }
 });
 
-// Hamburger
-var navHam = document.getElementById('navHamburger');
-var mobileNav = document.getElementById('mobileNav');
-function closeMobileNav() {
-  navHam.classList.remove('open');
-  mobileNav.classList.remove('open');
-}
-if (navHam && mobileNav) {
-  navHam.addEventListener('click', function() {
-    navHam.classList.toggle('open');
-    mobileNav.classList.toggle('open');
-  });
-}
+
 </script>
+<script src="/nav.js"></script>
 </body>
 </html>
