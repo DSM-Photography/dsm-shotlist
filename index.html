@@ -17,7 +17,7 @@
 }
 html{scroll-behavior:smooth}
 body{font-family:'Montserrat',sans-serif;background:var(--warm);color:var(--text);overflow-x:hidden}
-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0.4rem 3.5rem;background:rgba(253,250,246,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav{position:fixed;top:32px;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0.4rem 3.5rem;background:rgba(253,250,246,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
 .nav-logo img{height:90px;width:auto;display:block}
 .nav-links{display:flex;gap:2.2rem;list-style:none}
 .nav-links a{font-size:.59rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text);font-weight:700;text-decoration:none;transition:color .2s}
@@ -191,6 +191,53 @@ footer{background:var(--dark);border-top:1px solid rgba(222,192,140,.1);padding:
   .strip{padding:1.5rem}.f-row,.f-third{grid-template-columns:1fr}
   footer{padding:2rem 1.5rem;flex-direction:column;gap:1rem;text-align:center}
 }
+/* ANNOUNCEMENT BAR */
+.announcement-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 201;
+  height: 32px;
+  background: var(--dark);
+  border-bottom: 1px solid rgba(222,192,140,0.3);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.marquee-track {
+  width: 100%;
+  overflow: hidden;
+}
+
+.marquee-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-content span {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.marquee-content .dot {
+  color: rgba(222,192,140,0.4);
+  font-size: 8px;
+  letter-spacing: 0;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
 </style>
 </head>
 <body>
@@ -247,6 +294,33 @@ footer{background:var(--dark);border-top:1px solid rgba(222,192,140,.1);padding:
   <a href="#contact" class="mn-cta">Inquire</a>
 </div>
 
+<!-- ANNOUNCEMENT BAR
+     Update the text inside .marquee-content when running a new special.
+     To remove: delete this entire block.
+-->
+<div class="announcement-bar">
+  <div class="marquee-track">
+    <div class="marquee-content">
+      <span>Graduation Season 2026</span>
+      <span class="dot">&#9672;</span>
+      <span>Now booking across Miami-Dade, Broward &amp; Palm Beach</span>
+      <span class="dot">&#9672;</span>
+      <span>Save $50 with code GRAD2026 before May 31</span>
+      <span class="dot">&#9672;</span>
+      <span>Every level of graduation welcome</span>
+      <span class="dot">&#9672;</span>
+      <span>Graduation Season 2026</span>
+      <span class="dot">&#9672;</span>
+      <span>Now booking across Miami-Dade, Broward &amp; Palm Beach</span>
+      <span class="dot">&#9672;</span>
+      <span>Save $50 with code GRAD2026 before May 31</span>
+      <span class="dot">&#9672;</span>
+      <span>Every level of graduation welcome</span>
+      <span class="dot">&#9672;</span>
+    </div>
+  </div>
+</div>  
+  
 <section class="hero">
   <img class="hero-logo" src="assets/DSM_LOGOSaiFiles-01.png" alt="DSM Photography"/>
   <div class="hero-rule"></div>
