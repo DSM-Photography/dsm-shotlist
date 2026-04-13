@@ -370,12 +370,7 @@
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Hamburger
-  const ham = document.getElementById('hamburger');
-  const mm = document.getElementById('mobileMenu');
-  ham.addEventListener('click', () => { ham.classList.toggle('open'); mm.classList.toggle('open'); });
-  document.getElementById('mmCta').addEventListener('click', () => { ham.classList.remove('open'); mm.classList.remove('open'); });
-
+ 
   // Urgent date
   document.getElementById('eventDate').addEventListener('change', function() {
     const diff = (new Date(this.value) - new Date()) / (1000*60*60*24);
