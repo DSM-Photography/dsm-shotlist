@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graduation Sessions | DSM Photography</title>
+  <link rel="icon" type="image/png" href="assets/DSM_LOGOSaiFiles-04.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A96E;
+      --gold-light: #E2C99A;
+      --gold-pale: #F5EDD8;
+      --mint: #8FBCB2;
+      --mint-light: #B8D8D3;
+      --blush: #E8C5B8;
+      --blush-light: #F4DDD5;
+      --warm-white: #FDFAF6;
+      --charcoal: #2C2C2C;
+      --charcoal-deep: #1E1E1E;
+      --mid: #6B6560;
+      --light-text: #9B9490;
+      --border: rgba(201,169,110,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--warm-white);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 48px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(253,250,246,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo img { height: 44px; width: auto; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-links .coming-soon {
+      color: var(--light-text);
+      pointer-events: none;
+    }
+
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > a { cursor: pointer; }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 16px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 12px 0;
+      min-width: 200px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      z-index: 200;
+    }
+
+    .nav-dropdown::before {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 20px;
+    }
+
+    .nav-dropdown:hover .dropdown-menu { display: block; }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 10px 20px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--charcoal);
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .dropdown-menu a:hover { background: var(--gold-pale); color: var(--gold); }
+
+    .dropdown-menu .soon {
+      color: var(--light-text);
+      pointer-events: none;
+      cursor: default;
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0;
+    }
+
+    .nav-cta {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warm-white);
+      background: var(--gold);
+      border: none;
+      padding: 10px 24px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+      border-radius: 2px;
+    }
+
+    .nav-cta:hover { background: var(--gold-light); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--charcoal);
+      transition: all 0.3s;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--warm-white);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--charcoal);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu a:hover { color: var(--gold); }
+
+    .mobile-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--charcoal);
+      background: none;
+      border: none;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 65vh;
+      padding-top: 72px;
+      background: linear-gradient(135deg, #F4DDD5 0%, #E8C5B8 40%, #E2CAA0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(201,169,110,0.15) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 30%, rgba(143,188,178,0.12) 0%, transparent 50%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+      padding: 60px 40px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 20px;
+    }
+
+    .hero-eyebrow em {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    /* Graduation label pill — makes the page purpose unmistakable */
+    .hero-category {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--charcoal-deep);
+      color: var(--gold-light);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 2px;
+      margin-bottom: 28px;
+    }
+
+    .hero-category svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.8;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 6vw, 62px);
+      font-weight: 300;
+      line-height: 1.08;
+      color: var(--charcoal-deep);
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--mid);
+      margin-bottom: 36px;
+    }
+
+    .hero-levels {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .level-pill {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      background: rgba(255,255,255,0.6);
+      border: 1px solid var(--border);
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .hero-stat {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .hero-stat-divider {
+      width: 1px;
+      height: 14px;
+      background: var(--gold);
+      opacity: 0.4;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--warm-white);
+      background: var(--charcoal-deep);
+      padding: 14px 36px;
+      text-decoration: none;
+      transition: background 0.2s;
+      border-radius: 2px;
+    }
+
+    .hero-cta:hover { background: var(--gold); }
+
+    /* SEASONAL BANNER */
+    .seasonal-banner {
+      background: var(--charcoal-deep);
+      color: var(--gold-light);
+      text-align: center;
+      padding: 14px 24px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .seasonal-banner em {
+      font-style: italic;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      color: var(--gold);
+      text-transform: none;
+    }
+
+    /* EDITORIAL */
+    .editorial {
+      max-width: 680px;
+      margin: 80px auto;
+      padding: 0 40px;
+      text-align: center;
+    }
+
+    .editorial p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--mid);
+    }
+
+    .editorial-rule {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 32px auto;
+    }
+
+    .editorial-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--light-text);
+      letter-spacing: 0.02em;
+    }
+
+    /* PACKAGES */
+    .packages-section {
+      padding: 80px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 5vw, 52px);
+      font-weight: 300;
+      text-align: center;
+      color: var(--charcoal-deep);
+      margin-bottom: 60px;
+      line-height: 1.1;
+    }
+
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .package-card {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 40px 32px;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .package-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.08);
+    }
+
+    .package-card.recommended {
+      border-color: var(--gold);
+      border-width: 2px;
+    }
+
+    .recommended-badge {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      white-space: nowrap;
+    }
+
+    .package-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--charcoal-deep);
+      margin-bottom: 4px;
+    }
+
+    .package-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 300;
+      color: var(--gold);
+      margin-bottom: 24px;
+      line-height: 1;
+    }
+
+    .package-price span { font-size: 20px; vertical-align: super; }
+
+    .package-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 24px;
+    }
+
+    .package-features {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+
+    .package-features li {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--mid);
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(201,169,110,0.1);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .package-features li::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .package-features li.highlight {
+      color: var(--charcoal);
+      font-weight: 500;
+    }
+
+    .package-cta {
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 13px 20px;
+      text-decoration: none;
+      transition: all 0.2s;
+      border-radius: 2px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .package-cta-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+    }
+
+    .package-cta-outline:hover { background: var(--gold); color: white; }
+
+    .package-cta-filled {
+      background: var(--gold);
+      color: white;
+    }
+
+    .package-cta-filled:hover { background: var(--charcoal-deep); }
+
+    /* ADDONS */
+    .addons-section {
+      background: var(--charcoal-deep);
+      padding: 80px 40px;
+    }
+
+    .addons-inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .addons-section .section-label { color: var(--gold); }
+    .addons-section .section-title { color: var(--warm-white); }
+
+    .addons-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: rgba(201,169,110,0.15);
+      border: 1px solid rgba(201,169,110,0.15);
+    }
+
+    .addon-item {
+      background: var(--charcoal-deep);
+      padding: 20px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .addon-name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(253,250,246,0.75);
+      line-height: 1.4;
+    }
+
+    .addon-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    .addon-note {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      color: rgba(253,250,246,0.4);
+      margin-top: 4px;
+    }
+
+    /* FINE PRINT */
+    .fine-print {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    .fine-print p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--light-text);
+      line-height: 1.9;
+      letter-spacing: 0.02em;
+    }
+
+    /* INQUIRY FORM */
+    .inquiry-section {
+      background: linear-gradient(135deg, #F4DDD5 0%, #FDFAF6 60%);
+      padding: 100px 40px;
+    }
+
+    .inquiry-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    .field label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .field label .req { color: var(--gold); margin-left: 2px; }
+
+    .field input:not([type="checkbox"]),
+    .field select,
+    .field textarea {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      padding: 12px 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--charcoal);
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .field input:not([type="checkbox"]):focus,
+    .field select:focus,
+    .field textarea:focus { border-color: var(--gold); }
+
+    .field textarea { resize: vertical; min-height: 100px; }
+
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23C9A96E' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    .checkboxes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin-top: 1px;
+      accent-color: var(--gold);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .checkbox-item span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--mid);
+      line-height: 1.4;
+    }
+
+    .form-section-header {
+      grid-column: 1 / -1;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--charcoal-deep);
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      margin-top: 12px;
+    }
+
+    .urgency-note {
+      background: rgba(201,169,110,0.12);
+      border: 1px solid rgba(201,169,110,0.3);
+      border-radius: 2px;
+      padding: 12px 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      color: #8B6914;
+      display: none;
+      grid-column: 1 / -1;
+    }
+
+    .conditional-field {
+      display: none;
+      grid-column: 1 / -1;
+    }
+
+    .conditional-field.visible { display: flex; }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: white;
+      background: var(--charcoal-deep);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      border-radius: 2px;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover { background: var(--gold); }
+
+    .form-confirm {
+      display: none;
+      text-align: center;
+      padding: 48px 32px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+    }
+
+    .form-confirm .confirm-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--gold-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .form-confirm h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--charcoal-deep);
+      margin-bottom: 12px;
+    }
+
+    .form-confirm p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: var(--mid);
+      line-height: 1.7;
+    }
+
+    .ref-number {
+      display: inline-block;
+      margin-top: 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      background: var(--gold-pale);
+      padding: 8px 16px;
+      border-radius: 2px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--charcoal-deep);
+      padding: 60px 48px 40px;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .footer-logo img { height: 48px; opacity: 0.85; }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-links a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(253,250,246,0.45);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-copy {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      color: rgba(253,250,246,0.25);
+      letter-spacing: 0.06em;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .packages-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+      .addons-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .hero-content { padding: 40px 24px; }
+      .packages-section, .fine-print { padding: 60px 24px; }
+      .addons-section { padding: 60px 24px; }
+      .inquiry-section { padding: 60px 24px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .checkboxes-grid { grid-template-columns: 1fr; }
+      .conditional-field.visible { display: flex; flex-direction: column; }
+      footer { padding: 40px 24px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <a href="index.html"><img src="assets/DSM_LOGOSaiFiles-04.png" alt="DSM Photography" /></a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li class="nav-dropdown">
+        <a href="services.html">Services</a>
+        <div class="dropdown-menu">
+          <a href="events.html">Events</a>
+          <a href="portraits.html">Portraits</a>
+          <a href="graduations.html" style="color:var(--gold);">Graduations</a>
+          <div class="dropdown-divider"></div>
+          <a class="soon">Headshots</a>
+          <a class="soon">Lifestyle</a>
+          <a class="soon">Maternity</a>
+          <a class="soon">Engagements</a>
+          <a class="soon">Proposals</a>
+          <a class="soon">Weddings</a>
+          <a class="soon">Real Estate</a>
+          <a class="soon">Fine Art</a>
+        </div>
+      </li>
+      <li><a href="index.html#portfolio">Portfolio</a></li>
+      <li><a href="prints.html" class="coming-soon">Prints</a></li>
+      <li><a href="client-portal.html">Client Portal</a></li>
+    </ul>
+    <a href="#inquire" class="nav-cta">Inquire</a>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" onclick="toggleMenu()">&#x2715;</button>
+    <a href="index.html#about" onclick="toggleMenu()">About</a>
+    <a href="services.html" onclick="toggleMenu()">Services</a>
+    <a href="index.html#portfolio" onclick="toggleMenu()">Portfolio</a>
+    <a href="client-portal.html" onclick="toggleMenu()">Client Portal</a>
+    <a href="#inquire" onclick="toggleMenu()" style="color:var(--gold);">Inquire</a>
+  </div>
+
+  <!-- SEASONAL BANNER -->
+  <div class="seasonal-banner" style="margin-top:72px;">
+    Graduation Season 2026 &nbsp;&#183;&nbsp; <em>Book before May 31 and save $50 on any package</em> &nbsp;&#183;&nbsp; Use code <strong>GRAD2026</strong> at inquiry
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" style="margin-top:0; padding-top:0;">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Graduation Sessions <em>&amp; Packages</em></p>
+
+      <!-- Unmistakable category label -->
+      <div class="hero-category">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M8 2l6 3-6 3-6-3 6-3z"/>
+          <path d="M2 5v5c0 2 2.686 3 6 3s6-1 6-3V5"/>
+        </svg>
+        Graduation Photography
+      </div>
+
+      <h1 class="hero-title">You earned this.</h1>
+      <p class="hero-subtitle">Let the photos prove it.</p>
+
+      <!-- Graduation levels -->
+      <div class="hero-levels">
+        <span class="level-pill">Elementary</span>
+        <span class="level-pill">Middle School</span>
+        <span class="level-pill">High School</span>
+        <span class="level-pill">College</span>
+        <span class="level-pill">Graduate &amp; Professional</span>
+      </div>
+
+      <div class="hero-stats">
+        <span class="hero-stat">10+ retouched images</span>
+        <span class="hero-stat-divider"></span>
+        <span class="hero-stat">Starting at $275</span>
+        <span class="hero-stat-divider"></span>
+        <span class="hero-stat">Miami-Dade &middot; Broward &middot; Palm Beach</span>
+      </div>
+      <a href="#inquire" class="hero-cta">Book Your Session</a>
+    </div>
+  </section>
+
+  <!-- EDITORIAL -->
+  <section class="editorial">
+    <p>Every graduation is its own milestone. Pre-K or PhD, cap and gown or cap and tassel, on a campus stage or in a backyard full of people who love you, these moments deserve to be documented with the same care you brought to getting here. Sessions are available across Miami-Dade, Broward, and Palm Beach counties, on location or on campus, built around whoever is celebrating and however they want to show up.</p>
+    <div class="editorial-rule"></div>
+    <p class="editorial-tagline">The first record of who you became.</p>
+  </section>
+
+  <!-- PACKAGES -->
+  <section class="packages-section" id="packages">
+    <p class="section-label">Session Packages</p>
+    <h2 class="section-title">Choose your experience</h2>
+
+    <div class="packages-grid">
+
+      <!-- MILESTONE -->
+      <div class="package-card">
+        <div class="package-name">Milestone</div>
+        <div class="package-price"><span>$</span>275</div>
+        <div class="package-divider"></div>
+        <ul class="package-features">
+          <li>45-minute session</li>
+          <li>1 look (regalia or personal outfit)</li>
+          <li>1 location, on or off campus</li>
+          <li>10-15 fully retouched images</li>
+          <li>Online gallery, 5-day delivery</li>
+        </ul>
+        <a href="#inquire" class="package-cta package-cta-outline">Inquire</a>
+      </div>
+
+      <!-- CELEBRATION -->
+      <div class="package-card recommended">
+        <div class="recommended-badge">Most Popular</div>
+        <div class="package-name">Celebration</div>
+        <div class="package-price"><span>$</span>375</div>
+        <div class="package-divider"></div>
+        <ul class="package-features">
+          <li>75-minute session</li>
+          <li>2 looks (regalia + personal outfit)</li>
+          <li>1-2 locations</li>
+          <li>18-25 fully retouched images</li>
+          <li>Online gallery, 7-day delivery</li>
+        </ul>
+        <a href="#inquire" class="package-cta package-cta-filled">Inquire</a>
+      </div>
+
+      <!-- LEGACY -->
+      <div class="package-card">
+        <div class="package-name">Legacy</div>
+        <div class="package-price"><span>$</span>525</div>
+        <div class="package-divider"></div>
+        <ul class="package-features">
+          <li>2-hour session</li>
+          <li>3 looks, 2-3 locations</li>
+          <li>25-35 fully retouched images</li>
+          <li class="highlight">Full B&amp;W duplicate set of all finals</li>
+          <li class="highlight">One printed 5x7 of your hero image</li>
+          <li>Online gallery, 7-day delivery</li>
+        </ul>
+        <a href="#inquire" class="package-cta package-cta-outline">Inquire</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ADD-ONS -->
+  <section class="addons-section">
+    <div class="addons-inner">
+      <p class="section-label">Customize Your Session</p>
+      <h2 class="section-title" style="margin-bottom:40px;">Add-ons</h2>
+      <div class="addons-grid">
+        <div class="addon-item">
+          <div><div class="addon-name">Expedited 5-day delivery</div></div>
+          <div class="addon-price">+$75</div>
+        </div>
+        <div class="addon-item">
+          <div><div class="addon-name">Expedited 48-hour delivery</div></div>
+          <div class="addon-price">+$150</div>
+        </div>
+        <div class="addon-item">
+          <div><div class="addon-name">Additional look</div></div>
+          <div class="addon-price">+$50</div>
+        </div>
+        <div class="addon-item">
+          <div><div class="addon-name">Additional location</div></div>
+          <div class="addon-price">+$40</div>
+        </div>
+        <div class="addon-item">
+          <div>
+            <div class="addon-name">Graduation announcement cards</div>
+            <div class="addon-note">Set of 25, design included</div>
+          </div>
+          <div class="addon-price">TBD</div>
+        </div>
+        <div class="addon-item">
+          <div>
+            <div class="addon-name">Thank-you cards</div>
+            <div class="addon-note">Set of 25, design included</div>
+          </div>
+          <div class="addon-price">TBD</div>
+        </div>
+        <div class="addon-item">
+          <div><div class="addon-name">Print release</div></div>
+          <div class="addon-price">+$25</div>
+        </div>
+        <div class="addon-item">
+          <div><div class="addon-name">Commercial use license</div></div>
+          <div class="addon-price">+$40</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINE PRINT -->
+  <section class="fine-print">
+    <p>
+      50% deposit required within 48 hours of contract signing. Balance due 48 hours before your session.
+      Travel within Miami-Dade and Broward counties included. Palm Beach County and beyond billed at $0.75 per mile from Miami.
+      Sessions beyond 60 miles quoted individually. Regalia rental window conflicts accommodated with flexible reschedule at no fee.
+      Locations include university and high school campuses, Vizcaya, Wynwood, Bayfront Park, the RSMAS waterfront, and more by request.
+    </p>
+  </section>
+
+  <!-- INQUIRY FORM -->
+  <section class="inquiry-section" id="inquire">
+    <div class="inquiry-inner">
+      <p class="section-label">Ready to Book</p>
+      <h2 class="section-title" style="text-align:center;">Tell me about your session</h2>
+
+      <div id="gradForm">
+        <div class="form-grid">
+
+          <!-- SECTION: Who is inquiring -->
+          <div class="form-section-header">About You</div>
+
+          <div class="field">
+            <label>First Name <span class="req">*</span></label>
+            <input type="text" id="firstName" placeholder="Your first name" />
+          </div>
+
+          <div class="field">
+            <label>Last Name <span class="req">*</span></label>
+            <input type="text" id="lastName" placeholder="Your last name" />
+          </div>
+
+          <div class="field">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="your@email.com" />
+          </div>
+
+          <div class="field">
+            <label>Phone</label>
+            <input type="tel" id="phone" placeholder="(000) 000-0000" />
+          </div>
+
+          <div class="field">
+            <label>Preferred Contact <span class="req">*</span></label>
+            <select id="preferredContact">
+              <option value="">Select one</option>
+              <option>Email</option>
+              <option>Phone Call</option>
+              <option>Text Message</option>
+              <option>Instagram DM</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>How did you hear about me?</label>
+            <select id="howHeard">
+              <option value="">Select one</option>
+              <option>Instagram</option>
+              <option>Friend / Referral</option>
+              <option>Google</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <!-- SECTION: Who is the session for -->
+          <div class="form-section-header">Who is this session for?</div>
+
+          <div class="field full">
+            <label>This inquiry is for <span class="req">*</span></label>
+            <select id="inquiryFor" onchange="toggleGraduateFields()">
+              <option value="">Select one</option>
+              <option value="myself">Myself</option>
+              <option value="child">My child</option>
+              <option value="gift">Someone else (gift)</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- Reveals when not "myself" -->
+          <div class="field conditional-field" id="graduateNameField">
+            <label>Graduate's First Name <span class="req">*</span></label>
+            <input type="text" id="graduateName" placeholder="Graduate's first name" />
+          </div>
+
+          <div class="field conditional-field" id="graduateLastField">
+            <label>Graduate's Last Name</label>
+            <input type="text" id="graduateLastName" placeholder="Graduate's last name" />
+          </div>
+
+          <!-- SECTION: About the graduation -->
+          <div class="form-section-header">About the Graduation</div>
+
+          <div class="field">
+            <label>Graduation Level <span class="req">*</span></label>
+            <select id="gradLevel">
+              <option value="">Select one</option>
+              <option>Elementary School (K-5)</option>
+              <option>Middle School (6-8)</option>
+              <option>High School</option>
+              <option>Associate's Degree</option>
+              <option>Bachelor's Degree</option>
+              <option>Master's Degree</option>
+              <option>Doctoral / PhD</option>
+              <option>Professional Degree (MD, JD, etc.)</option>
+              <option>Trade / Certificate Program</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>School / Program</label>
+            <input type="text" id="school" placeholder="e.g. University of Miami, BS Marine Biology" />
+          </div>
+
+          <div class="field">
+            <label>Graduation / Ceremony Date</label>
+            <input type="date" id="gradDate" />
+          </div>
+
+          <div class="field">
+            <label>County <span class="req">*</span></label>
+            <select id="county">
+              <option value="">Select one</option>
+              <option>Miami-Dade</option>
+              <option>Broward</option>
+              <option>Palm Beach (travel fees apply)</option>
+              <option>Other (I'll provide details below)</option>
+            </select>
+          </div>
+
+          <!-- SECTION: Session details -->
+          <div class="form-section-header">Session Details</div>
+
+          <div class="field">
+            <label>Package Interest <span class="req">*</span></label>
+            <select id="packageInterest">
+              <option value="">Select a package</option>
+              <option>Milestone ($275)</option>
+              <option>Celebration ($375)</option>
+              <option>Legacy ($525)</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Preferred Session Date <span class="req">*</span></label>
+            <input type="date" id="sessionDate" onchange="checkUrgency()" />
+          </div>
+
+          <div class="field">
+            <label>Alternate Date</label>
+            <input type="date" id="altDate1" />
+          </div>
+
+          <div class="field">
+            <label>Second Alternate Date</label>
+            <input type="date" id="altDate2" />
+          </div>
+
+          <div id="urgencyNote" class="urgency-note">
+            Your preferred date is within 60 days. I'll prioritize your inquiry and follow up within 24 hours.
+          </div>
+
+          <div class="field">
+            <label>Preferred Location Style</label>
+            <select id="locationStyle">
+              <option value="">Select one</option>
+              <option>On campus / school grounds</option>
+              <option>Off campus</option>
+              <option>Both</option>
+              <option>Not sure, open to suggestions</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Specific Location in Mind?</label>
+            <input type="text" id="locationDetail" placeholder="Campus quad, Vizcaya, Wynwood, etc." />
+          </div>
+
+          <div class="field full">
+            <label>Session Energy</label>
+            <select id="sessionEnergy">
+              <option value="">Select one</option>
+              <option>More feminine energy</option>
+              <option>More masculine energy</option>
+              <option>A mix of both</option>
+              <option>Not sure, open to direction</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Add-ons</label>
+            <div class="checkboxes-grid">
+              <label class="checkbox-item">
+                <input type="checkbox" name="addon" value="Expedited 5-day delivery (+$75)" />
+                <span>Expedited 5-day (+$75)</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="addon" value="Expedited 48-hour delivery (+$150)" />
+                <span>Expedited 48-hr (+$150)</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="addon" value="Additional look (+$50)" />
+                <span>Additional look (+$50)</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="addon" value="Additional location (+$40)" />
+                <span>Additional location (+$40)</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="addon" value="Graduation announcement cards" />
+                <span>Announcement cards</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="addon" value="Thank-you cards" />
+                <span>Thank-you cards</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="addon" value="Print release (+$25)" />
+                <span>Print release (+$25)</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="addon" value="Commercial use (+$40)" />
+                <span>Commercial use (+$40)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Session Vision</label>
+            <textarea id="sessionVibe" placeholder="Tell me what you're envisioning. Classic and traditional? Bold and editorial? Something in between? Any specific shots or moments that matter to you?"></textarea>
+          </div>
+
+          <div class="field full">
+            <label>Anything else I should know?</label>
+            <textarea id="notes" placeholder="Regalia rental window, accessibility needs, who might be joining the shoot, etc."></textarea>
+          </div>
+
+          <div class="field full">
+            <button class="submit-btn" onclick="submitForm()">Send My Inquiry</button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-confirm" id="formConfirm">
+        <div class="confirm-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M4 10l4 4 8-8" stroke="#C9A96E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Inquiry received.</h3>
+        <p>Thank you for reaching out. You'll hear from me within 48 hours.<br>A confirmation has been sent to your email.</p>
+        <div class="ref-number" id="refDisplay"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="assets/DSM_LOGOSaiFiles-01.png" alt="DSM Photography" />
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="index.html#portfolio">Portfolio</a>
+        <a href="client-portal.html">Client Portal</a>
+        <a href="https://instagram.com/DSM_Photography" target="_blank">Instagram</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 DSM Photography. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+
+    function toggleGraduateFields() {
+      const val = document.getElementById('inquiryFor').value;
+      const showFields = val && val !== 'myself';
+      const nameField = document.getElementById('graduateNameField');
+      const lastField = document.getElementById('graduateLastField');
+      nameField.classList.toggle('visible', showFields);
+      lastField.classList.toggle('visible', showFields);
+    }
+
+    function checkUrgency() {
+      const val = document.getElementById('sessionDate').value;
+      if (!val) return;
+      const selected = new Date(val);
+      const now = new Date();
+      const diff = (selected - now) / (1000 * 60 * 60 * 24);
+      const note = document.getElementById('urgencyNote');
+      note.style.display = diff <= 60 && diff >= 0 ? 'block' : 'none';
+    }
+
+    async function submitForm() {
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const preferredContact = document.getElementById('preferredContact').value;
+      const sessionDate = document.getElementById('sessionDate').value;
+      const packageInterest = document.getElementById('packageInterest').value;
+      const inquiryFor = document.getElementById('inquiryFor').value;
+      const gradLevel = document.getElementById('gradLevel').value;
+      const county = document.getElementById('county').value;
+
+      if (!firstName || !lastName || !email || !preferredContact || !sessionDate || !packageInterest || !inquiryFor || !gradLevel || !county) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      // If not booking for self, require graduate name
+      if (inquiryFor !== 'myself') {
+        const gradName = document.getElementById('graduateName').value.trim();
+        if (!gradName) {
+          alert('Please enter the graduate\'s first name.');
+          return;
+        }
+      }
+
+      const addons = [...document.querySelectorAll('input[name="addon"]:checked')].map(cb => cb.value);
+
+      const payload = {
+        inquiryType: 'graduation',
+        firstName,
+        lastName,
+        email,
+        preferredContact,
+        phone: document.getElementById('phone').value,
+        howHeard: document.getElementById('howHeard').value,
+        inquiryFor,
+        graduateName: document.getElementById('graduateName').value,
+        graduateLastName: document.getElementById('graduateLastName').value,
+        gradLevel,
+        school: document.getElementById('school').value,
+        gradDate: document.getElementById('gradDate').value,
+        county,
+        packageInterest,
+        sessionDate,
+        altDate1: document.getElementById('altDate1').value,
+        altDate2: document.getElementById('altDate2').value,
+        locationStyle: document.getElementById('locationStyle').value,
+        locationDetail: document.getElementById('locationDetail').value,
+        sessionEnergy: document.getElementById('sessionEnergy').value,
+        addons,
+        sessionVibe: document.getElementById('sessionVibe').value,
+        notes: document.getElementById('notes').value,
+      };
+
+      try {
+        const res = await fetch('/.netlify/functions/submit-inquiry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('gradForm').style.display = 'none';
+          document.getElementById('formConfirm').style.display = 'block';
+          if (data.refNumber) {
+            document.getElementById('refDisplay').textContent = 'Reference: ' + data.refNumber;
+          }
+        } else {
+          alert('Something went wrong. Please try again or email dsmphotography21@gmail.com directly.');
+        }
+      } catch (e) {
+        alert('Something went wrong. Please try again or email dsmphotography21@gmail.com directly.');
+      }
+    }
+  </script>
+
+</body>
+</html>

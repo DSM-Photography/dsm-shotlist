@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services | DSM Photography</title>
+  <link rel="icon" type="image/png" href="assets/DSM_LOGOSaiFiles-04.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A96E;
+      --gold-light: #E2C99A;
+      --gold-pale: #F5EDD8;
+      --mint: #8FBCB2;
+      --mint-light: #B8D8D3;
+      --blush: #E8C5B8;
+      --blush-light: #F4DDD5;
+      --warm-white: #FDFAF6;
+      --charcoal: #2C2C2C;
+      --charcoal-deep: #1E1E1E;
+      --mid: #6B6560;
+      --light-text: #9B9490;
+      --border: rgba(201,169,110,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--warm-white);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 48px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(253,250,246,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo img { height: 44px; width: auto; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links .active { color: var(--gold); }
+
+    .nav-links .coming-soon {
+      color: var(--light-text);
+      pointer-events: none;
+    }
+
+    .nav-dropdown { position: relative; }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 16px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 12px 0;
+      min-width: 200px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      z-index: 200;
+    }
+
+    .nav-dropdown::before {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 20px;
+    }
+
+    .nav-dropdown:hover .dropdown-menu { display: block; }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 10px 20px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--charcoal);
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .dropdown-menu a:hover { background: var(--gold-pale); color: var(--gold); }
+
+    .dropdown-menu .soon {
+      color: var(--light-text);
+      pointer-events: none;
+      cursor: default;
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0;
+    }
+
+    .nav-cta {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warm-white);
+      background: var(--gold);
+      border: none;
+      padding: 10px 24px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+      border-radius: 2px;
+    }
+
+    .nav-cta:hover { background: var(--gold-light); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--charcoal);
+      transition: all 0.3s;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--warm-white);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--charcoal);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu a:hover { color: var(--gold); }
+
+    .mobile-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--charcoal);
+      background: none;
+      border: none;
+    }
+
+    /* PAGE HEADER */
+    .page-header {
+      margin-top: 72px;
+      padding: 64px 48px 52px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 6vw, 64px);
+      font-weight: 300;
+      color: var(--charcoal-deep);
+      line-height: 1.05;
+      margin-bottom: 14px;
+    }
+
+    .page-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--light-text);
+    }
+
+    /* =====================
+       SPOTLIGHT BANNER
+       Visually distinct — charcoal with gold rule, clearly a "right now" feature.
+       To update: edit only the content inside .spotlight-content.
+       ===================== */
+    .spotlight-strip {
+      background: var(--charcoal-deep);
+      border-top: 3px solid var(--gold);
+      border-bottom: 3px solid var(--gold);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated shimmer to signal this rotates / is current */
+    .spotlight-strip::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(201,169,110,0.06), transparent);
+      animation: shimmer 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes shimmer {
+      0% { left: -60%; }
+      100% { left: 120%; }
+    }
+
+    .spotlight-strip-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .spotlight-left-col {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-shrink: 0;
+    }
+
+    .spotlight-now-tag {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border: 1px solid var(--gold);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .spotlight-now-tag span:first-child {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .spotlight-now-tag span:last-child {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--gold);
+      line-height: 1.1;
+    }
+
+    .spotlight-label-col {}
+
+    .spotlight-label-top {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(201,169,110,0.6);
+      margin-bottom: 4px;
+    }
+
+    .spotlight-label-main {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 500;
+      color: var(--warm-white);
+      line-height: 1.1;
+    }
+
+    .spotlight-label-main em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .spotlight-middle-col {
+      flex-grow: 1;
+      padding: 0 24px;
+      border-left: 1px solid rgba(201,169,110,0.2);
+      border-right: 1px solid rgba(201,169,110,0.2);
+    }
+
+    .spotlight-body-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(253,250,246,0.6);
+    }
+
+    .spotlight-body-text strong {
+      color: rgba(253,250,246,0.9);
+      font-weight: 500;
+    }
+
+    .spotlight-right-col {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .spotlight-cta {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--charcoal-deep);
+      background: var(--gold);
+      padding: 12px 24px;
+      text-decoration: none;
+      transition: background 0.2s;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .spotlight-cta:hover { background: var(--gold-light); }
+
+    .spotlight-options-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      color: rgba(253,250,246,0.35);
+      letter-spacing: 0.08em;
+      text-align: right;
+    }
+
+    /* =====================
+       SEASONAL SECTION
+       ===================== */
+    .seasonal-section {
+      padding: 72px 48px 0;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .seasonal-section-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 10px;
+    }
+
+    .seasonal-section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 300;
+      color: var(--charcoal-deep);
+      margin-bottom: 8px;
+    }
+
+    .seasonal-section-note {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      color: var(--light-text);
+      margin-bottom: 32px;
+      font-style: italic;
+    }
+
+    .seasonal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    /* =====================
+       SERVICES GRID
+       ===================== */
+    .services-section {
+      padding: 60px 48px 100px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .services-section-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .services-section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 300;
+      color: var(--charcoal-deep);
+      margin-bottom: 32px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    /* SHARED CARD STYLES */
+    .service-card {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 32px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.07);
+      border-color: var(--gold);
+    }
+
+    .service-card.featured {
+      border-color: var(--gold);
+      border-width: 2px;
+    }
+
+    .service-card.seasonal-featured {
+      border-color: var(--mint);
+      border-width: 2px;
+    }
+
+    .service-card.seasonal-featured:hover {
+      border-color: var(--mint);
+    }
+
+    .service-card.coming-soon {
+      opacity: 0.48;
+      pointer-events: none;
+    }
+
+    .service-badge {
+      position: absolute;
+      top: -1px;
+      right: 18px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 0 0 3px 3px;
+    }
+
+    .badge-soon { background: var(--light-text); color: white; }
+    .badge-live { background: var(--gold); color: white; }
+    .badge-seasonal { background: var(--mint); color: white; }
+
+    .service-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--gold-pale);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2px;
+      flex-shrink: 0;
+    }
+
+    .service-card.seasonal-featured .service-icon {
+      background: rgba(143,188,178,0.15);
+    }
+
+    .service-icon svg { width: 14px; height: 14px; }
+
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--charcoal-deep);
+      line-height: 1.2;
+    }
+
+    .service-desc {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--mid);
+      line-height: 1.7;
+      flex-grow: 1;
+    }
+
+    .service-starting {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+
+    .service-card.seasonal-featured .service-starting {
+      color: var(--mint);
+    }
+
+    .service-arrow {
+      font-size: 16px;
+      color: var(--gold);
+      transition: transform 0.2s;
+    }
+
+    .service-card.seasonal-featured .service-arrow { color: var(--mint); }
+    .service-card:hover .service-arrow { transform: translateX(4px); }
+
+    /* DIVIDER */
+    .section-divider {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--charcoal-deep);
+      padding: 60px 48px 40px;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .footer-logo img { height: 48px; opacity: 0.85; }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-links a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(253,250,246,0.45);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-copy {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      color: rgba(253,250,246,0.25);
+      letter-spacing: 0.06em;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      .spotlight-strip-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 28px 32px;
+      }
+      .spotlight-middle-col {
+        border-left: none;
+        border-right: none;
+        border-top: 1px solid rgba(201,169,110,0.2);
+        border-bottom: 1px solid rgba(201,169,110,0.2);
+        padding: 16px 0;
+      }
+      .spotlight-right-col { align-items: flex-start; }
+      .seasonal-grid, .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .page-header { padding: 48px 24px 40px; }
+      .spotlight-strip-inner { padding: 24px; }
+      .seasonal-section, .services-section { padding-left: 24px; padding-right: 24px; }
+      .section-divider { padding: 0 24px; }
+      .seasonal-grid, .services-grid { grid-template-columns: 1fr; }
+      footer { padding: 40px 24px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <a href="index.html"><img src="assets/DSM_LOGOSaiFiles-04.png" alt="DSM Photography" /></a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li class="nav-dropdown">
+        <a href="services.html" class="active">Services</a>
+        <div class="dropdown-menu">
+          <a href="events.html">Events</a>
+          <a href="portraits.html">Portraits</a>
+          <a href="graduations.html">Graduations</a>
+          <div class="dropdown-divider"></div>
+          <a class="soon">Headshots</a>
+          <a class="soon">Lifestyle</a>
+          <a class="soon">Maternity</a>
+          <a class="soon">Engagements</a>
+          <a class="soon">Proposals</a>
+          <a class="soon">Weddings</a>
+          <a class="soon">Real Estate</a>
+          <a class="soon">Fine Art</a>
+        </div>
+      </li>
+      <li><a href="index.html#portfolio">Portfolio</a></li>
+      <li><a href="prints.html" class="coming-soon">Prints</a></li>
+      <li><a href="client-portal.html">Client Portal</a></li>
+    </ul>
+    <a href="index.html#contact" class="nav-cta">Inquire</a>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" onclick="toggleMenu()">&#x2715;</button>
+    <a href="index.html#about" onclick="toggleMenu()">About</a>
+    <a href="services.html" onclick="toggleMenu()">Services</a>
+    <a href="index.html#portfolio" onclick="toggleMenu()">Portfolio</a>
+    <a href="client-portal.html" onclick="toggleMenu()">Client Portal</a>
+    <a href="index.html#contact" onclick="toggleMenu()" style="color:var(--gold);">Inquire</a>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <p class="section-label">DSM Photography</p>
+    <h1 class="page-title">Services</h1>
+    <p class="page-sub">Every session is built around you.</p>
+  </div>
+
+  <!-- =====================
+       SPOTLIGHT BANNER
+       UPDATE THIS SECTION when running a new special or seasonal feature.
+       Change: spotlight-label-main, spotlight-body-text, spotlight-cta href + text, spotlight-options-text.
+       ===================== -->
+  <div class="spotlight-strip">
+    <div class="spotlight-strip-inner">
+
+      <div class="spotlight-left-col">
+        <div class="spotlight-now-tag">
+          <span>Now</span>
+          <span>Live</span>
+        </div>
+        <div class="spotlight-label-col">
+          <div class="spotlight-label-top">Current Feature</div>
+          <div class="spotlight-label-main">Graduation Season <em>2026</em></div>
+        </div>
+      </div>
+
+      <div class="spotlight-middle-col">
+        <p class="spotlight-body-text">
+          Documenting <strong>every level of graduation</strong> across Miami-Dade, Broward, and Palm Beach counties.
+          Elementary through doctoral. On campus or off. The milestone that matters most to your family, captured with the care it deserves.
+          <strong>Book before May 31 and save $50</strong> on any package with code GRAD2026.
+        </p>
+      </div>
+
+      <div class="spotlight-right-col">
+        <a href="graduations.html" class="spotlight-cta">See Packages</a>
+        <div class="spotlight-options-text">Multiple packages available</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =====================
+       SEASONAL SECTION
+       Graduation lives here. When grad season ends, swap this out for
+       holiday minis, prom, back-to-school specials, etc.
+       ===================== -->
+  <section class="seasonal-section">
+    <p class="seasonal-section-label">Seasonal &amp; Special Sessions</p>
+    <h2 class="seasonal-section-title">Right now</h2>
+    <p class="seasonal-section-note">These offerings change with the season. Check back for minis, themed sessions, and limited-time specials.</p>
+
+    <div class="seasonal-grid">
+
+      <!-- GRADUATIONS (seasonal, live) -->
+      <a href="graduations.html" class="service-card seasonal-featured">
+        <div class="service-badge badge-seasonal">Now Booking</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#8FBCB2" stroke-width="1.5">
+            <path d="M8 2l6 3-6 3-6-3 6-3z"/>
+            <path d="M2 5v5c0 2 2.686 3 6 3s6-1 6-3V5"/>
+          </svg>
+        </div>
+        <div class="service-name">Graduation Sessions</div>
+        <p class="service-desc">Pre-K through PhD. Every milestone, every county, every level of celebration. On campus or off, built around who is graduating and how they want to be remembered.</p>
+        <div class="service-starting">Starting at $275 &nbsp;&middot;&nbsp; Multiple packages</div>
+        <div class="service-arrow">&#8594;</div>
+      </a>
+
+      <!-- Placeholder slot for second seasonal offering -->
+      <!-- Uncomment and populate when running another seasonal special
+      <a href="#" class="service-card seasonal-featured">
+        <div class="service-badge badge-seasonal">Coming Soon</div>
+        ...
+      </a>
+      -->
+
+    </div>
+  </section>
+
+  <div class="section-divider" style="margin-top:60px;"></div>
+
+  <!-- =====================
+       MAIN SERVICES GRID
+       Portraits first as the evergreen anchor.
+       ===================== -->
+  <section class="services-section">
+    <p class="services-section-label">All Services</p>
+    <h2 class="services-section-title">What I offer year-round</h2>
+
+    <div class="services-grid">
+
+      <!-- PORTRAITS (live, anchor) -->
+      <a href="portraits.html" class="service-card featured">
+        <div class="service-badge badge-live">Available Now</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#C9A96E" stroke-width="1.5">
+            <circle cx="8" cy="6" r="3"/>
+            <path d="M2 14c0-3.314 2.686-6 6-6s6 2.686 6 6"/>
+          </svg>
+        </div>
+        <div class="service-name">Portraits</div>
+        <p class="service-desc">A session built around whoever you want to be that day. Polished, candid, editorial, or somewhere in between. You define the vibe.</p>
+        <div class="service-starting">Starting at $125</div>
+        <div class="service-arrow">&#8594;</div>
+      </a>
+
+      <!-- EVENTS (live) -->
+      <a href="events.html" class="service-card featured">
+        <div class="service-badge badge-live">Available Now</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#C9A96E" stroke-width="1.5">
+            <rect x="2" y="3" width="12" height="11" rx="1"/>
+            <path d="M5 1v4M11 1v4M2 7h12"/>
+          </svg>
+        </div>
+        <div class="service-name">Events</div>
+        <p class="service-desc">Corporate receptions, milestone celebrations, social gatherings. I show up knowing where to be before the moment happens.</p>
+        <div class="service-starting">Starting at $350</div>
+        <div class="service-arrow">&#8594;</div>
+      </a>
+
+      <!-- HEADSHOTS (coming soon) -->
+      <div class="service-card coming-soon">
+        <div class="service-badge badge-soon">Coming Soon</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#C9A96E" stroke-width="1.5">
+            <circle cx="8" cy="5" r="3"/>
+            <path d="M4 12c0-2.209 1.791-4 4-4s4 1.791 4 4"/>
+            <rect x="1" y="9" width="14" height="6" rx="1"/>
+          </svg>
+        </div>
+        <div class="service-name">Headshots</div>
+        <p class="service-desc">Professional headshots for LinkedIn, press kits, corporate profiles, and personal branding.</p>
+      </div>
+
+      <!-- LIFESTYLE (coming soon) -->
+      <div class="service-card coming-soon">
+        <div class="service-badge badge-soon">Coming Soon</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#C9A96E" stroke-width="1.5">
+            <circle cx="8" cy="8" r="6"/>
+            <path d="M5 8c0-1.657 1.343-3 3-3s3 1.343 3 3"/>
+          </svg>
+        </div>
+        <div class="service-name">Lifestyle</div>
+        <p class="service-desc">Unposed, documentary-style sessions that capture how you actually live, move, and exist in your environment.</p>
+      </div>
+
+      <!-- MATERNITY (coming soon) -->
+      <div class="service-card coming-soon">
+        <div class="service-badge badge-soon">Coming Soon</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#C9A96E" stroke-width="1.5">
+            <path d="M8 2C5.5 2 4 4 4 6c0 3 2 6 4 8 2-2 4-5 4-8 0-2-1.5-4-4-4z"/>
+          </svg>
+        </div>
+        <div class="service-name">Maternity</div>
+        <p class="service-desc">Documenting the in-between with the care and attention this season deserves.</p>
+      </div>
+
+      <!-- ENGAGEMENTS (coming soon) -->
+      <div class="service-card coming-soon">
+        <div class="service-badge badge-soon">Coming Soon</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#C9A96E" stroke-width="1.5">
+            <path d="M8 13s-5-3.5-5-7a5 5 0 0110 0c0 3.5-5 7-5 7z"/>
+          </svg>
+        </div>
+        <div class="service-name">Engagements</div>
+        <p class="service-desc">The chapter before the chapter. Relaxed sessions built around you as a couple.</p>
+      </div>
+
+      <!-- PROPOSALS (coming soon) -->
+      <div class="service-card coming-soon">
+        <div class="service-badge badge-soon">Coming Soon</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#C9A96E" stroke-width="1.5">
+            <path d="M8 14l-1-1C3.5 9.5 2 7.9 2 6a4 4 0 018 0 4 4 0 018 0c0 1.9-1.5 3.5-5 7l-1 1z"/>
+          </svg>
+        </div>
+        <div class="service-name">Proposals</div>
+        <p class="service-desc">Discreet, planned coverage of the moment you ask or get asked. You just show up.</p>
+      </div>
+
+      <!-- WEDDINGS (coming soon) -->
+      <div class="service-card coming-soon">
+        <div class="service-badge badge-soon">Coming Soon</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#C9A96E" stroke-width="1.5">
+            <path d="M3 14V8l5-6 5 6v6"/>
+            <rect x="5" y="10" width="6" height="4"/>
+          </svg>
+        </div>
+        <div class="service-name">Weddings</div>
+        <p class="service-desc">Full-day wedding coverage with an eye for the moments that matter most and the ones no one else catches.</p>
+      </div>
+
+      <!-- REAL ESTATE (coming soon) -->
+      <div class="service-card coming-soon">
+        <div class="service-badge badge-soon">Coming Soon</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#C9A96E" stroke-width="1.5">
+            <rect x="2" y="7" width="12" height="7"/>
+            <path d="M1 7l7-5 7 5"/>
+          </svg>
+        </div>
+        <div class="service-name">Real Estate</div>
+        <p class="service-desc">Interior and exterior photography that makes a property look exactly as good as it actually is.</p>
+      </div>
+
+      <!-- FINE ART (coming soon) -->
+      <div class="service-card coming-soon">
+        <div class="service-badge badge-soon">Coming Soon</div>
+        <div class="service-icon">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#C9A96E" stroke-width="1.5">
+            <circle cx="8" cy="8" r="6"/>
+            <circle cx="8" cy="6" r="1.5" fill="#C9A96E"/>
+          </svg>
+        </div>
+        <div class="service-name">Fine Art</div>
+        <p class="service-desc">Conceptual and editorial work. If you have a vision that does not fit a standard category, this is the right conversation to start.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="assets/DSM_LOGOSaiFiles-01.png" alt="DSM Photography" />
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="index.html#portfolio">Portfolio</a>
+        <a href="client-portal.html">Client Portal</a>
+        <a href="https://instagram.com/DSM_Photography" target="_blank">Instagram</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 DSM Photography. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+  </script>
+
+</body>
+</html>
