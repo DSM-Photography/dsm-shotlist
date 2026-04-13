@@ -406,27 +406,29 @@
 
     /* GALLERY */
     .gallery-section {
-      padding: 0 40px 80px;
-      max-width: 1100px;
+      padding: 0 60px 80px;
+      max-width: 1000px;
       margin: 0 auto;
     }
 
+    /*
+      Layout:
+      Col 1: back shot — tall, spans all 3 rows
+      Col 2: three portrait shots stacked
+      Col 3 top: one portrait shot
+      Col 3 bottom (rows 2-3): horizontal/landscape shot
+    */
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto auto;
-      gap: 12px;
+      grid-template-columns: 1.1fr 1fr 1fr;
+      grid-template-rows: 180px 180px 180px;
+      gap: 10px;
     }
 
     .gallery-item {
       overflow: hidden;
       background: var(--gold-pale);
       position: relative;
-    }
-
-    /* First image spans 2 rows — tall hero shot */
-    .gallery-item:nth-child(1) {
-      grid-row: span 2;
     }
 
     .gallery-item img {
@@ -437,32 +439,40 @@
       transition: transform 0.4s ease;
     }
 
-    .gallery-item:nth-child(1) img {
-      min-height: 500px;
+    .gallery-item:hover img { transform: scale(1.04); }
+
+    /* Back/walkway shot — col 1, spans all 3 rows */
+    .gallery-item:nth-child(1) {
+      grid-column: 1;
+      grid-row: 1 / 4;
     }
 
-    .gallery-item:not(:nth-child(1)) img {
-      min-height: 240px;
-    }
+    /* Three portrait shots — col 2, one per row */
+    .gallery-item:nth-child(2) { grid-column: 2; grid-row: 1; }
+    .gallery-item:nth-child(3) { grid-column: 2; grid-row: 2; }
+    .gallery-item:nth-child(4) { grid-column: 2; grid-row: 3; }
 
-    .gallery-item:hover img {
-      transform: scale(1.03);
+    /* Top right portrait */
+    .gallery-item:nth-child(5) { grid-column: 3; grid-row: 1; }
+
+    /* Horizontal/landscape shot — col 3, spans rows 2-3 */
+    .gallery-item:nth-child(6) {
+      grid-column: 3;
+      grid-row: 2 / 4;
     }
 
     @media (max-width: 768px) {
+      .gallery-section { padding: 0 24px 60px; }
       .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 160px 160px 160px 240px;
       }
-      .gallery-item:nth-child(1) {
-        grid-row: span 1;
-        grid-column: span 2;
-      }
-      .gallery-item:nth-child(1) img {
-        min-height: 280px;
-      }
-      .gallery-item:not(:nth-child(1)) img {
-        min-height: 180px;
-      }
+      .gallery-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+      .gallery-item:nth-child(2) { grid-column: 1; grid-row: 2; }
+      .gallery-item:nth-child(3) { grid-column: 2; grid-row: 2; }
+      .gallery-item:nth-child(4) { grid-column: 1; grid-row: 3; }
+      .gallery-item:nth-child(5) { grid-column: 2; grid-row: 3; }
+      .gallery-item:nth-child(6) { grid-column: 1 / 3; grid-row: 4; }
     }
 
     /* PACKAGES */
@@ -1051,26 +1061,34 @@
     <p class="editorial-tagline">The first record of who you became.</p>
   </section>
 
-  <!-- GALLERY -->
+  <!-- GALLERY
+       Image order:
+       1. grad-01.jpg — back/walkway shot (tall, left column)
+       2. grad-06.jpg — arms crossed (col 2, row 1)
+       3. grad-03.jpg — fountain smiling close-up (col 2, row 2)
+       4. grad-05.jpg — fountain winking (col 2, row 3)
+       5. grad-04.jpg — Florida A&M sign (col 3, row 1)
+       6. grad-02.jpg — seated editorial/landscape (col 3, rows 2-3)
+  -->
   <section class="gallery-section">
     <div class="gallery-grid">
       <div class="gallery-item">
         <img src="assets/gallery/grad-01.jpg" alt="Graduation session — campus walkway" />
       </div>
       <div class="gallery-item">
-        <img src="assets/gallery/grad-02.jpg" alt="Graduation session — seated portrait" />
+        <img src="assets/gallery/grad-06.jpg" alt="Graduation session — arms crossed portrait" />
       </div>
       <div class="gallery-item">
-        <img src="assets/gallery/grad-03.jpg" alt="Graduation session — close-up portrait" />
+        <img src="assets/gallery/grad-03.jpg" alt="Graduation session — fountain portrait" />
+      </div>
+      <div class="gallery-item">
+        <img src="assets/gallery/grad-05.jpg" alt="Graduation session — smiling portrait" />
       </div>
       <div class="gallery-item">
         <img src="assets/gallery/grad-04.jpg" alt="Graduation session — campus sign" />
       </div>
       <div class="gallery-item">
-        <img src="assets/gallery/grad-05.jpg" alt="Graduation session — fountain portrait" />
-      </div>
-      <div class="gallery-item">
-        <img src="assets/gallery/grad-06.jpg" alt="Graduation session — arms crossed portrait" />
+        <img src="assets/gallery/grad-02.jpg" alt="Graduation session — seated editorial" />
       </div>
     </div>
   </section>
