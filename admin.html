@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSM Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Josefin+Sans:wght@200;300;400;500&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A96E; --gold-l: #E2C99A; --gold-p: #F5EDD8; --gold-d: #a8813e;
+  --mint: #8FBCB2; --blush: #E8C5B8;
+  --dark: #1E1E1E; --charcoal: #2C2C2C; --mid: #6B6560; --light: #9B9490;
+  --warm: #FDFAF6; --cream: #F5F0E8; --border: rgba(201,169,110,0.2);
+  --shadow: 0 4px 32px rgba(44,44,44,0.10);
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Raleway', sans-serif; background: var(--warm); color: var(--charcoal); overflow-x: hidden; }
+
+/* ── LOCK SCREEN ── */
+#lock-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--dark);
+  display: flex; align-items: center; justify-content: center;
+}
+.lock-card {
+  width: 380px; padding: 52px 44px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,169,110,0.2);
+  text-align: center;
+}
+.lock-logo {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px; font-weight: 300;
+  letter-spacing: 0.5em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 8px;
+}
+.lock-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 300;
+  color: white; margin-bottom: 36px; line-height: 1.1;
+}
+.lock-title em { font-style: italic; color: var(--gold); }
+.lock-input {
+  width: 100%; padding: 13px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(201,169,110,0.25);
+  color: white; font-family: 'Raleway', sans-serif;
+  font-size: 13px; font-weight: 300;
+  outline: none; letter-spacing: 0.05em;
+  transition: border-color 0.2s; margin-bottom: 12px;
+}
+.lock-input:focus { border-color: var(--gold); }
+.lock-btn {
+  width: 100%; padding: 13px;
+  background: var(--gold); color: var(--dark);
+  border: none; cursor: pointer;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px; font-weight: 500;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  transition: background 0.2s;
+}
+.lock-btn:hover { background: var(--gold-l); }
+.lock-error {
+  font-size: 11px; color: #e8786a;
+  margin-top: 10px; letter-spacing: 0.05em;
+  display: none;
+}
+
+/* ── APP (hidden until unlocked) ── */
+#app { display: none; }
+
+/* ── HEADER ── */
+.app-header {
+  background: var(--dark);
+  border-bottom: 1px solid rgba(201,169,110,0.15);
+  padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px; position: sticky; top: 0; z-index: 100;
+}
+.header-brand {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px; font-weight: 300;
+  letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--gold);
+}
+.header-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px; font-weight: 300;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+.btn-lock {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 8px; font-weight: 400;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.25); background: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 6px 14px; cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-lock:hover { color: white; border-color: rgba(255,255,255,0.3); }
+
+/* ── TABS ── */
+.tab-bar {
+  background: white; border-bottom: 1px solid var(--border);
+  display: flex; padding: 0 40px; gap: 0;
+}
+.tab {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--light); padding: 16px 20px 14px;
+  cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all 0.2s; background: none; border-top: none;
+  border-left: none; border-right: none;
+}
+.tab:hover { color: var(--charcoal); }
+.tab.active { color: var(--gold-d); border-bottom-color: var(--gold); }
+
+/* ── LAYOUT ── */
+.studio-layout {
+  max-width: 1200px; margin: 0 auto;
+  padding: 36px 40px 80px;
+  display: grid; grid-template-columns: 1fr 340px;
+  gap: 28px; align-items: start;
+}
+
+/* ── PANELS ── */
+.panel {
+  background: white; border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.panel-head {
+  background: linear-gradient(90deg, var(--gold-d), var(--gold));
+  padding: 8px 20px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 8px; font-weight: 500;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: white;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.panel-body { padding: 20px 20px 16px; }
+
+/* ── FORM FIELDS ── */
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
+.field-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+.field-grid.full { grid-template-columns: 1fr; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field.span2 { grid-column: 1 / -1; }
+.field label {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 7px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--light);
+}
+.field input, .field select, .field textarea {
+  font-family: 'Raleway', sans-serif;
+  font-size: 12.5px; font-weight: 400;
+  color: var(--charcoal); background: white;
+  border: 1px solid #ddd; padding: 8px 11px;
+  outline: none; transition: border-color 0.2s;
+  appearance: none; -webkit-appearance: none;
+  border-radius: 0; width: 100%;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); }
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23C9A96E'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 11px center;
+  padding-right: 28px; cursor: pointer;
+}
+.field textarea { resize: vertical; min-height: 60px; line-height: 1.6; }
+
+/* ── ADDONS TABLE ── */
+.addons-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.addons-table thead tr { background: linear-gradient(90deg, var(--gold-d), var(--gold)); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.addons-table thead th {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 7px; font-weight: 400; letter-spacing: 0.2em;
+  text-transform: uppercase; color: white;
+  padding: 7px 10px; text-align: left;
+}
+.addons-table thead th.r { text-align: right; }
+.addons-table tbody tr { border-bottom: 1px solid #f5f0e8; }
+.addons-table tbody tr:last-child { border-bottom: none; }
+.addons-table tbody td { padding: 5px 10px; font-size: 12px; color: var(--charcoal); }
+.addons-table tbody td.price { text-align: right; color: var(--gold-d); font-weight: 500; white-space: nowrap; }
+.addons-table tbody td.action { text-align: center; width: 36px; }
+.btn-remove-row { background: none; border: none; color: #ccc; cursor: pointer; font-size: 15px; line-height: 1; transition: color 0.2s; padding: 2px 4px; }
+.btn-remove-row:hover { color: #e88; }
+.btn-add-addon {
+  background: none; border: 1px dashed var(--gold-l);
+  color: var(--gold-d); font-family: 'Josefin Sans', sans-serif;
+  font-size: 7px; letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 8px 14px; cursor: pointer; width: 100%; margin-top: 8px;
+  transition: background 0.2s;
+}
+.btn-add-addon:hover { background: var(--gold-p); }
+
+/* ── TOTALS SIDEBAR ── */
+.totals-panel {
+  background: white; border: 1px solid var(--border);
+  position: sticky; top: 76px;
+}
+.totals-inner { padding: 0 20px 16px; }
+.total-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 9px 0; border-bottom: 1px solid #f5f0e8;
+  font-size: 12px;
+}
+.total-row:last-child { border-bottom: none; }
+.tl {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 7.5px; font-weight: 400; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--light);
+}
+.tv { font-weight: 500; color: var(--charcoal); }
+.total-row.deposit .tv { color: #5a9e8a; }
+.total-row.balance .tl { color: var(--gold-d); font-size: 8px; font-weight: 500; }
+.total-row.balance .tv { color: var(--gold-d); font-size: 16px; font-weight: 600; }
+
+/* Action buttons */
+.action-section { margin-top: 4px; }
+.btn-action {
+  width: 100%; padding: 11px 16px; margin-bottom: 8px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 8px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  border: none; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-primary { background: var(--gold); color: var(--dark); }
+.btn-primary:hover { background: var(--gold-l); }
+.btn-secondary { background: var(--dark); color: white; }
+.btn-secondary:hover { background: #333; }
+.btn-outline {
+  background: transparent; color: var(--mid);
+  border: 1px solid var(--border);
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold-d); }
+.btn-mint { background: var(--mint); color: white; }
+.btn-mint:hover { background: #6fa99f; }
+
+/* Attachment checkboxes */
+.attach-section { margin-top: 0; }
+.attach-label {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 7px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--light);
+  display: block; margin-bottom: 8px;
+}
+.attach-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 0; border-bottom: 1px solid #f5f0e8;
+  font-size: 11.5px; color: var(--mid);
+  cursor: pointer;
+}
+.attach-item:last-child { border-bottom: none; }
+.attach-item input[type="checkbox"] {
+  width: 13px; height: 13px; accent-color: var(--gold);
+  cursor: pointer; flex-shrink: 0;
+}
+
+/* Divider */
+.panel-divider { height: 1px; background: var(--border); margin: 4px 0 12px; }
+
+/* Receipt mode */
+#receipt-tab { display: none; }
+
+/* ── STATUS BADGE ── */
+.status-badge {
+  display: inline-block; padding: 3px 12px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 7px; font-weight: 400; letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.s-draft { background: #f0f0f0; color: #888; }
+.s-sent { background: var(--gold-p); color: var(--gold-d); border: 1px solid var(--gold-l); }
+.s-deposit { background: rgba(143,188,178,0.12); color: #4a8a80; border: 1px solid var(--mint); }
+.s-paid { background: #edf7ed; color: #4a8a4a; border: 1px solid #a8d8a8; }
+
+/* ── PRINT STYLES ── */
+@media print {
+  @page { size: letter; margin: 0.55in 0.75in 0.85in 0.75in; }
+  #lock-screen { display: none !important; }
+  #app { display: block !important; }
+  .app-header, .tab-bar, .totals-panel, .screen-hide, .btn-add-addon, .btn-remove-row, .action-section, .attach-section { display: none !important; }
+  .studio-layout { display: block; padding: 0; max-width: 100%; }
+  .panel { border: none; margin-bottom: 0.15in; box-shadow: none; }
+  .panel-head { -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 0 0 0.08in; padding: 6px 14px; }
+  .field input, .field select, .field textarea { border: none !important; background: transparent !important; padding: 0 !important; font-size: 8.5pt; }
+  .field { border-bottom: 0.5px solid #ddd; padding-bottom: 2px; margin-bottom: 5px; }
+  .field label { font-size: 6.5pt; margin-bottom: 1px; }
+  .addons-table thead tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .print-header { display: flex !important; }
+  .print-footer { display: flex !important; }
+  .print-totals { display: block !important; }
+  #receipt-tab { display: none !important; }
+}
+
+/* Print header/footer (hidden on screen) */
+.print-header {
+  display: none;
+  align-items: flex-start; justify-content: space-between;
+  margin-bottom: 0.15in; padding-bottom: 0.1in;
+  border-bottom: 2px solid var(--gold-l);
+}
+.print-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 22pt; font-weight: 200;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--gold); line-height: 1;
+}
+.print-meta {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 7.5pt; font-weight: 300;
+  letter-spacing: 0.15em; color: var(--mid);
+  margin-top: 4px;
+}
+.print-footer {
+  display: none;
+  justify-content: space-between; align-items: center;
+  position: fixed; bottom: 0.3in;
+  left: 0.75in; right: 0.75in;
+  padding-top: 0.06in;
+  border-top: 0.5px solid var(--gold-l);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 7pt; color: #bbbbbf;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  background: white;
+}
+.print-totals {
+  display: none;
+  border: 0.5px solid var(--gold-l);
+  background: linear-gradient(160deg, #fffdf9, #fdf6ec);
+  padding: 0.1in 0.14in; margin: 0.1in 0 0.08in;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+
+/* ── REF# LOOKUP BAR ── */
+.lookup-bar {
+  background: var(--dark);
+  border-bottom: 1px solid rgba(201,169,110,0.2);
+  padding: 14px 0 12px;
+}
+.lookup-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 40px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.lookup-label {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 8px; font-weight: 400;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold); white-space: nowrap;
+}
+.lookup-row { display: flex; gap: 8px; flex: 1; min-width: 280px; }
+.lookup-row input {
+  flex: 1; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(201,169,110,0.25); color: white;
+  font-family: 'Raleway', sans-serif; font-size: 12.5px; font-weight: 300;
+  padding: 8px 12px; outline: none; transition: border-color 0.2s; letter-spacing: 0.04em;
+}
+.lookup-row input:focus { border-color: var(--gold); }
+.lookup-row input::placeholder { color: rgba(255,255,255,0.2); }
+#lookupBtn {
+  background: var(--gold); color: var(--dark); border: none;
+  font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  padding: 9px 20px; cursor: pointer; transition: background 0.2s; white-space: nowrap;
+}
+#lookupBtn:hover { background: var(--gold-l); }
+#lookupBtn:disabled { background: #555; cursor: not-allowed; }
+.lookup-status {
+  font-family: 'Josefin Sans', sans-serif; font-size: 8px; letter-spacing: 0.1em; white-space: nowrap;
+}
+.lookup-status.success { color: var(--mint); }
+.lookup-status.error   { color: #e8817a; }
+.lookup-status.loading { color: rgba(201,169,110,0.5); }
+
+/* ── CLIENT BANNER ── */
+.client-banner {
+  background: rgba(143,188,178,0.08); border-bottom: 1px solid rgba(143,188,178,0.2);
+  padding: 8px 40px; display: flex; align-items: center; gap: 12px;
+  font-family: 'Josefin Sans', sans-serif; font-size: 9px; letter-spacing: 0.12em;
+  color: var(--mint); flex-wrap: wrap;
+}
+.banner-divider { color: rgba(201,169,110,0.3); }
+.banner-clear {
+  margin-left: auto; background: none; border: 1px solid rgba(143,188,178,0.3);
+  color: rgba(143,188,178,0.6); font-family: 'Josefin Sans', sans-serif;
+  font-size: 7px; letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 4px 12px; cursor: pointer; transition: all 0.2s;
+}
+.banner-clear:hover { background: rgba(143,188,178,0.1); border-color: var(--mint); color: var(--mint); }
+
+@media print {
+  .lookup-bar, .client-banner { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── LOCK SCREEN ── -->
+<div id="lock-screen">
+  <div class="lock-card">
+    <div class="lock-logo">DSM Photography</div>
+    <h1 class="lock-title">Studio <em>Admin</em></h1>
+    <input type="password" class="lock-input" id="pw-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="lock-btn" onclick="checkPw()">Enter Studio</button>
+    <div class="lock-error" id="pw-error">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div id="app">
+
+  <div class="app-header">
+    <div class="header-brand">DSM Photography</div>
+    <div class="header-title">Studio Admin</div>
+    <button class="btn-lock" onclick="lockApp()">Lock</button>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('invoice')">Invoice</button>
+    <button class="tab" onclick="switchTab('deposit')">Deposit Receipt</button>
+    <button class="tab" onclick="switchTab('balance')">Balance Receipt</button>
+  </div>
+
+  <!-- ══════════════ REF# LOOKUP BAR ══════════════ -->
+  <div class="lookup-bar">
+    <div class="lookup-inner">
+      <span class="lookup-label">Load by Ref #</span>
+      <div class="lookup-row">
+        <input type="text" id="refLookup" placeholder="DSM-20260414-PRT-1024" autocomplete="off" spellcheck="false" />
+        <button id="lookupBtn" onclick="lookupInquiry()">Look Up</button>
+      </div>
+      <span id="lookupStatus" class="lookup-status" aria-live="polite"></span>
+    </div>
+  </div>
+
+  <div id="clientBanner" class="client-banner" style="display:none;">
+    <span id="bannerName"></span>
+    <span class="banner-divider">|</span>
+    <span id="bannerService"></span>
+    <span class="banner-divider">|</span>
+    <span id="bannerDate"></span>
+    <button class="banner-clear" onclick="clearLookup()">✕ Clear</button>
+  </div>
+
+  <!-- ══════════════ INVOICE TAB ══════════════ -->
+  <div id="invoice-tab">
+
+    <!-- Print header -->
+    <div class="print-header" id="inv-print-header">
+      <img src="assets/DSM_LOGOSaiFiles-04.png" alt="DSM Photography" style="height:0.55in;width:auto;">
+      <div style="text-align:right;">
+        <div class="print-title">Invoice</div>
+        <div class="print-meta" id="inv-print-meta">—</div>
+      </div>
+    </div>
+
+    <div class="studio-layout">
+      <div class="left-col">
+
+        <div class="panel">
+          <div class="panel-head">Invoice Details</div>
+          <div class="panel-body">
+            <div class="field-grid three">
+              <div class="field"><label>Invoice No.</label><input type="text" id="inv-num" placeholder="INV-001" oninput="syncMeta()"></div>
+              <div class="field"><label>Invoice Date</label><input type="date" id="inv-date" oninput="syncMeta()"></div>
+              <div class="field"><label>Due Date</label><input type="date" id="inv-due"></div>
+              <div class="field span2"><label>Job Reference</label><input type="text" id="inv-ref" placeholder="e.g. Latoya Corporate Reception – May 19"></div>
+              <div class="field">
+                <label>Status</label>
+                <select id="inv-status">
+                  <option value="draft">Draft</option>
+                  <option value="sent">Sent</option>
+                  <option value="deposit">Deposit Received</option>
+                  <option value="paid">Paid in Full</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">Client Information</div>
+          <div class="panel-body">
+            <div class="field-grid">
+              <div class="field"><label>Client Name</label><input type="text" id="client-name" placeholder="Full name"></div>
+              <div class="field"><label>Organization</label><input type="text" id="client-org" placeholder="Optional"></div>
+              <div class="field"><label>Email</label><input type="email" id="client-email" placeholder="client@email.com"></div>
+              <div class="field"><label>Phone</label><input type="tel" id="client-phone" placeholder="(305) 000-0000"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">Session Details</div>
+          <div class="panel-body">
+            <div class="field-grid">
+              <div class="field">
+                <label>Service Type</label>
+                <select id="service-type" onchange="loadPackages()">
+                  <option value="">Select service...</option>
+                  <option value="event">Events</option>
+                  <option value="portrait">Portraits</option>
+                  <option value="graduation">Graduations</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Package</label>
+                <select id="package-select" onchange="applyPackage()">
+                  <option value="">Select package...</option>
+                </select>
+              </div>
+              <div class="field"><label>Session Date</label><input type="date" id="session-date"></div>
+              <div class="field"><label>Session Time</label><input type="text" id="session-time" placeholder="e.g. 6:00 PM – 8:00 PM"></div>
+              <div class="field span2"><label>Location / Venue</label><input type="text" id="session-location" placeholder="Venue name and address"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">Package &amp; Add-Ons</div>
+          <div class="panel-body">
+            <table class="addons-table">
+              <thead><tr>
+                <th>Description</th>
+                <th class="r">Price</th>
+                <th class="r">Qty</th>
+                <th class="r">Total</th>
+                <th class="screen-hide"></th>
+              </tr></thead>
+              <tbody id="line-items"></tbody>
+            </table>
+            <button class="btn-add-addon screen-hide" onclick="addAddonRow()">+ Add Line Item</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">Notes</div>
+          <div class="panel-body">
+            <div class="field field-grid full">
+              <textarea id="inv-notes" placeholder="Payment instructions, special notes, or anything you want on the invoice..." rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Print totals block -->
+        <div class="print-totals" id="inv-print-totals">
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid #ede9e1;font-size:8.5pt;">
+            <span style="font-family:'Josefin Sans',sans-serif;font-size:7.5pt;letter-spacing:0.15em;text-transform:uppercase;color:#9B9490;">Subtotal</span>
+            <span id="pt-subtotal" style="font-weight:500;color:#2a2a2a;">$0.00</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:8.5pt;">
+            <span style="font-family:'Josefin Sans',sans-serif;font-size:8pt;letter-spacing:0.15em;text-transform:uppercase;color:#C9A96E;font-weight:500;">Deposit Due (50%)</span>
+            <span id="pt-deposit" style="font-weight:600;color:#C9A96E;font-size:12pt;">$0.00</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-top:0.5px solid #ede9e1;font-size:8.5pt;">
+            <span style="font-family:'Josefin Sans',sans-serif;font-size:8pt;letter-spacing:0.15em;text-transform:uppercase;color:#6B6560;">Balance Due at Session</span>
+            <span id="pt-balance" style="font-weight:500;color:#6B6560;font-size:10pt;">$0.00</span>
+          </div>
+        </div>
+
+        <!-- Payment methods (print only) -->
+        <div style="display:none;" class="print-header" id="inv-payment-block">
+          <div style="width:100%;padding:0.1in 0.14in;border:0.5px solid #ede9e1;background:#fafefe;margin-bottom:0.08in;">
+            <div style="font-family:'Josefin Sans',sans-serif;font-size:7pt;letter-spacing:0.22em;text-transform:uppercase;color:#C9A96E;margin-bottom:6px;">Payment Methods</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:7.5pt;color:#333;line-height:1.6;">
+              <div><strong style="font-family:'Josefin Sans',sans-serif;font-size:6.5pt;letter-spacing:0.1em;text-transform:uppercase;color:#9B9490;display:block;margin-bottom:2px;">Zelle</strong>Provided upon request</div>
+              <div><strong style="font-family:'Josefin Sans',sans-serif;font-size:6.5pt;letter-spacing:0.1em;text-transform:uppercase;color:#9B9490;display:block;margin-bottom:2px;">Check</strong>Payable to Dayna McKenzie</div>
+              <div><strong style="font-family:'Josefin Sans',sans-serif;font-size:6.5pt;letter-spacing:0.1em;text-transform:uppercase;color:#9B9490;display:block;margin-bottom:2px;">Cash</strong>Accepted in person</div>
+            </div>
+          </div>
+          <div style="border-left:2px solid #C9A96E;background:#fffdf9;padding:0.06in 0.12in;font-size:7.5pt;color:#444;line-height:1.6;width:100%;">
+            Deposit is non-refundable. 50% due within 48 hours of signing. Balance due 7 days prior to session.
+          </div>
+        </div>
+
+      </div><!-- /left-col -->
+
+      <!-- SIDEBAR -->
+      <div class="sidebar-col">
+        <div class="totals-panel">
+          <div class="panel-head">Summary</div>
+          <div class="totals-inner">
+            <div class="total-row">
+              <span class="tl">Subtotal</span>
+              <span class="tv" id="s-subtotal">$0.00</span>
+            </div>
+            <div class="total-row deposit">
+              <span class="tl">Deposit (50%)</span>
+              <span class="tv" id="s-deposit">$0.00</span>
+            </div>
+            <div class="total-row balance">
+              <span class="tl">Balance Due</span>
+              <span class="tv" id="s-balance">$0.00</span>
+            </div>
+          </div>
+          <div class="panel-divider"></div>
+          <div style="padding:0 20px 4px;">
+            <div class="action-section">
+              <button class="btn-action btn-primary" onclick="printInvoice()">&#8593; Print / Save PDF</button>
+              <button class="btn-action btn-secondary" onclick="sendEmail('invoice')">&#9993; Send to Client</button>
+            </div>
+          </div>
+          <div style="padding:0 20px 20px;">
+            <div class="attach-label" style="margin-top:12px;">Attach to Email</div>
+            <div class="attach-section">
+              <label class="attach-item">
+                <input type="checkbox" id="attach-master" checked>
+                Master Agreement
+              </label>
+              <label class="attach-item">
+                <input type="checkbox" id="attach-addendum-event">
+                Event Addendum
+              </label>
+              <label class="attach-item">
+                <input type="checkbox" id="attach-addendum-portrait">
+                Portrait Addendum
+              </label>
+              <label class="attach-item">
+                <input type="checkbox" id="attach-guide-event">
+                Event Client Guide
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /studio-layout -->
+
+    <div class="print-footer">
+      <span>DSM Photography &middot; Miami, FL</span>
+      <span style="color:#6B6560;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="096d7a647961667d666e7b687961703b38496e64686065276a6664">[email&#160;protected]</a></span>
+      <span>Invoice</span>
+    </div>
+
+  </div><!-- /invoice-tab -->
+
+
+  <!-- ══════════════ DEPOSIT RECEIPT TAB ══════════════ -->
+  <div id="deposit-tab" style="display:none;">
+
+    <div class="print-header" id="dep-print-header">
+      <img src="assets/DSM_LOGOSaiFiles-04.png" alt="DSM Photography" style="height:0.55in;width:auto;">
+      <div style="text-align:right;">
+        <div class="print-title" style="color:#5a9e8a;">Deposit Receipt</div>
+        <div class="print-meta" id="dep-print-meta">—</div>
+      </div>
+    </div>
+
+    <div class="studio-layout">
+      <div class="left-col">
+
+        <div class="panel">
+          <div class="panel-head" style="background:linear-gradient(90deg,#4a8a80,#8FBCB2);">Receipt Details</div>
+          <div class="panel-body">
+            <div class="field-grid three">
+              <div class="field"><label>Receipt No.</label><input type="text" id="dep-num" placeholder="REC-D-001" oninput="syncDepMeta()"></div>
+              <div class="field"><label>Payment Date</label><input type="date" id="dep-date" oninput="syncDepMeta()"></div>
+              <div class="field"><label>Payment Method</label>
+                <select id="dep-method">
+                  <option>Zelle</option><option>Check</option><option>Cash</option>
+                </select>
+              </div>
+              <div class="field span2"><label>Invoice Reference</label><input type="text" id="dep-inv-ref" placeholder="INV-001 — Job Reference"></div>
+              <div class="field"><label>Check No. (if applicable)</label><input type="text" id="dep-check" placeholder="—"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head" style="background:linear-gradient(90deg,#4a8a80,#8FBCB2);">Client</div>
+          <div class="panel-body">
+            <div class="field-grid">
+              <div class="field"><label>Client Name</label><input type="text" id="dep-client-name" placeholder="Full name"></div>
+              <div class="field"><label>Email</label><input type="email" id="dep-client-email" placeholder="client@email.com"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head" style="background:linear-gradient(90deg,#4a8a80,#8FBCB2);">Session</div>
+          <div class="panel-body">
+            <div class="field-grid">
+              <div class="field"><label>Service</label><input type="text" id="dep-service" placeholder="e.g. Event Coverage — Signature Package"></div>
+              <div class="field"><label>Session Date</label><input type="date" id="dep-session-date"></div>
+              <div class="field"><label>Total Contract Amount</label><input type="number" id="dep-total" placeholder="0.00" step="0.01" oninput="calcDeposit()"></div>
+              <div class="field"><label>Deposit Paid (50%)</label><input type="text" id="dep-amount" placeholder="$0.00" readonly style="background:#f5fdf9;color:#4a8a80;font-weight:500;"></div>
+              <div class="field"><label>Balance Remaining</label><input type="text" id="dep-remaining" placeholder="$0.00" readonly style="background:#f5f0e8;color:#a8813e;font-weight:500;"></div>
+              <div class="field"><label>Balance Due Date</label><input type="date" id="dep-balance-due"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Print totals block for deposit -->
+        <div class="print-totals" id="dep-print-totals" style="background:linear-gradient(160deg,#f5fdf9,#edf8f5);">
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid #c8e8e3;font-size:8.5pt;">
+            <span style="font-family:'Josefin Sans',sans-serif;font-size:7.5pt;letter-spacing:0.15em;text-transform:uppercase;color:#9B9490;">Contract Total</span>
+            <span id="dpt-total" style="font-weight:500;color:#2a2a2a;">$0.00</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:8.5pt;">
+            <span style="font-family:'Josefin Sans',sans-serif;font-size:8pt;letter-spacing:0.15em;text-transform:uppercase;color:#4a8a80;font-weight:500;">Deposit Received</span>
+            <span id="dpt-dep" style="font-weight:600;color:#4a8a80;font-size:12pt;">$0.00</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-top:0.5px solid #c8e8e3;font-size:8.5pt;">
+            <span style="font-family:'Josefin Sans',sans-serif;font-size:8pt;letter-spacing:0.15em;text-transform:uppercase;color:#6B6560;">Balance Due</span>
+            <span id="dpt-bal" style="font-weight:500;color:#6B6560;font-size:10pt;">$0.00</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="sidebar-col">
+        <div class="totals-panel">
+          <div class="panel-head" style="background:linear-gradient(90deg,#4a8a80,#8FBCB2);">Deposit Summary</div>
+          <div class="totals-inner">
+            <div class="total-row">
+              <span class="tl">Contract Total</span>
+              <span class="tv" id="ds-total">$0.00</span>
+            </div>
+            <div class="total-row deposit">
+              <span class="tl">Deposit Received</span>
+              <span class="tv" id="ds-deposit" style="color:#4a8a80;">$0.00</span>
+            </div>
+            <div class="total-row">
+              <span class="tl">Balance Remaining</span>
+              <span class="tv" id="ds-balance">$0.00</span>
+            </div>
+          </div>
+          <div class="panel-divider"></div>
+          <div style="padding:0 20px 20px;">
+            <div class="action-section">
+              <button class="btn-action btn-mint" onclick="printDeposit()">&#8593; Print / Save PDF</button>
+              <button class="btn-action btn-secondary" onclick="sendEmail('deposit')">&#9993; Send Receipt to Client</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="print-footer" style="border-top-color:#8FBCB2;">
+      <span>DSM Photography &middot; Miami, FL</span>
+      <span style="color:#4a8a80;">Deposit Received — Thank You</span>
+      <span>Receipt</span>
+    </div>
+  </div><!-- /deposit-tab -->
+
+
+  <!-- ══════════════ BALANCE RECEIPT TAB ══════════════ -->
+  <div id="balance-tab" style="display:none;">
+
+    <div class="print-header" id="bal-print-header">
+      <img src="assets/DSM_LOGOSaiFiles-04.png" alt="DSM Photography" style="height:0.55in;width:auto;">
+      <div style="text-align:right;">
+        <div class="print-title" style="color:#4a8a4a;">Paid in Full</div>
+        <div class="print-meta" id="bal-print-meta">—</div>
+      </div>
+    </div>
+
+    <div class="studio-layout">
+      <div class="left-col">
+
+        <div class="panel">
+          <div class="panel-head" style="background:linear-gradient(90deg,#3d7a3d,#6ab86a);">Receipt Details</div>
+          <div class="panel-body">
+            <div class="field-grid three">
+              <div class="field"><label>Receipt No.</label><input type="text" id="bal-num" placeholder="REC-B-001" oninput="syncBalMeta()"></div>
+              <div class="field"><label>Payment Date</label><input type="date" id="bal-date" oninput="syncBalMeta()"></div>
+              <div class="field"><label>Payment Method</label>
+                <select id="bal-method">
+                  <option>Zelle</option><option>Check</option><option>Cash</option>
+                </select>
+              </div>
+              <div class="field span2"><label>Invoice Reference</label><input type="text" id="bal-inv-ref" placeholder="INV-001 — Job Reference"></div>
+              <div class="field"><label>Check No. (if applicable)</label><input type="text" id="bal-check" placeholder="—"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head" style="background:linear-gradient(90deg,#3d7a3d,#6ab86a);">Client</div>
+          <div class="panel-body">
+            <div class="field-grid">
+              <div class="field"><label>Client Name</label><input type="text" id="bal-client-name" placeholder="Full name"></div>
+              <div class="field"><label>Email</label><input type="email" id="bal-client-email" placeholder="client@email.com"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head" style="background:linear-gradient(90deg,#3d7a3d,#6ab86a);">Session</div>
+          <div class="panel-body">
+            <div class="field-grid">
+              <div class="field"><label>Service</label><input type="text" id="bal-service" placeholder="e.g. Event Coverage — Signature Package"></div>
+              <div class="field"><label>Session Date</label><input type="date" id="bal-session-date"></div>
+              <div class="field"><label>Contract Total</label><input type="number" id="bal-total" placeholder="0.00" step="0.01" oninput="calcBalance()"></div>
+              <div class="field"><label>Deposit Previously Paid</label><input type="number" id="bal-deposit-paid" placeholder="0.00" step="0.01" oninput="calcBalance()"></div>
+              <div class="field"><label>Balance Payment</label><input type="text" id="bal-payment" placeholder="$0.00" readonly style="background:#edf7ed;color:#4a8a4a;font-weight:500;"></div>
+              <div class="field"><label>Total Paid</label><input type="text" id="bal-total-paid" placeholder="$0.00" readonly style="background:#f5f0e8;color:#a8813e;font-weight:500;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Print totals block for balance -->
+        <div class="print-totals" id="bal-print-totals" style="background:linear-gradient(160deg,#edf7ed,#e5f5e5);">
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid #c8e3c8;font-size:8.5pt;">
+            <span style="font-family:'Josefin Sans',sans-serif;font-size:7.5pt;letter-spacing:0.15em;text-transform:uppercase;color:#9B9490;">Contract Total</span>
+            <span id="bpt-total" style="font-weight:500;color:#2a2a2a;">$0.00</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid #c8e3c8;font-size:8.5pt;">
+            <span style="font-family:'Josefin Sans',sans-serif;font-size:7.5pt;letter-spacing:0.15em;text-transform:uppercase;color:#9B9490;">Deposit Previously Paid</span>
+            <span id="bpt-dep" style="font-weight:500;color:#4a8a80;">$0.00</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:8.5pt;">
+            <span style="font-family:'Josefin Sans',sans-serif;font-size:8pt;letter-spacing:0.15em;text-transform:uppercase;color:#4a8a4a;font-weight:500;">Balance Payment Received</span>
+            <span id="bpt-bal" style="font-weight:600;color:#4a8a4a;font-size:12pt;">$0.00</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-top:0.5px solid #c8e3c8;font-size:8.5pt;">
+            <span style="font-family:'Josefin Sans',sans-serif;font-size:8pt;letter-spacing:0.15em;text-transform:uppercase;color:#C9A96E;font-weight:500;">Paid in Full</span>
+            <span id="bpt-full" style="font-weight:600;color:#C9A96E;font-size:12pt;">$0.00</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="sidebar-col">
+        <div class="totals-panel">
+          <div class="panel-head" style="background:linear-gradient(90deg,#3d7a3d,#6ab86a);">Balance Summary</div>
+          <div class="totals-inner">
+            <div class="total-row">
+              <span class="tl">Contract Total</span>
+              <span class="tv" id="bs-total">$0.00</span>
+            </div>
+            <div class="total-row deposit">
+              <span class="tl">Deposit Paid</span>
+              <span class="tv" id="bs-deposit">$0.00</span>
+            </div>
+            <div class="total-row">
+              <span class="tl">Balance Payment</span>
+              <span class="tv" id="bs-balance" style="color:#4a8a4a;">$0.00</span>
+            </div>
+            <div class="total-row balance">
+              <span class="tl">Paid in Full</span>
+              <span class="tv" id="bs-full">$0.00</span>
+            </div>
+          </div>
+          <div class="panel-divider"></div>
+          <div style="padding:0 20px 20px;">
+            <div class="action-section">
+              <button class="btn-action" style="background:#4a8a4a;color:white;" onclick="printBalance()">&#8593; Print / Save PDF</button>
+              <button class="btn-action btn-secondary" onclick="sendEmail('balance')">&#9993; Send Receipt to Client</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="print-footer" style="border-top-color:#6ab86a;">
+      <span>DSM Photography &middot; Miami, FL</span>
+      <span style="color:#4a8a4a;">Paid in Full — Thank You</span>
+      <span>Receipt</span>
+    </div>
+  </div><!-- /balance-tab -->
+
+</div><!-- /app -->
+
+
+<!-- ══════════════ EMAIL MODAL ══════════════ -->
+<div id="email-modal" style="display:none;position:fixed;inset:0;z-index:5000;background:rgba(30,30,30,0.7);display:none;align-items:center;justify-content:center;">
+  <div style="background:white;width:520px;max-width:95vw;max-height:90vh;overflow-y:auto;">
+    <div style="background:linear-gradient(90deg,var(--gold-d),var(--gold));padding:12px 20px;font-family:'Josefin Sans',sans-serif;font-size:9px;font-weight:500;letter-spacing:0.3em;text-transform:uppercase;color:white;display:flex;justify-content:space-between;align-items:center;">
+      <span>Send to Client</span>
+      <button onclick="closeModal()" style="background:none;border:none;color:rgba(255,255,255,0.7);font-size:18px;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+    <div style="padding:24px;">
+      <div class="field" style="margin-bottom:12px;"><label>To</label><input type="email" id="modal-to" placeholder="client@email.com"></div>
+      <div class="field" style="margin-bottom:12px;"><label>Subject</label><input type="text" id="modal-subject" placeholder="Subject line"></div>
+      <div class="field" style="margin-bottom:16px;"><label>Message</label><textarea id="modal-body" rows="6" style="font-size:12px;line-height:1.7;"></textarea></div>
+
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:7px;letter-spacing:0.22em;text-transform:uppercase;color:var(--light);margin-bottom:8px;">Attachments</div>
+      <div id="modal-attachments" style="margin-bottom:20px;border:1px solid var(--border);padding:10px 14px;font-size:12px;color:var(--mid);line-height:2;">
+      </div>
+
+      <div style="font-size:11px;color:var(--light);margin-bottom:16px;line-height:1.6;background:var(--gold-p);padding:10px 12px;border-left:2px solid var(--gold);">
+        Note: PDFs must be hosted in <code>/assets/docs/</code> in your repo for attachment links to work. The email will include direct download links.
+      </div>
+
+      <button onclick="doSendEmail()" style="width:100%;padding:12px;background:var(--gold);color:var(--dark);border:none;cursor:pointer;font-family:'Josefin Sans',sans-serif;font-size:9px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;">Send Email</button>
+      <div id="modal-status" style="text-align:center;margin-top:10px;font-size:12px;color:var(--mid);display:none;"></div>
+    </div>
+  </div>
+</div>
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── PASSWORD ──
+const PASS = 'DSM-Studio-9x4k';
+function checkPw() {
+  const v = document.getElementById('pw-input').value;
+  if (v === PASS) {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    setToday();
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+function lockApp() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('lock-screen').style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-error').style.display = 'none';
+}
+
+// ── TABS ──
+let currentTab = 'invoice';
+function switchTab(tab) {
+  ['invoice','deposit','balance'].forEach(t => {
+    document.getElementById(t+'-tab').style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach((btn,i) => {
+    btn.classList.toggle('active', ['invoice','deposit','balance'][i] === tab);
+  });
+  currentTab = tab;
+}
+
+// ── PRICING DATA ──
+const PACKAGES = {
+  event: [
+    { name: 'Essential — 2hrs, 75+ images', price: 350 },
+    { name: 'Signature — 2.5hrs, 125+ images', price: 525 },
+    { name: 'Premier — 2.5hrs + pre-event, 175+ images', price: 750 },
+  ],
+  portrait: [
+    { name: 'Exposure — 1hr, 15 images', price: 125 },
+    { name: 'Aperture — 1.5hrs, 25 images', price: 275 },
+    { name: 'Prism — 2hrs, 40 images', price: 550 },
+  ],
+  graduation: [
+    { name: 'Milestone — 45min, 1 look, 10-15 images', price: 275 },
+    { name: 'Celebration — 75min, 2 looks, 18-25 images', price: 375 },
+    { name: 'Legacy — 2hrs, 3 looks, 25-35 images', price: 525 },
+  ]
+};
+
+const ADDONS = {
+  event: [
+    { name: 'Expedited Delivery — 5 Business Days', price: 100 },
+    { name: 'Expedited Delivery — 48 Hours', price: 200 },
+    { name: 'Additional Coverage Hour', price: 150 },
+    { name: 'Additional Retouched Images (+25)', price: 75 },
+    { name: 'Group Photo Session (up to 3 groupings)', price: 75 },
+    { name: 'Additional Group Grouping', price: 20 },
+    { name: 'Print Release Letter', price: 25 },
+    { name: 'Licensed Commercial Use', price: 40 },
+    { name: 'Print + Commercial Bundle', price: 55 },
+  ],
+  portrait: [
+    { name: 'Premium Editing Upgrade (Aperture only)', price: 50 },
+    { name: 'Additional Images — Set of 10', price: 60 },
+    { name: 'Additional Images — Set of 15', price: 75 },
+    { name: 'Additional Look', price: 50 },
+    { name: 'Additional Location', price: 40 },
+    { name: 'Expedited Delivery — 48 Hours', price: 50 },
+    { name: 'Print Release Letter', price: 25 },
+    { name: 'Licensed Commercial Use', price: 40 },
+    { name: 'Print + Commercial Bundle', price: 55 },
+  ],
+  graduation: [
+    { name: 'Expedited 5-Day Delivery', price: 75 },
+    { name: 'Expedited 48-Hour Delivery', price: 150 },
+    { name: 'Additional Look', price: 50 },
+    { name: 'Additional Location', price: 40 },
+    { name: 'Graduation Announcement Cards (set of 25)', price: 65 },
+    { name: 'Thank-You Cards (set of 25)', price: 65 },
+    { name: 'Announcement + Thank-You Bundle', price: 120 },
+    { name: 'Print Release Letter', price: 25 },
+    { name: 'Commercial Use License', price: 40 },
+  ]
+};
+
+// ── LOAD PACKAGES INTO SELECT ──
+function loadPackages() {
+  const svc = document.getElementById('service-type').value;
+  const sel = document.getElementById('package-select');
+  sel.innerHTML = '<option value="">Select package...</option>';
+  if (!svc) return;
+  PACKAGES[svc].forEach((p, i) => {
+    const o = document.createElement('option');
+    o.value = i;
+    o.textContent = p.name + ' — $' + p.price;
+    sel.appendChild(o);
+  });
+  // Update addon dropdown options
+  updateAddonOptions(svc);
+}
+
+function updateAddonOptions(svc) {
+  document.querySelectorAll('.addon-select').forEach(sel => {
+    const current = sel.value;
+    sel.innerHTML = '<option value="">Select add-on...</option>';
+    if (svc && ADDONS[svc]) {
+      ADDONS[svc].forEach((a, i) => {
+        const o = document.createElement('option');
+        o.value = i;
+        o.textContent = a.name;
+        sel.appendChild(o);
+      });
+    }
+    sel.value = current;
+  });
+}
+
+let rows = [];
+let rowCounter = 0;
+
+function applyPackage() {
+  const svc = document.getElementById('service-type').value;
+  const idx = document.getElementById('package-select').value;
+  if (!svc || idx === '') return;
+  const pkg = PACKAGES[svc][parseInt(idx)];
+  // Remove existing package row if any
+  rows = rows.filter(r => !r.isPackage);
+  // Add package as first row
+  rows.unshift({ id: rowCounter++, desc: pkg.name, price: pkg.price, qty: 1, isPackage: true });
+  renderRows();
+  calcTotals();
+}
+
+function renderRows() {
+  const svc = document.getElementById('service-type').value;
+  const tbody = document.getElementById('line-items');
+  tbody.innerHTML = '';
+  rows.forEach(r => {
+    const tr = document.createElement('tr');
+    const addonOptions = svc && ADDONS[svc] ? ADDONS[svc].map((a,i) =>
+      `<option value="${i}" ${a.name === r.desc ? 'selected' : ''}>${a.name}</option>`
+    ).join('') : '';
+    tr.id = 'row-' + r.id;
+    tr.innerHTML = `
+      <td style="min-width:180px;">
+        ${r.isPackage
+          ? `<span style="font-size:12px;color:var(--charcoal);">${r.desc}</span>`
+          : `<select class="addon-select" style="font-family:'Raleway',sans-serif;font-size:11.5px;color:var(--charcoal);border:1px solid transparent;padding:5px 8px;width:100%;background:transparent;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23C9A96E'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 6px center;padding-right:22px;-webkit-appearance:none;appearance:none;cursor:pointer;outline:none;border-radius:0;" onchange="addonChanged(${r.id}, this)">
+              <option value="">Select add-on...</option>
+              ${addonOptions}
+            </select>`
+        }
+      </td>
+      <td style="text-align:right;white-space:nowrap;">
+        <input type="number" value="${r.price}" min="0" step="0.01" style="font-family:'Raleway',sans-serif;font-size:12px;color:var(--charcoal);border:1px solid transparent;padding:5px 8px;width:80px;text-align:right;background:transparent;outline:none;border-radius:0;" oninput="priceChanged(${r.id}, this)">
+      </td>
+      <td style="text-align:right;">
+        <input type="number" value="${r.qty}" min="1" style="font-family:'Raleway',sans-serif;font-size:12px;color:var(--charcoal);border:1px solid transparent;padding:5px 8px;width:50px;text-align:right;background:transparent;outline:none;border-radius:0;" oninput="qtyChanged(${r.id}, this)">
+      </td>
+      <td class="price">$${(r.price * r.qty).toFixed(2)}</td>
+      <td class="action screen-hide"><button class="btn-remove-row" onclick="removeRow(${r.id})">&#215;</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function addonChanged(id, sel) {
+  const svc = document.getElementById('service-type').value;
+  const idx = parseInt(sel.value);
+  const row = rows.find(r => r.id === id);
+  if (!row) return;
+  if (!isNaN(idx) && svc && ADDONS[svc][idx]) {
+    row.desc = ADDONS[svc][idx].name;
+    row.price = ADDONS[svc][idx].price;
+  }
+  renderRows();
+  calcTotals();
+}
+
+function priceChanged(id, inp) {
+  const row = rows.find(r => r.id === id);
+  if (row) { row.price = parseFloat(inp.value) || 0; }
+  renderRows();
+  calcTotals();
+}
+
+function qtyChanged(id, inp) {
+  const row = rows.find(r => r.id === id);
+  if (row) { row.qty = parseInt(inp.value) || 1; }
+  renderRows();
+  calcTotals();
+}
+
+function removeRow(id) {
+  rows = rows.filter(r => r.id !== id);
+  renderRows();
+  calcTotals();
+}
+
+function addAddonRow() {
+  rows.push({ id: rowCounter++, desc: '', price: 0, qty: 1, isPackage: false });
+  renderRows();
+}
+
+function calcTotals() {
+  const sub = rows.reduce((acc, r) => acc + r.price * r.qty, 0);
+  const dep = sub * 0.5;
+  const bal = sub - dep;
+  document.getElementById('s-subtotal').textContent = '$' + sub.toFixed(2);
+  document.getElementById('s-deposit').textContent = '$' + dep.toFixed(2);
+  document.getElementById('s-balance').textContent = '$' + bal.toFixed(2);
+  // Print totals
+  document.getElementById('pt-subtotal').textContent = '$' + sub.toFixed(2);
+  document.getElementById('pt-deposit').textContent = '$' + dep.toFixed(2);
+  document.getElementById('pt-balance').textContent = '$' + bal.toFixed(2);
+}
+
+function calcDeposit() {
+  const total = parseFloat(document.getElementById('dep-total').value) || 0;
+  const dep = total * 0.5;
+  const rem = total - dep;
+  document.getElementById('dep-amount').value = '$' + dep.toFixed(2);
+  document.getElementById('dep-remaining').value = '$' + rem.toFixed(2);
+  document.getElementById('ds-total').textContent = '$' + total.toFixed(2);
+  document.getElementById('ds-deposit').textContent = '$' + dep.toFixed(2);
+  document.getElementById('ds-balance').textContent = '$' + rem.toFixed(2);
+  document.getElementById('dpt-total').textContent = '$' + total.toFixed(2);
+  document.getElementById('dpt-dep').textContent = '$' + dep.toFixed(2);
+  document.getElementById('dpt-bal').textContent = '$' + rem.toFixed(2);
+}
+
+function calcBalance() {
+  const total = parseFloat(document.getElementById('bal-total').value) || 0;
+  const depPaid = parseFloat(document.getElementById('bal-deposit-paid').value) || 0;
+  const balPay = total - depPaid;
+  document.getElementById('bal-payment').value = '$' + balPay.toFixed(2);
+  document.getElementById('bal-total-paid').value = '$' + total.toFixed(2);
+  document.getElementById('bs-total').textContent = '$' + total.toFixed(2);
+  document.getElementById('bs-deposit').textContent = '$' + depPaid.toFixed(2);
+  document.getElementById('bs-balance').textContent = '$' + balPay.toFixed(2);
+  document.getElementById('bs-full').textContent = '$' + total.toFixed(2);
+  document.getElementById('bpt-total').textContent = '$' + total.toFixed(2);
+  document.getElementById('bpt-dep').textContent = '$' + depPaid.toFixed(2);
+  document.getElementById('bpt-bal').textContent = '$' + balPay.toFixed(2);
+  document.getElementById('bpt-full').textContent = '$' + total.toFixed(2);
+}
+
+// ── META SYNC ──
+function syncMeta() {
+  const num = document.getElementById('inv-num').value;
+  const date = document.getElementById('inv-date').value;
+  const txt = [num, date ? fmtDate(date) : ''].filter(Boolean).join(' · ');
+  document.getElementById('inv-print-meta').textContent = txt || '—';
+}
+function syncDepMeta() {
+  const num = document.getElementById('dep-num').value;
+  const date = document.getElementById('dep-date').value;
+  const txt = [num, date ? fmtDate(date) : ''].filter(Boolean).join(' · ');
+  document.getElementById('dep-print-meta').textContent = txt || '—';
+}
+function syncBalMeta() {
+  const num = document.getElementById('bal-num').value;
+  const date = document.getElementById('bal-date').value;
+  const txt = [num, date ? fmtDate(date) : ''].filter(Boolean).join(' · ');
+  document.getElementById('bal-print-meta').textContent = txt || '—';
+}
+
+function fmtDate(d) {
+  if (!d) return '';
+  const [y, m, day] = d.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return months[parseInt(m)-1] + ' ' + parseInt(day) + ', ' + y;
+}
+
+function setToday() {
+  const today = new Date().toISOString().slice(0,10);
+  ['inv-date','dep-date','bal-date'].forEach(id => {
+    document.getElementById(id).value = today;
+  });
+  syncMeta(); syncDepMeta(); syncBalMeta();
+}
+
+// ── PRINT ──
+function printInvoice() {
+  // Show print-only payment block
+  document.getElementById('inv-payment-block').style.display = 'block';
+  window.print();
+  document.getElementById('inv-payment-block').style.display = 'none';
+}
+function printDeposit() { switchTab('deposit'); window.print(); }
+function printBalance() { switchTab('balance'); window.print(); }
+
+// ── EMAIL MODAL ──
+let emailType = 'invoice';
+const DOCS = {
+  master: { label: 'Master Agreement', path: '/assets/docs/DSM_Master_Agreement.pdf' },
+  eventAddendum: { label: 'Event Coverage Addendum', path: '/assets/docs/DSM_Event_Addendum.pdf' },
+  portraitAddendum: { label: 'Portrait Session Addendum', path: '/assets/docs/DSM_Portrait_Addendum.pdf' },
+  eventGuide: { label: 'Event Client Guide', path: '/assets/docs/DSM_Event_Client_Guide.pdf' },
+};
+
+function sendEmail(type) {
+  emailType = type;
+  const modal = document.getElementById('email-modal');
+  modal.style.display = 'flex';
+
+  // Pre-fill To
+  const emailField = type === 'invoice' ? 'client-email'
+    : type === 'deposit' ? 'dep-client-email' : 'bal-client-email';
+  document.getElementById('modal-to').value = document.getElementById(emailField).value || '';
+
+  // Pre-fill subject
+  const subjects = {
+    invoice: 'Your DSM Photography Invoice',
+    deposit: 'Deposit Received — DSM Photography',
+    balance: 'Paid in Full — DSM Photography'
+  };
+  document.getElementById('modal-subject').value = subjects[type];
+
+  // Pre-fill body
+  const clientName = (type === 'invoice'
+    ? document.getElementById('client-name').value
+    : type === 'deposit'
+    ? document.getElementById('dep-client-name').value
+    : document.getElementById('bal-client-name').value) || 'there';
+
+  const bodies = {
+    invoice: `Hi ${clientName},\n\nPlease find your invoice attached. A 50% deposit is due within 48 hours of signing to confirm your booking.\n\nDocuments to review and sign are included below. Please don't hesitate to reach out with any questions.\n\nLooking forward to working with you!\n\nDayna\nDSM Photography`,
+    deposit: `Hi ${clientName},\n\nThis confirms that your deposit has been received. You're all set — your date is officially booked!\n\nYour balance receipt is attached for your records. Remaining balance will be due 7 days prior to your session.\n\nCan't wait!\n\nDayna\nDSM Photography`,
+    balance: `Hi ${clientName},\n\nThis confirms that your final payment has been received. You are paid in full — thank you so much!\n\nYour receipt is attached for your records. I'm so excited to work with you.\n\nDayna\nDSM Photography`
+  };
+  document.getElementById('modal-body').value = bodies[type];
+
+  // Build attachments list
+  let attachHtml = '';
+  if (type === 'invoice') {
+    if (document.getElementById('attach-master').checked)
+      attachHtml += `<div style="padding:3px 0;">&#128196; <a href="${DOCS.master.path}" target="_blank">${DOCS.master.label}</a></div>`;
+    if (document.getElementById('attach-addendum-event').checked)
+      attachHtml += `<div style="padding:3px 0;">&#128196; <a href="${DOCS.eventAddendum.path}" target="_blank">${DOCS.eventAddendum.label}</a></div>`;
+    if (document.getElementById('attach-addendum-portrait').checked)
+      attachHtml += `<div style="padding:3px 0;">&#128196; <a href="${DOCS.portraitAddendum.path}" target="_blank">${DOCS.portraitAddendum.label}</a></div>`;
+    if (document.getElementById('attach-guide-event').checked)
+      attachHtml += `<div style="padding:3px 0;">&#128196; <a href="${DOCS.eventGuide.path}" target="_blank">${DOCS.eventGuide.label}</a></div>`;
+  }
+  attachHtml += `<div style="padding:3px 0;color:#9B9490;font-style:italic;font-size:11px;">PDF invoice generated from print dialog (Print → Save as PDF, then attach manually)</div>`;
+  document.getElementById('modal-attachments').innerHTML = attachHtml || '<span style="color:#9B9490;font-style:italic;">No documents selected.</span>';
+  document.getElementById('modal-status').style.display = 'none';
+}
+
+function closeModal() {
+  document.getElementById('email-modal').style.display = 'none';
+}
+
+async function doSendEmail() {
+  const to = document.getElementById('modal-to').value.trim();
+  const subject = document.getElementById('modal-subject').value.trim();
+  const body = document.getElementById('modal-body').value.trim();
+  if (!to || !subject) { alert('Please fill in To and Subject.'); return; }
+
+  // Build attachment list for function
+  const attachments = [];
+  if (emailType === 'invoice') {
+    if (document.getElementById('attach-master').checked) attachments.push(DOCS.master);
+    if (document.getElementById('attach-addendum-event').checked) attachments.push(DOCS.eventAddendum);
+    if (document.getElementById('attach-addendum-portrait').checked) attachments.push(DOCS.portraitAddendum);
+    if (document.getElementById('attach-guide-event').checked) attachments.push(DOCS.eventGuide);
+  }
+
+  const statusEl = document.getElementById('modal-status');
+  statusEl.style.display = 'block';
+  statusEl.textContent = 'Sending...';
+  statusEl.style.color = 'var(--mid)';
+
+  try {
+    const res = await fetch('/.netlify/functions/send-client-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to, subject, body, attachments, emailType })
+    });
+    const data = await res.json();
+    if (data.success) {
+      statusEl.textContent = '&#10003; Sent successfully.';
+      statusEl.style.color = '#4a8a4a';
+    } else {
+      throw new Error(data.error || 'Unknown error');
+    }
+  } catch(err) {
+    statusEl.textContent = 'Error: ' + err.message;
+    statusEl.style.color = '#e8786a';
+  }
+}
+// ── REF# LOOKUP ──
+let loadedInquiry = null;
+
+async function lookupInquiry() {
+  const input = document.getElementById('refLookup');
+  const btn = document.getElementById('lookupBtn');
+  const ref = input.value.trim();
+  if (!ref) { setLookupStatus('Please enter a ref number.', 'error'); return; }
+
+  btn.disabled = true;
+  setLookupStatus('Looking up…', 'loading');
+
+  try {
+    const res = await fetch(`/.netlify/functions/get-inquiry?ref_number=${encodeURIComponent(ref)}`);
+    const json = await res.json();
+    if (!res.ok) {
+      setLookupStatus(json.error || 'Inquiry not found.', 'error');
+      btn.disabled = false;
+      return;
+    }
+    loadedInquiry = json.inquiry;
+    populateInvoiceFields(loadedInquiry);
+    showClientBanner(loadedInquiry);
+    setLookupStatus('✓ Loaded — ' + loadedInquiry.first_name + ' ' + loadedInquiry.last_name, 'success');
+  } catch(err) {
+    setLookupStatus('Network error. Check console.', 'error');
+    console.error('Lookup error:', err);
+  }
+  btn.disabled = false;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var refInput = document.getElementById('refLookup');
+  if (refInput) refInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') lookupInquiry();
+  });
+});
+
+function populateInvoiceFields(inq) {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+
+  // Client info
+  set('client-name',  (inq.first_name + ' ' + inq.last_name).trim());
+  set('client-email', inq.email);
+  set('client-phone', inq.phone);
+
+  // Session details
+  set('session-date',     inq.session_date);
+  set('session-time',     inq.session_time || '');
+  set('session-location', inq.venue);
+  set('inv-ref',          inq.ref_number);
+  set('inv-notes',        inq.notes);
+
+  // Service type + trigger package load
+  const svcEl = document.getElementById('service-type');
+  if (svcEl && inq.service_type) {
+    // Map inquiry service_type to select values
+    const svcMap = { event: 'event', portrait: 'portrait', graduation: 'graduation',
+                     events: 'event', portraits: 'portrait', graduations: 'graduation' };
+    const mapped = svcMap[inq.service_type.toLowerCase()] || '';
+    if (mapped) { svcEl.value = mapped; loadPackages(); }
+  }
+
+  // Pre-select package if package_interest matches
+  if (inq.package_interest) {
+    const pkgSel = document.getElementById('package-select');
+    if (pkgSel) {
+      Array.from(pkgSel.options).forEach((opt, i) => {
+        if (opt.text.toLowerCase().includes(inq.package_interest.toLowerCase())) {
+          pkgSel.selectedIndex = i;
+          applyPackage();
+        }
+      });
+    }
+  }
+}
+
+function showClientBanner(inq) {
+  document.getElementById('bannerName').textContent = (inq.first_name + ' ' + inq.last_name).trim();
+  document.getElementById('bannerService').textContent = inq.service_type || inq.inquiry_type || '';
+  document.getElementById('bannerDate').textContent = inq.session_date ? 'Session: ' + inq.session_date : 'Date TBD';
+  document.getElementById('clientBanner').style.display = 'flex';
+}
+
+function clearLookup() {
+  loadedInquiry = null;
+  document.getElementById('refLookup').value = '';
+  document.getElementById('clientBanner').style.display = 'none';
+  setLookupStatus('', '');
+  ['client-name','client-email','client-phone','session-date','session-time',
+   'session-location','inv-ref','inv-notes'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('service-type').value = '';
+  document.getElementById('package-select').innerHTML = '<option value="">Select package...</option>';
+  rows = []; renderRows(); calcTotals();
+}
+
+function setLookupStatus(msg, type) {
+  const el = document.getElementById('lookupStatus');
+  el.textContent = msg;
+  el.className = 'lookup-status' + (type ? ' ' + type : '');
+}
+</script>
+</body>
+</html>
