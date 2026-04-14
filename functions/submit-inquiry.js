@@ -1,9 +1,27 @@
 // functions/submit-inquiry.js
-// Form POST handler — sends via SendGrid
+// Form POST handler — sends via SendGrid + saves to Supabase
 // Dayna receives: elegant section-grouped HTML intake document
 // Client receives: branded confirmation with reference number + next steps
 
 const sgMail = require('@sendgrid/mail');
+
+// ── Supabase client (lightweight fetch-based) ─────────────────
+async function supabaseInsert(table, record) {
+  const url = `${process.env.SUPABASE_URL}/rest/v1/${table}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': process.env.SUPABASE_KEY,
+      'Authorization': `Bearer ${process.env.SUPABASE_KEY}`,
+      'Prefer': 'return=representation',
+    },
+    body: JSON.stringify(record),
+  });
+  const text = await res.text();
+  if (!res.ok) throw new Error(`Supabase insert failed: ${res.status} ${text}`);
+  return JSON.parse(text);
+}
 
 // ── Type maps ─────────────────────────────────────────────────
 const TYPE_CODE_MAP = {
@@ -11,17 +29,20 @@ const TYPE_CODE_MAP = {
   maternity:'MAT', engagement:'ENG', proposal:'PRP', wedding:'WED',
   creative:'CRE', realestate:'RST', general:'GEN', other:'OTH',
   'other-session':'OTH',
+  graduation:'GRD',
 };
 const TYPE_LABELS = {
   EVT:'Event Coverage', PRT:'Portrait Session', HDT:'Headshot Session',
   LST:'Lifestyle Session', MAT:'Maternity Session', ENG:'Engagement Session',
   PRP:'Proposal Coverage', WED:'Wedding Coverage', CRE:'Creative Session',
   RST:'Real Estate Photography', GEN:'General Inquiry', OTH:'Other Inquiry',
+  GRD:'Graduation Session',
 };
 const TYPE_COLORS = {
   EVT:'#dec08c', PRT:'#f5d2c4', HDT:'#f5d2c4', LST:'#f5d2c4',
   MAT:'#f5d2c4', ENG:'#a8dbd2', PRP:'#a8dbd2', WED:'#a8dbd2',
   CRE:'#c9856a', RST:'#8aabb5', GEN:'#b8a99a', OTH:'#b8a99a',
+  GRD:'#E8C5B8',
 };
 
 // ── Utilities ─────────────────────────────────────────────────
@@ -40,7 +61,7 @@ function fmtLabel(key) {
 
 function fmtDate(str) {
   if (!str) return '';
-  const d = new Date(str + 'T12:00:00'); // noon to avoid TZ day-shift
+  const d = new Date(str + 'T12:00:00');
   if (isNaN(d)) return str;
   return d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
 }
@@ -48,25 +69,19 @@ function fmtDate(str) {
 const SKIP_KEYS = new Set([
   'inquiryType','sessionType','sequenceNumber','hardBudgetCapSelect',
   'addEngagement','addWedding','_refNumber','_pdfBase64',
-  // raw date fields collapsed into preferredDates by collect()
   'date1','date2','date3',
 ]);
 
-// Date-like field names — rendered with formatted date
 const DATE_FIELDS = new Set([
   'eventDate','preferredDates','weddingDate','dueDate','engDate1','engDate2','engDate3',
   'proposalDate','contentDeadline','mlsDeadline','weddingDateCross',
 ]);
 
-// Narrative / long-text fields — rendered differently
 const NARRATIVE_FIELDS = new Set([
   'sessionNarrative','eventNarrative','coupleStory','weddingVisionCross',
   'specificShots','moodReferences','customQuoteDetails','coverStory',
 ]);
 
-// ── Section schema — defines grouping order for the intake email ──
-// Each section has a label and the field keys that belong to it (in order).
-// Fields not matched to any section fall into "Additional Details" at the end.
 const SECTIONS = [
   {
     label: 'Client',
@@ -78,31 +93,27 @@ const SECTIONS = [
     icon: '◇',
     fields: [
       'inquiryType','sessionType',
-      // event
       'eventType','eventDate','venue','guestCount','indoorOutdoor',
-      // sessions
       'occasion','intendedUse','creativeType',
-      // wedding
       'partnerName','season','colorPalette','weddingPartySize','guestCount',
       'ceremonyVenue','receptionVenue','numLocations','ceremonyStart',
       'bridalPartySession','secondShooter','hasVideographer','coordinator',
       'portionsCovered',
-      // proposal
       'proposalDate','whoInvolved','coverageScope','photographerRole','coverStory',
-      // maternity
       'dueDate',
-      // real estate
       'propertyAddress','propertyType','listingStatus','sqFootage','bedsBaths',
       'clientRole','brokerage','stagingStatus','mlsDeadline','servicesNeeded',
-      // shared
       'numSubjects','indoorOutdoor',
+      // graduation
+      'inquiryFor','graduateName','graduateLastName','gradLevel','school',
+      'gradDate','county','sessionEnergy','locationStyle','locationDetail',
     ],
   },
   {
     label: 'Dates & Logistics',
     icon: '◇',
     fields: [
-      'preferredDates','timeOfDay','outfitChanges',
+      'preferredDates','sessionDate','altDate1','altDate2','timeOfDay','outfitChanges',
       'locationPref','specificLocation','locationAccess',
       'engDate1','engDate2','engDate3',
       'contentDeadline',
@@ -112,7 +123,7 @@ const SECTIONS = [
     label: 'Package & Budget',
     icon: '◇',
     fields: [
-      'packageInterest','addOns','budgetRange','hardBudgetCap',
+      'packageInterest','addons','addOns','budgetRange','hardBudgetCap',
       'expeditedDelivery','additionalImages',
     ],
   },
@@ -129,8 +140,8 @@ const SECTIONS = [
     label: 'Vision & Notes',
     icon: '◇',
     fields: [
-      'sessionNarrative','eventNarrative','coupleStory',
-      'specificShots','moodReferences','customQuoteDetails',
+      'sessionNarrative','eventNarrative','coupleStory','sessionVibe',
+      'specificShots','moodReferences','customQuoteDetails','notes',
     ],
   },
 ];
@@ -138,7 +149,6 @@ const SECTIONS = [
 // ── Build intake email HTML ────────────────────────────────────
 function buildIntakeHtml(data, refNumber, typeLabel, accentColor, isUrgent, submittedAt) {
 
-  // Flatten data into a map for easy lookup, skip blank/skipped keys
   const available = {};
   for (const [k, v] of Object.entries(data)) {
     if (!SKIP_KEYS.has(k) && v && String(v).trim()) {
@@ -146,17 +156,13 @@ function buildIntakeHtml(data, refNumber, typeLabel, accentColor, isUrgent, subm
     }
   }
 
-  // Track which keys have been rendered so we can catch stragglers
   const rendered = new Set();
 
-  // Render a single field row
   function fieldRow(key, value, isNarrative) {
     rendered.add(key);
     let displayVal = esc(String(value));
 
-    // Format date fields
     if (DATE_FIELDS.has(key) && !key.includes('preferred')) {
-      // preferredDates is already a formatted string from collect()
       const formatted = fmtDate(value);
       if (formatted) displayVal = esc(formatted);
     }
@@ -180,7 +186,6 @@ function buildIntakeHtml(data, refNumber, typeLabel, accentColor, isUrgent, subm
       </tr>`;
   }
 
-  // Render a section — returns empty string if no fields have data
   function renderSection(section) {
     const rows = [];
     for (const key of section.fields) {
@@ -202,10 +207,8 @@ function buildIntakeHtml(data, refNumber, typeLabel, accentColor, isUrgent, subm
       </div>`;
   }
 
-  // Render all defined sections
   const sectionBlocks = SECTIONS.map(renderSection).filter(Boolean).join('');
 
-  // Catch any remaining fields not placed in a section
   const stragglerRows = [];
   for (const [key, value] of Object.entries(available)) {
     if (!rendered.has(key)) {
@@ -232,10 +235,7 @@ function buildIntakeHtml(data, refNumber, typeLabel, accentColor, isUrgent, subm
 <html>
 <head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
 <body style="margin:0;padding:24px 0 40px;background:#f2ede8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-
 <div style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #ddd8d0;box-shadow:0 2px 16px rgba(0,0,0,.07);">
-
-  <!-- HEADER -->
   <div style="background:#100f09;padding:28px 28px 22px;">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;">
       <div>
@@ -250,27 +250,19 @@ function buildIntakeHtml(data, refNumber, typeLabel, accentColor, isUrgent, subm
       </div>
     </div>
   </div>
-
   ${urgentBanner}
-
-  <!-- INQUIRY TYPE BADGE -->
   <div style="background:#faf6f0;border-bottom:1px solid #ede8e0;padding:14px 28px;display:flex;align-items:center;gap:14px;">
     <span style="background:${accentColor};color:#100f09;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:5px 14px;font-weight:700;">${esc(typeLabel)}</span>
     <span style="font-size:11px;color:#b8a99a;letter-spacing:.04em;">New client inquiry submitted via dsmphotolab.com</span>
   </div>
-
-  <!-- BODY: SECTIONS -->
   ${sectionBlocks}
   ${stragglerBlock}
-
-  <!-- FOOTER -->
   <div style="background:#fdfaf6;border-top:2px solid #ede8e0;padding:18px 28px;text-align:center;">
     <div style="font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#b8a99a;">
       DSM Photography &nbsp;&middot;&nbsp; Miami, FL &nbsp;&middot;&nbsp; dsmphotography21@gmail.com &nbsp;&middot;&nbsp; @DSM_Photography
     </div>
     <div style="width:32px;height:1px;background:#dec08c;margin:10px auto 0;opacity:.5;"></div>
   </div>
-
 </div>
 </body>
 </html>`;
@@ -289,25 +281,21 @@ function buildConfirmationHtml(data, refNumber, typeLabel, accentColor) {
 <head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
 <body style="margin:0;padding:24px 0 40px;background:#f2ede8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
 <div style="max-width:580px;margin:0 auto;background:#fff;border:1px solid #ddd8d0;box-shadow:0 2px 16px rgba(0,0,0,.07);">
-
   <div style="background:#100f09;padding:36px 40px;text-align:center;">
     <div style="font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px;">Miami, Florida</div>
     <div style="font-size:22px;font-weight:300;letter-spacing:.1em;text-transform:uppercase;color:#ffffff;">DSM Photography</div>
     <div style="width:36px;height:1px;background:${accentColor};margin:14px auto 0;"></div>
   </div>
-
   <div style="padding:40px 40px 28px;">
     <p style="font-size:22px;font-weight:300;color:#2c2418;margin:0 0 8px;letter-spacing:.01em;">Thank you, ${esc(firstName)}.</p>
     <p style="font-size:13px;color:#8a7d72;line-height:1.9;margin:0 0 28px;">
       Your inquiry has been received and I'm excited to connect. I'll be in touch within <strong style="color:#2c2418;font-weight:600;">48 hours</strong>.
     </p>
-
     <div style="background:#fdfaf6;border:1px solid #ede8e0;border-left:3px solid ${accentColor};padding:16px 18px;margin-bottom:32px;">
       <div style="font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:#b8a99a;margin-bottom:5px;">Your reference number</div>
       <div style="font-size:15px;letter-spacing:.08em;color:#2c2418;font-weight:500;font-family:monospace;">${esc(refNumber)}</div>
       <div style="font-size:10px;color:#b8a99a;margin-top:3px;letter-spacing:.04em;">${esc(typeLabel)}</div>
     </div>
-
     <div style="font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#b8a99a;margin-bottom:14px;">What happens next</div>
     <table style="width:100%;border-collapse:collapse;">
       ${steps.map(([step, desc], i) => `
@@ -322,13 +310,11 @@ function buildConfirmationHtml(data, refNumber, typeLabel, accentColor) {
       </tr>`).join('')}
     </table>
   </div>
-
   <div style="padding:0 40px 36px;">
     <p style="font-size:13px;color:#8a7d72;line-height:1.9;margin:0 0 6px;">Looking forward to connecting,</p>
     <p style="font-size:22px;font-style:italic;font-weight:300;color:${accentColor};margin:0;letter-spacing:.02em;">Dayna S. McKenzie</p>
     <p style="font-size:11px;color:#b8a99a;margin:5px 0 0;letter-spacing:.06em;">DSM Photography &nbsp;&middot;&nbsp; Miami, FL</p>
   </div>
-
   <div style="background:#fdfaf6;border-top:1px solid #ede8e0;padding:16px 40px;font-size:10px;color:#b8a99a;text-align:center;letter-spacing:.08em;">
     dsmphotography21@gmail.com &nbsp;&middot;&nbsp; @DSM_Photography
   </div>
@@ -343,15 +329,14 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: 'Method not allowed' };
   }
   try {
-    const data       = JSON.parse(event.body || '{}');
-    const rawType    = data.inquiryType || 'general';
-    const typeCode   = TYPE_CODE_MAP[rawType]  || 'OTH';
-    const typeLabel  = TYPE_LABELS[typeCode]   || 'Inquiry';
-    const accentColor = TYPE_COLORS[typeCode]  || '#dec08c';
-    const seq        = parseInt(data.sequenceNumber || '1000', 10);
-    const refNumber  = generateRefNumber(typeCode, seq);
+    const data        = JSON.parse(event.body || '{}');
+    const rawType     = data.inquiryType || 'general';
+    const typeCode    = TYPE_CODE_MAP[rawType]  || 'OTH';
+    const typeLabel   = TYPE_LABELS[typeCode]   || 'Inquiry';
+    const accentColor = TYPE_COLORS[typeCode]   || '#dec08c';
+    const seq         = parseInt(data.sequenceNumber || '1000', 10);
+    const refNumber   = generateRefNumber(typeCode, seq);
 
-    // Submitted timestamp (server-side, reliable)
     const now = new Date();
     const submittedAt = now.toLocaleDateString('en-US', {
       month:'long', day:'numeric', year:'numeric',
@@ -359,14 +344,40 @@ exports.handler = async (event) => {
       hour:'numeric', minute:'2-digit', hour12:true,
     });
 
-    // Urgency check — is any key date within 60 days?
     const todayMs = Date.now();
-    const isUrgent = ['eventDate','date1','weddingDate','weddingDateCross','proposalDate','mlsDeadline'].some(f => {
+    const isUrgent = ['eventDate','date1','sessionDate','weddingDate','proposalDate','mlsDeadline'].some(f => {
       if (!data[f]) return false;
       const diff = (new Date(data[f]).getTime() - todayMs) / 864e5;
       return diff > 0 && diff <= 60;
     });
 
+    // ── Save to Supabase ──────────────────────────────────────
+    // Pull the most useful session date from whatever fields are present
+    const sessionDate = data.eventDate || data.sessionDate || data.date1 || data.gradDate || '';
+    const venue = data.venue || data.locationDetail || data.specificLocation || '';
+
+    const inquiryRecord = {
+      ref_number:       refNumber,
+      first_name:       data.firstName || '',
+      last_name:        data.lastName  || '',
+      email:            data.email     || '',
+      phone:            data.phone     || '',
+      inquiry_type:     rawType,
+      service_type:     rawType,
+      session_date:     sessionDate,
+      venue:            venue,
+      package_interest: data.packageInterest || '',
+      notes:            data.sessionNarrative || data.eventNarrative || data.notes || '',
+      raw_data:         data,
+      status:           'new',
+    };
+
+    // Fire and don't block emails if Supabase fails
+    supabaseInsert('inquiries', inquiryRecord).catch(err => {
+      console.error('Supabase save failed (non-fatal):', err.message);
+    });
+
+    // ── Send emails ───────────────────────────────────────────
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const from = { email: 'dsmphotography21@gmail.com', name: 'DSM Photography' };
 
@@ -374,7 +385,6 @@ exports.handler = async (event) => {
     const clientName = [data.firstName, data.lastName].filter(Boolean).join(' ') || 'New Client';
 
     const messages = [
-      // Intake email to Dayna
       {
         to: 'dsmphotography21@gmail.com',
         from,
@@ -383,7 +393,6 @@ exports.handler = async (event) => {
       },
     ];
 
-    // Confirmation email to client
     if (data.email) {
       messages.push({
         to: data.email,
