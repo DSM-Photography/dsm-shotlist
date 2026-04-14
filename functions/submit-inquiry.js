@@ -4,23 +4,13 @@
 // Client receives: branded confirmation with reference number + next steps
 
 const sgMail = require('@sendgrid/mail');
+const { createClient } = require('@supabase/supabase-js');
 
-// ── Supabase client (lightweight fetch-based) ─────────────────
-async function supabaseInsert(table, record) {
-  const url = `${process.env.SUPABASE_URL}/rest/v1/${table}`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': process.env.SUPABASE_KEY,
-      'Authorization': `Bearer ${process.env.SUPABASE_KEY}`,
-      'Prefer': 'return=representation',
-    },
-    body: JSON.stringify(record),
-  });
-  const text = await res.text();
-  if (!res.ok) throw new Error(`Supabase insert failed: ${res.status} ${text}`);
-  return JSON.parse(text);
+function getSupabase() {
+  return createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_KEY
+  );
 }
 
 // ── Type maps ─────────────────────────────────────────────────
@@ -282,9 +272,8 @@ function buildConfirmationHtml(data, refNumber, typeLabel, accentColor) {
 <body style="margin:0;padding:24px 0 40px;background:#f2ede8;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
 <div style="max-width:580px;margin:0 auto;background:#fff;border:1px solid #ddd8d0;box-shadow:0 2px 16px rgba(0,0,0,.07);">
   <div style="background:#100f09;padding:36px 40px;text-align:center;">
-    <div style="font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px;">Miami, Florida</div>
-    <div style="font-size:22px;font-weight:300;letter-spacing:.1em;text-transform:uppercase;color:#ffffff;">DSM Photography</div>
-    <div style="width:36px;height:1px;background:${accentColor};margin:14px auto 0;"></div>
+    <img src="https://dsmphotolab.com/assets/DSM_LOGOSaiFiles-01.png" alt="DSM Photography" style="height:56px;width:auto;display:block;margin:0 auto;">
+    <div style="width:36px;height:1px;background:${accentColor};margin:16px auto 0;opacity:0.6;"></div>
   </div>
   <div style="padding:40px 40px 28px;">
     <p style="font-size:22px;font-weight:300;color:#2c2418;margin:0 0 8px;letter-spacing:.01em;">Thank you, ${esc(firstName)}.</p>
@@ -372,10 +361,16 @@ exports.handler = async (event) => {
       status:           'new',
     };
 
-    // Fire and don't block emails if Supabase fails
-    supabaseInsert('inquiries', inquiryRecord).catch(err => {
-      console.error('Supabase save failed (non-fatal):', err.message);
-    });
+    // Save to Supabase
+    try {
+      const supabase = getSupabase();
+      const { error: sbError } = await supabase
+        .from('inquiries')
+        .insert(inquiryRecord);
+      if (sbError) console.error('Supabase save failed:', sbError.message);
+    } catch (sbErr) {
+      console.error('Supabase exception:', sbErr.message);
+    }
 
     // ── Send emails ───────────────────────────────────────────
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
