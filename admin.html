@@ -1315,6 +1315,27 @@ async function lookupInquiry() {
     populateInvoiceFields(loadedInquiry);
     showClientBanner(loadedInquiry);
     setLookupStatus('✓ Loaded — ' + loadedInquiry.first_name + ' ' + loadedInquiry.last_name, 'success');
+
+    // Fetch and populate next invoice number
+    try {
+      const invRes = await fetch('/.netlify/functions/get-next-invoice');
+      const invJson = await invRes.json();
+      if (invJson.invoice_number) {
+        const invNum = invJson.invoice_number;
+        const invNumEl = document.getElementById('inv-num');
+        if (invNumEl) { invNumEl.value = invNum; syncMeta(); }
+        const depRef = document.getElementById('dep-inv-ref');
+        if (depRef) depRef.value = invNum;
+        const depNum = document.getElementById('dep-num');
+        if (depNum) { depNum.value = invNum.replace('INV', 'REC-D'); syncDepMeta(); }
+        const balRef = document.getElementById('bal-inv-ref');
+        if (balRef) balRef.value = invNum;
+        const balNum = document.getElementById('bal-num');
+        if (balNum) { balNum.value = invNum.replace('INV', 'REC-B'); syncBalMeta(); }
+      }
+    } catch(e) {
+      console.warn('Could not fetch next invoice number:', e);
+    }
   } catch(err) {
     setLookupStatus('Network error. Check console.', 'error');
     console.error('Lookup error:', err);
