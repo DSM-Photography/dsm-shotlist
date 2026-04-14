@@ -336,6 +336,66 @@ body { font-family: 'Raleway', sans-serif; background: var(--warm); color: var(-
   padding: 0.1in 0.14in; margin: 0.1in 0 0.08in;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
+
+/* ── REF# LOOKUP BAR ── */
+.lookup-bar {
+  background: var(--dark);
+  border-bottom: 1px solid rgba(201,169,110,0.2);
+  padding: 14px 0 12px;
+}
+.lookup-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 40px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.lookup-label {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 8px; font-weight: 400;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold); white-space: nowrap;
+}
+.lookup-row { display: flex; gap: 8px; flex: 1; min-width: 280px; }
+.lookup-row input {
+  flex: 1; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(201,169,110,0.25); color: white;
+  font-family: 'Raleway', sans-serif; font-size: 12.5px; font-weight: 300;
+  padding: 8px 12px; outline: none; transition: border-color 0.2s; letter-spacing: 0.04em;
+}
+.lookup-row input:focus { border-color: var(--gold); }
+.lookup-row input::placeholder { color: rgba(255,255,255,0.2); }
+#lookupBtn {
+  background: var(--gold); color: var(--dark); border: none;
+  font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  padding: 9px 20px; cursor: pointer; transition: background 0.2s; white-space: nowrap;
+}
+#lookupBtn:hover { background: var(--gold-l); }
+#lookupBtn:disabled { background: #555; cursor: not-allowed; }
+.lookup-status {
+  font-family: 'Josefin Sans', sans-serif; font-size: 8px; letter-spacing: 0.1em; white-space: nowrap;
+}
+.lookup-status.success { color: var(--mint); }
+.lookup-status.error   { color: #e8817a; }
+.lookup-status.loading { color: rgba(201,169,110,0.5); }
+
+/* ── CLIENT BANNER ── */
+.client-banner {
+  background: rgba(143,188,178,0.08); border-bottom: 1px solid rgba(143,188,178,0.2);
+  padding: 8px 40px; display: flex; align-items: center; gap: 12px;
+  font-family: 'Josefin Sans', sans-serif; font-size: 9px; letter-spacing: 0.12em;
+  color: var(--mint); flex-wrap: wrap;
+}
+.banner-divider { color: rgba(201,169,110,0.3); }
+.banner-clear {
+  margin-left: auto; background: none; border: 1px solid rgba(143,188,178,0.3);
+  color: rgba(143,188,178,0.6); font-family: 'Josefin Sans', sans-serif;
+  font-size: 7px; letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 4px 12px; cursor: pointer; transition: all 0.2s;
+}
+.banner-clear:hover { background: rgba(143,188,178,0.1); border-color: var(--mint); color: var(--mint); }
+
+@media print {
+  .lookup-bar, .client-banner { display: none !important; }
+}
 </style>
 </head>
 <body>
@@ -364,6 +424,27 @@ body { font-family: 'Raleway', sans-serif; background: var(--warm); color: var(-
     <button class="tab active" onclick="switchTab('invoice')">Invoice</button>
     <button class="tab" onclick="switchTab('deposit')">Deposit Receipt</button>
     <button class="tab" onclick="switchTab('balance')">Balance Receipt</button>
+  </div>
+
+  <!-- ══════════════ REF# LOOKUP BAR ══════════════ -->
+  <div class="lookup-bar">
+    <div class="lookup-inner">
+      <span class="lookup-label">Load by Ref #</span>
+      <div class="lookup-row">
+        <input type="text" id="refLookup" placeholder="DSM-20260414-PRT-1024" autocomplete="off" spellcheck="false" />
+        <button id="lookupBtn" onclick="lookupInquiry()">Look Up</button>
+      </div>
+      <span id="lookupStatus" class="lookup-status" aria-live="polite"></span>
+    </div>
+  </div>
+
+  <div id="clientBanner" class="client-banner" style="display:none;">
+    <span id="bannerName"></span>
+    <span class="banner-divider">|</span>
+    <span id="bannerService"></span>
+    <span class="banner-divider">|</span>
+    <span id="bannerDate"></span>
+    <button class="banner-clear" onclick="clearLookup()">✕ Clear</button>
   </div>
 
   <!-- ══════════════ INVOICE TAB ══════════════ -->
@@ -1226,14 +1307,12 @@ async function doSendEmail() {
       const bookingData = await bookingRes.json();
       if (bookingRes.ok) {
         portalUrl = bookingData.portal_url || null;
-        // Update invoice number field with the confirmed committed number
         if (bookingData.invoice_number) {
           const el = document.getElementById('inv-num');
           if (el) { el.value = bookingData.invoice_number; syncMeta(); }
         }
       } else {
         console.warn('Booking creation warning:', bookingData.error);
-        // Don't block the email send for duplicate booking errors
       }
     }
 
@@ -1261,6 +1340,120 @@ async function doSendEmail() {
     statusEl.style.color = '#e8786a';
   }
 }
+
+// ── REF# LOOKUP ──
+let loadedInquiry = null;
+
+async function lookupInquiry() {
+  const input = document.getElementById('refLookup');
+  const btn = document.getElementById('lookupBtn');
+  const ref = input.value.trim();
+  if (!ref) { setLookupStatus('Please enter a ref number.', 'error'); return; }
+
+  btn.disabled = true;
+  setLookupStatus('Looking up…', 'loading');
+
+  try {
+    const res = await fetch(`/.netlify/functions/get-inquiry?ref_number=${encodeURIComponent(ref)}`);
+    const json = await res.json();
+    if (!res.ok) {
+      setLookupStatus(json.error || 'Inquiry not found.', 'error');
+      btn.disabled = false;
+      return;
+    }
+    loadedInquiry = json.inquiry;
+    populateInvoiceFields(loadedInquiry);
+    showClientBanner(loadedInquiry);
+    setLookupStatus('✓ Loaded — ' + loadedInquiry.first_name + ' ' + loadedInquiry.last_name, 'success');
+
+    try {
+      const invRes = await fetch('/.netlify/functions/get-next-invoice');
+      const invJson = await invRes.json();
+      if (invJson.invoice_number) {
+        const invNum = invJson.invoice_number;
+        const invNumEl = document.getElementById('inv-num');
+        if (invNumEl) { invNumEl.value = invNum; syncMeta(); }
+        const depRef = document.getElementById('dep-inv-ref');
+        if (depRef) depRef.value = invNum;
+        const depNum = document.getElementById('dep-num');
+        if (depNum) { depNum.value = invNum.replace('INV', 'REC-D'); syncDepMeta(); }
+        const balRef = document.getElementById('bal-inv-ref');
+        if (balRef) balRef.value = invNum;
+        const balNum = document.getElementById('bal-num');
+        if (balNum) { balNum.value = invNum.replace('INV', 'REC-B'); syncBalMeta(); }
+      }
+    } catch(e) { console.warn('Could not fetch next invoice number:', e); }
+
+  } catch(err) {
+    setLookupStatus('Network error. Check console.', 'error');
+    console.error('Lookup error:', err);
+  }
+  btn.disabled = false;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var refInput = document.getElementById('refLookup');
+  if (refInput) refInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') lookupInquiry();
+  });
+});
+
+function populateInvoiceFields(inq) {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+  set('client-name',  (inq.first_name + ' ' + inq.last_name).trim());
+  set('client-email', inq.email);
+  set('client-phone', inq.phone);
+  set('session-date',     inq.session_date);
+  set('session-time',     inq.session_time || '');
+  set('session-location', inq.venue);
+  set('inv-ref',          inq.ref_number);
+  set('inv-notes',        inq.notes);
+  const svcEl = document.getElementById('service-type');
+  if (svcEl && inq.service_type) {
+    const svcMap = { event: 'event', portrait: 'portrait', graduation: 'graduation',
+                     events: 'event', portraits: 'portrait', graduations: 'graduation' };
+    const mapped = svcMap[inq.service_type.toLowerCase()] || '';
+    if (mapped) { svcEl.value = mapped; loadPackages(); }
+  }
+  if (inq.package_interest) {
+    const pkgSel = document.getElementById('package-select');
+    if (pkgSel) {
+      Array.from(pkgSel.options).forEach((opt, i) => {
+        if (opt.text.toLowerCase().includes(inq.package_interest.toLowerCase())) {
+          pkgSel.selectedIndex = i; applyPackage();
+        }
+      });
+    }
+  }
+}
+
+function showClientBanner(inq) {
+  document.getElementById('bannerName').textContent = (inq.first_name + ' ' + inq.last_name).trim();
+  document.getElementById('bannerService').textContent = inq.service_type || inq.inquiry_type || '';
+  document.getElementById('bannerDate').textContent = inq.session_date ? 'Session: ' + inq.session_date : 'Date TBD';
+  document.getElementById('clientBanner').style.display = 'flex';
+}
+
+function clearLookup() {
+  loadedInquiry = null;
+  document.getElementById('refLookup').value = '';
+  document.getElementById('clientBanner').style.display = 'none';
+  setLookupStatus('', '');
+  ['client-name','client-email','client-phone','session-date','session-time',
+   'session-location','inv-ref','inv-notes'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('service-type').value = '';
+  document.getElementById('package-select').innerHTML = '<option value="">Select package...</option>';
+  rows = []; renderRows(); calcTotals();
+}
+
+function setLookupStatus(msg, type) {
+  const el = document.getElementById('lookupStatus');
+  el.textContent = msg;
+  el.className = 'lookup-status' + (type ? ' ' + type : '');
+}
+
 </script>
 </body>
 </html>
