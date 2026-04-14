@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Portal — DSM Photography</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Josefin+Sans:wght@200;300;400;500;600&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A96E; --gold-l: #E2C99A; --gold-p: #F5EDD8; --gold-d: #a8813e;
+  --mint: #8FBCB2; --mint-d: #6a9e94; --blush: #E8C5B8;
+  --dark: #1E1E1E; --charcoal: #2C2C2C; --mid: #6B6560; --light: #9B9490;
+  --warm: #FDFAF6; --cream: #F5F0E8; --border: rgba(201,169,110,0.18);
+  --border-lt: #ece7de; --ink: #1c1a18;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Raleway', sans-serif; background: var(--warm); color: var(--charcoal); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--dark); padding: 0;
+  border-bottom: 1px solid rgba(201,169,110,0.15);
+  position: sticky; top: 0; z-index: 100;
+}
+.header-inner {
+  max-width: 860px; margin: 0 auto; padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between; height: 56px;
+}
+.header-brand {
+  font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 300;
+  letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold);
+}
+.header-right {
+  font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 300;
+  letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.25);
+}
+
+/* ── LOADING / ERROR ── */
+#portal-loading, #portal-error {
+  max-width: 520px; margin: 80px auto; padding: 0 24px; text-align: center;
+}
+.loading-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin: 0 3px; animation: blink 1.2s infinite; }
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%,80%,100% { opacity: 0.2; } 40% { opacity: 1; } }
+.error-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--charcoal); margin-bottom: 12px; }
+.error-sub { font-size: 13px; color: var(--mid); line-height: 1.7; }
+
+/* ── PORTAL HERO ── */
+.portal-hero {
+  background: var(--dark); padding: 44px 32px 36px;
+  position: relative; overflow: hidden;
+}
+.portal-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(201,169,110,0.08) 0%, transparent 70%),
+              radial-gradient(ellipse 40% 60% at 10% 80%, rgba(143,188,178,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-eyebrow {
+  font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 400;
+  letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 10px;
+}
+.hero-name {
+  font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 300;
+  color: white; line-height: 1.15; margin-bottom: 6px;
+}
+.hero-name em { font-style: italic; color: var(--gold-l); }
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;
+}
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label {
+  font-family: 'Josefin Sans', sans-serif; font-size: 7px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.3);
+}
+.meta-value { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.85); }
+
+/* ── PROGRESS BAR ── */
+.progress-bar {
+  background: var(--ink); border-bottom: 1px solid rgba(201,169,110,0.12);
+  padding: 14px 32px;
+}
+.progress-inner { max-width: 860px; margin: 0 auto; display: flex; gap: 6px; flex-wrap: wrap; }
+.prog-step {
+  display: flex; align-items: center; gap: 7px;
+  font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 400;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255,255,255,0.25); padding: 5px 12px;
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 100px;
+  transition: all 0.3s;
+}
+.prog-step.done { color: var(--mint); border-color: rgba(143,188,178,0.35); background: rgba(143,188,178,0.07); }
+.prog-step.done::before { content: '✓'; font-size: 9px; color: var(--mint); }
+.prog-step.pending::before { content: '○'; font-size: 9px; }
+
+/* ── MAIN LAYOUT ── */
+.portal-body { max-width: 860px; margin: 0 auto; padding: 32px 32px 80px; }
+
+/* ── SECTION CARD ── */
+.doc-card {
+  background: white; border: 1px solid var(--border-lt);
+  margin-bottom: 20px; overflow: hidden;
+}
+.doc-card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 22px; border-bottom: 1px solid var(--border-lt);
+  background: linear-gradient(to right, #fdfaf5, white);
+}
+.doc-card-title {
+  font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--charcoal);
+  display: flex; align-items: center; gap: 10px;
+}
+.doc-status {
+  font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 400;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 100px;
+}
+.status-pending { background: var(--cream); color: var(--light); border: 1px solid var(--border-lt); }
+.status-signed { background: rgba(143,188,178,0.12); color: var(--mint-d); border: 1px solid rgba(143,188,178,0.3); }
+.status-download { background: var(--gold-p); color: var(--gold-d); border: 1px solid rgba(201,169,110,0.3); }
+.doc-card-body { padding: 22px 22px 24px; }
+
+/* ── CONTRACT FORM ── */
+.contract-intro {
+  font-size: 13px; color: var(--mid); line-height: 1.75;
+  margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--border-lt);
+}
+.section-block { margin-bottom: 22px; }
+.section-label {
+  font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 500;
+  letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-d);
+  margin-bottom: 12px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--gold-p);
+  display: block;
+}
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
+.field-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+.field-grid.full { grid-template-columns: 1fr; }
+@media (max-width: 580px) { .field-grid, .field-grid.three { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field.span2 { grid-column: 1 / -1; }
+.field label {
+  font-family: 'Josefin Sans', sans-serif; font-size: 7.5px; font-weight: 400;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--light);
+}
+.field input, .field select, .field textarea {
+  font-family: 'Raleway', sans-serif; font-size: 13px; font-weight: 400;
+  color: var(--charcoal); background: var(--warm);
+  border: 1px solid #ddd; padding: 9px 12px;
+  outline: none; transition: border-color 0.2s; width: 100%; border-radius: 0;
+  appearance: none; -webkit-appearance: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); background: white; }
+.field input[readonly] { background: var(--cream); color: var(--mid); cursor: default; }
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23C9A96E'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 11px center; padding-right: 28px; cursor: pointer;
+}
+.field textarea { resize: vertical; min-height: 64px; line-height: 1.6; }
+
+/* Terms scroll box */
+.terms-box {
+  background: var(--cream); border: 1px solid var(--border-lt);
+  padding: 18px 20px; max-height: 220px; overflow-y: auto;
+  font-size: 12px; line-height: 1.8; color: var(--mid);
+  margin-bottom: 16px;
+}
+.terms-box h4 {
+  font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--charcoal);
+  margin: 12px 0 4px;
+}
+.terms-box h4:first-child { margin-top: 0; }
+
+/* Signature block */
+.sig-block {
+  background: var(--cream); border: 1px solid var(--border-lt);
+  padding: 20px 22px; margin-top: 18px;
+}
+.sig-agree {
+  display: flex; align-items: flex-start; gap: 12px;
+  margin-bottom: 16px; cursor: pointer;
+}
+.sig-agree input[type="checkbox"] {
+  width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px;
+  accent-color: var(--gold); cursor: pointer;
+}
+.sig-agree-text {
+  font-size: 12.5px; color: var(--charcoal); line-height: 1.65;
+}
+.sig-agree-text strong { color: var(--charcoal); font-weight: 600; }
+.sig-name-row { display: grid; grid-template-columns: 1fr 160px; gap: 12px; align-items: end; }
+@media (max-width: 520px) { .sig-name-row { grid-template-columns: 1fr; } }
+
+/* Submit button */
+.btn-sign {
+  width: 100%; padding: 13px; margin-top: 14px;
+  background: var(--gold); color: var(--dark); border: none; cursor: pointer;
+  font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 500;
+  letter-spacing: 0.25em; text-transform: uppercase;
+  transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-sign:hover { background: var(--gold-l); }
+.btn-sign:disabled { background: var(--light); cursor: not-allowed; }
+.btn-sign.signed { background: var(--mint); color: white; }
+
+.form-status {
+  margin-top: 10px; font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px; letter-spacing: 0.12em; text-align: center;
+  min-height: 18px;
+}
+.form-status.success { color: var(--mint-d); }
+.form-status.error { color: #c0392b; }
+
+/* Signed overlay */
+.signed-overlay {
+  display: none; padding: 24px 22px;
+  background: rgba(143,188,178,0.06); border-top: 1px solid rgba(143,188,178,0.2);
+  text-align: center;
+}
+.signed-overlay.show { display: block; }
+.signed-check { font-size: 28px; color: var(--mint); margin-bottom: 8px; }
+.signed-msg {
+  font-family: 'Josefin Sans', sans-serif; font-size: 9px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--mint-d); margin-bottom: 4px;
+}
+.signed-sub { font-size: 12px; color: var(--mid); }
+
+/* ── SHOT LIST CARD ── */
+.shot-link-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--dark); color: white; padding: 12px 24px;
+  font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 400;
+  letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none;
+  transition: background 0.2s; margin-top: 4px;
+}
+.shot-link-btn:hover { background: var(--charcoal); }
+.shot-link-btn.done { background: var(--mint-d); }
+
+/* ── GUIDE CARD ── */
+.guide-link {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--gold-d); font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase;
+  text-decoration: none; padding: 10px 0; transition: color 0.2s;
+  border-bottom: 1px solid var(--border-lt); width: 100%;
+}
+.guide-link:last-child { border-bottom: none; }
+.guide-link:hover { color: var(--gold); }
+.guide-icon { font-size: 14px; }
+
+/* ── PAYMENT CARD ── */
+.payment-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 4px; }
+@media (max-width: 540px) { .payment-grid { grid-template-columns: 1fr; } }
+.payment-method {
+  background: var(--cream); padding: 14px 16px; border: 1px solid var(--border-lt);
+}
+.pm-label {
+  font-family: 'Josefin Sans', sans-serif; font-size: 7px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-d);
+  display: block; margin-bottom: 5px;
+}
+.pm-value { font-size: 12.5px; color: var(--charcoal); line-height: 1.6; }
+.payment-note {
+  margin-top: 14px; padding: 12px 16px;
+  border-left: 2px solid var(--gold); background: var(--gold-p);
+  font-size: 12px; color: var(--charcoal); line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+  .portal-hero { padding: 32px 20px 28px; }
+  .portal-body { padding: 24px 16px 60px; }
+  .progress-bar { padding: 12px 16px; }
+  .header-inner { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-brand">DSM Photography</div>
+    <div class="header-right">Client Portal</div>
+  </div>
+</header>
+
+<!-- Loading state -->
+<div id="portal-loading" style="text-align:center;padding:80px 24px;">
+  <span class="loading-dot"></span>
+  <span class="loading-dot"></span>
+  <span class="loading-dot"></span>
+</div>
+
+<!-- Error state -->
+<div id="portal-error" style="display:none;">
+  <p class="error-title">Portal not found.</p>
+  <p class="error-sub">This link may be invalid or expired. Please reach out to <a href="mailto:dsmphotography21@gmail.com" style="color:var(--gold);">dsmphotography21@gmail.com</a> if you need help accessing your documents.</p>
+</div>
+
+<!-- Portal content (hidden until loaded) -->
+<div id="portal-content" style="display:none;">
+
+  <!-- Hero -->
+  <section class="portal-hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Your Client Portal</div>
+      <div class="hero-name">Welcome, <em id="h-client-name">—</em></div>
+      <div class="hero-meta">
+        <div class="meta-item">
+          <span class="meta-label">Session Date</span>
+          <span class="meta-value" id="h-session-date">—</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Package</span>
+          <span class="meta-value" id="h-package">—</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Venue</span>
+          <span class="meta-value" id="h-venue">—</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Invoice</span>
+          <span class="meta-value" id="h-invoice">—</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Progress -->
+  <div class="progress-bar">
+    <div class="progress-inner" id="progress-steps"></div>
+  </div>
+
+  <main class="portal-body">
+
+    <!-- ══ MASTER AGREEMENT ══ -->
+    <div class="doc-card" id="card-master">
+      <div class="doc-card-head">
+        <div class="doc-card-title">① Master Services Agreement</div>
+        <span class="doc-status status-pending" id="status-master">Awaiting Signature</span>
+      </div>
+      <div class="doc-card-body">
+        <p class="contract-intro">Please read and complete this agreement before your session. All fields marked with your booking info are pre-filled — review them, make any corrections, then type your full name and check the box at the bottom to sign.</p>
+
+        <div class="section-block">
+          <span class="section-label">Client Information</span>
+          <div class="field-grid">
+            <div class="field"><label>Client Name</label><input type="text" id="m-client-name" placeholder="Full legal name"></div>
+            <div class="field"><label>Organization / Event Name</label><input type="text" id="m-org" placeholder="Optional"></div>
+            <div class="field"><label>Email Address</label><input type="email" id="m-email" placeholder="your@email.com"></div>
+            <div class="field"><label>Phone Number</label><input type="tel" id="m-phone" placeholder="(305) 000-0000"></div>
+            <div class="field"><label>Referred By (if applicable)</label><input type="text" id="m-referred" placeholder="Optional"></div>
+            <div class="field"><label>Date of Agreement</label><input type="text" id="m-agreement-date" readonly></div>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <span class="section-label">Session Details</span>
+          <div class="field-grid">
+            <div class="field"><label>Session Date</label><input type="text" id="m-session-date" readonly></div>
+            <div class="field"><label>Session Time</label><input type="text" id="m-session-time" placeholder="e.g. 6:00 PM – 8:00 PM"></div>
+            <div class="field span2"><label>Location / Venue</label><input type="text" id="m-venue" placeholder="Venue name and address"></div>
+            <div class="field"><label>Session Type</label><input type="text" id="m-session-type" readonly></div>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <span class="section-label">Package Summary</span>
+          <div class="field-grid">
+            <div class="field"><label>Package Selected</label><input type="text" id="m-package" readonly></div>
+            <div class="field"><label>Add-Ons</label><input type="text" id="m-addons" placeholder="e.g. Expedited Delivery, Print Release"></div>
+            <div class="field"><label>Deposit Due (50%)</label><input type="text" id="m-deposit" readonly></div>
+            <div class="field"><label>Total Balance Due</label><input type="text" id="m-total" readonly></div>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <span class="section-label">Terms &amp; Conditions</span>
+          <div class="terms-box" id="master-terms">
+            <h4>1. Contract Delivery and Booking Confirmation</h4>
+            <p>DSM Photography will deliver this agreement within 48 hours of booking confirmation. A 50% non-refundable deposit is due within 48 hours of the client signing this agreement. The booking is not confirmed and the date is not held until both the signed contract and deposit have been received. No verbal agreements constitute a booking.</p>
+            <h4>2. Deposit and Payment</h4>
+            <p>A non-refundable deposit of 50% of the total contracted balance secures the booking date. The remaining balance is due no later than 7 days prior to the session date. If the remaining balance is not received within 7 days of the session date, DSM Photography will issue a written notice. If payment is not received within 24 hours of that notice, DSM Photography reserves the right to cancel the booking.</p>
+            <h4>3. Cancellation Policy</h4>
+            <p>The deposit is non-refundable under all circumstances. If the client cancels 14 or more days prior to the session date, no further balance is owed. If the client cancels within 14 days of the session, the full contract balance becomes due immediately. The client is entitled to one reschedule opportunity provided written notice is given at least 14 days prior to the original session date.</p>
+            <h4>4. Photographer Cancellation</h4>
+            <p>In the unlikely event that DSM Photography must cancel due to emergency, illness, or circumstances beyond reasonable control, the client will receive a full refund of all payments made.</p>
+            <h4>5. Image Delivery and Feedback Window</h4>
+            <p>All images are delivered via private PASS gallery. The client will confirm receipt of the gallery link in writing within 48 hours of delivery notification. The client has 14 days from gallery delivery to raise any concerns. Raw or unedited files are not available for release under any circumstances.</p>
+            <h4>6. Copyright, Image Usage, and Licensing</h4>
+            <p>DSM Photography retains full copyright of all images captured. The client receives a limited personal license for personal, non-commercial use. Organizational use is permitted with photo credit. A commercial use license is required only for paid advertising or revenue-generating campaigns.</p>
+            <h4>7. Social Media Credit</h4>
+            <p>When sharing images on social media, the client agrees to credit DSM Photography by caption or tag. Preferred credit: Photo by DSM Photography / @DSM_photography.</p>
+            <h4>8. Travel Fees</h4>
+            <p>Travel within 30 miles of Miami, FL is included. Sessions 30–60 miles from Miami incur a $0.75/mile round trip fee. Sessions beyond 60 miles are quoted individually.</p>
+            <h4>9–17. Additional Terms</h4>
+            <p>Full liability, force majeure, model release, pre-event communication, testimonials, amendment, dispute resolution (Miami-Dade County, FL), governing law (State of Florida), and entire agreement clauses apply as stated in the full agreement.</p>
+            <h4>11. Model Release</h4>
+            <p>By signing, the client grants DSM Photography permission to use select delivered images for portfolio, website, and social media promotional purposes. Clients who wish to opt out must notify DSM Photography in writing prior to the session date.</p>
+          </div>
+        </div>
+
+        <div class="sig-block" id="sig-master">
+          <label class="sig-agree">
+            <input type="checkbox" id="m-agree">
+            <span class="sig-agree-text">I have read and agree to all terms of the <strong>DSM Photography Master Services Agreement</strong>. I understand that typing my full name below constitutes my legal electronic signature.</span>
+          </label>
+          <div class="sig-name-row">
+            <div class="field">
+              <label>Type Full Name (Electronic Signature)</label>
+              <input type="text" id="m-sig-name" placeholder="Your full legal name">
+            </div>
+            <div class="field">
+              <label>Date</label>
+              <input type="text" id="m-sig-date" readonly>
+            </div>
+          </div>
+          <button class="btn-sign" id="btn-master" onclick="submitContract('master')">Sign Master Agreement</button>
+          <div class="form-status" id="status-msg-master"></div>
+        </div>
+
+        <div class="signed-overlay" id="signed-master">
+          <div class="signed-check">✓</div>
+          <div class="signed-msg">Master Agreement Signed</div>
+          <div class="signed-sub" id="signed-master-sub"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ SERVICE ADDENDUM (event or portrait) ══ -->
+    <div class="doc-card" id="card-addendum">
+      <div class="doc-card-head">
+        <div class="doc-card-title" id="addendum-title">② Service Addendum</div>
+        <span class="doc-status status-pending" id="status-addendum">Awaiting Signature</span>
+      </div>
+      <div class="doc-card-body" id="addendum-body">
+        <!-- Populated dynamically based on service_type -->
+      </div>
+    </div>
+
+    <!-- ══ SHOT LIST ══ -->
+    <div class="doc-card" id="card-shotlist">
+      <div class="doc-card-head">
+        <div class="doc-card-title">③ Shot List</div>
+        <span class="doc-status status-pending" id="status-shotlist">Not Yet Submitted</span>
+      </div>
+      <div class="doc-card-body">
+        <p style="font-size:13px;color:var(--mid);line-height:1.75;margin-bottom:18px;">Your shot list helps me plan coverage around what matters most to you. Please complete and submit it <strong style="color:var(--charcoal);">at least 48 hours before your session.</strong></p>
+        <a href="#" id="shotlist-link" class="shot-link-btn" target="_blank">→ Open Shot List Form</a>
+        <p style="font-size:11px;color:var(--light);margin-top:12px;">Opens in a new tab. Your event details will be pre-filled.</p>
+      </div>
+    </div>
+
+    <!-- ══ CLIENT GUIDE ══ -->
+    <div class="doc-card" id="card-guide" style="display:none;">
+      <div class="doc-card-head">
+        <div class="doc-card-title">④ Client Guide</div>
+        <span class="doc-status status-download">Download</span>
+      </div>
+      <div class="doc-card-body">
+        <p style="font-size:13px;color:var(--mid);line-height:1.75;margin-bottom:18px;">Everything you need to know about your session — what to expect, how the day flows, how your images are delivered, and answers to common questions.</p>
+        <a href="/assets/docs/DSM_Event_Client_Guide.pdf" id="guide-link" class="guide-link" download>
+          <span class="guide-icon">↓</span> The DSM Experience — Event Edition
+        </a>
+      </div>
+    </div>
+
+    <!-- ══ PAYMENT ══ -->
+    <div class="doc-card">
+      <div class="doc-card-head">
+        <div class="doc-card-title" id="payment-step-num">⑤ Payment Instructions</div>
+      </div>
+      <div class="doc-card-body">
+        <p style="font-size:13px;color:var(--mid);line-height:1.75;margin-bottom:18px;">A <strong style="color:var(--charcoal);">50% deposit</strong> is due within 48 hours of signing to confirm your booking. Your remaining balance is due 7 days before your session.</p>
+        <div class="payment-grid">
+          <div class="payment-method">
+            <span class="pm-label">Zelle</span>
+            <div class="pm-value">Provided upon confirmation</div>
+          </div>
+          <div class="payment-method">
+            <span class="pm-label">Check</span>
+            <div class="pm-value">Payable to<br><strong>Dayna McKenzie</strong></div>
+          </div>
+          <div class="payment-method">
+            <span class="pm-label">Cash</span>
+            <div class="pm-value">Accepted in person</div>
+          </div>
+        </div>
+        <div class="payment-note">
+          Deposit is non-refundable and holds your date. Dates are not secured without a paid deposit. Balance due 7 days prior to your session. Questions? <a href="mailto:dsmphotography21@gmail.com" style="color:var(--gold-d);">dsmphotography21@gmail.com</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div><!-- /portal-content -->
+
+
+<script>
+// ── STATE ────────────────────────────────────────────────
+let BOOKING = null;
+let CONTRACTS_SIGNED = {};  // { master: true, event: true, portrait: true }
+let SHOT_LIST_DONE = false;
+const TOKEN = new URLSearchParams(window.location.search).get('token');
+
+// ── INIT ─────────────────────────────────────────────────
+(async function init() {
+  if (!TOKEN) { showError(); return; }
+
+  try {
+    const res = await fetch(`/.netlify/functions/get-booking?token=${encodeURIComponent(TOKEN)}`);
+    const json = await res.json();
+    if (!res.ok) { showError(); return; }
+
+    BOOKING = json.booking;
+
+    // Track signed contracts
+    (json.contracts || []).forEach(c => { CONTRACTS_SIGNED[c.contract_type] = true; });
+    SHOT_LIST_DONE = !!json.shot_list;
+
+    renderPortal();
+  } catch(e) {
+    console.error(e);
+    showError();
+  }
+})();
+
+function showError() {
+  document.getElementById('portal-loading').style.display = 'none';
+  document.getElementById('portal-error').style.display = 'block';
+}
+
+// ── RENDER ───────────────────────────────────────────────
+function renderPortal() {
+  document.getElementById('portal-loading').style.display = 'none';
+  document.getElementById('portal-content').style.display = 'block';
+
+  const b = BOOKING;
+  const firstName = (b.client_name || '').split(' ')[0];
+  const serviceType = (b.service_type || '').toLowerCase();
+  const isEvent = serviceType === 'event' || serviceType === 'events';
+  const isPortrait = serviceType === 'portrait' || serviceType === 'portraits';
+  const isGrad = serviceType === 'graduation' || serviceType === 'graduations';
+
+  // Hero
+  document.getElementById('h-client-name').textContent = firstName || b.client_name || 'there';
+  document.getElementById('h-session-date').textContent = fmtDate(b.session_date) || '—';
+  document.getElementById('h-package').textContent = b.package_name || b.service_type || '—';
+  document.getElementById('h-venue').textContent = b.venue || '—';
+  document.getElementById('h-invoice').textContent = b.invoice_number || '—';
+
+  // Prefill Master Agreement
+  const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  setVal('m-client-name', b.client_name);
+  setVal('m-email', b.client_email);
+  setVal('m-phone', b.client_phone);
+  setVal('m-session-date', fmtDate(b.session_date));
+  setVal('m-session-time', b.session_time);
+  setVal('m-venue', b.venue);
+  setVal('m-session-type', b.service_type);
+  setVal('m-package', b.package_name);
+  setVal('m-deposit', b.deposit_amount ? '$' + parseFloat(b.deposit_amount).toFixed(2) : '');
+  setVal('m-total', b.contract_total ? '$' + parseFloat(b.contract_total).toFixed(2) : '');
+  setVal('m-agreement-date', today);
+  setVal('m-sig-date', today);
+
+  // Show signed state if already signed
+  if (CONTRACTS_SIGNED['master']) showSignedState('master');
+
+  // Build addendum based on service type
+  const addendumType = isPortrait || isGrad ? 'portrait' : 'event';
+  buildAddendum(addendumType, b);
+  if (CONTRACTS_SIGNED[addendumType]) showSignedState(addendumType);
+
+  // Shot list link — pre-fill via URL params
+  const shotParams = new URLSearchParams();
+  if (b.client_name) shotParams.set('name', b.client_name);
+  if (b.session_date) shotParams.set('date', b.session_date);
+  if (b.venue) shotParams.set('venue', b.venue);
+  if (b.package_name) shotParams.set('pkg', b.package_name);
+  document.getElementById('shotlist-link').href = '/shotlist.html?' + shotParams.toString();
+  if (SHOT_LIST_DONE) {
+    const sl = document.getElementById('shotlist-link');
+    sl.textContent = '✓ Shot List Submitted';
+    sl.classList.add('done');
+    document.getElementById('status-shotlist').textContent = 'Submitted';
+    document.getElementById('status-shotlist').className = 'doc-status status-signed';
+  }
+
+  // Guide — show for events
+  if (isEvent) {
+    document.getElementById('card-guide').style.display = 'block';
+    document.getElementById('payment-step-num').textContent = '⑤ Payment Instructions';
+  } else {
+    document.getElementById('card-guide').style.display = 'none';
+    document.getElementById('payment-step-num').textContent = '④ Payment Instructions';
+  }
+
+  // Progress steps
+  renderProgress(addendumType);
+}
+
+// ── ADDENDUM BUILDER ─────────────────────────────────────
+function buildAddendum(type, b) {
+  const isPortrait = type === 'portrait';
+  const title = isPortrait ? '② Portrait Session Addendum' : '② Event Coverage Addendum';
+  document.getElementById('addendum-title').textContent = title;
+
+  const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  let fieldsHtml = '';
+  let termsHtml = '';
+  let sigBtnLabel = '';
+
+  if (isPortrait) {
+    fieldsHtml = `
+      <div class="section-block">
+        <span class="section-label">Session Information</span>
+        <div class="field-grid">
+          <div class="field"><label>Session Type</label><input type="text" id="a-session-type" value="${b.service_type || ''}"></div>
+          <div class="field"><label>Session Date</label><input type="text" id="a-session-date" value="${fmtDate(b.session_date)}" readonly></div>
+          <div class="field"><label>Session Time</label><input type="text" id="a-session-time" value="${b.session_time || ''}" placeholder="e.g. 2:00 PM"></div>
+          <div class="field"><label>Session Location</label><input type="text" id="a-location" value="${b.venue || ''}"></div>
+          <div class="field"><label>Number of Subjects</label><input type="text" id="a-subjects" placeholder="e.g. 2"></div>
+          <div class="field">
+            <label>Editing Level</label>
+            <select id="a-editing">
+              <option value="">Select...</option>
+              <option>Basic</option><option>Standard</option><option>Premium</option>
+            </select>
+          </div>
+          <div class="field"><label>Looks Included</label><input type="text" id="a-looks" placeholder="e.g. 2"></div>
+          <div class="field"><label>Locations Included</label><input type="text" id="a-locations-n" placeholder="e.g. 1"></div>
+          <div class="field">
+            <label>Indoor / Outdoor / Both</label>
+            <select id="a-indoor">
+              <option value="">Select...</option>
+              <option>Indoor</option><option>Outdoor</option><option>Both</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Minor Client (Yes / No)</label>
+            <select id="a-minor">
+              <option value="">Select...</option>
+              <option>No</option><option>Yes</option>
+            </select>
+          </div>
+        </div>
+      </div>`;
+
+    termsHtml = `
+      <h4>P1. Outfit and Location Changes</h4>
+      <p>All changes must be completed within the contracted session time. Time spent changing outfits or traveling between locations counts against contracted session time.</p>
+      <h4>P2. Late Arrivals</h4>
+      <p>The contracted session begins at the agreed start time regardless of client arrival. Clients who arrive more than 15 minutes late forfeit the session. DSM Photography will wait no longer than 20 minutes past the contracted start time.</p>
+      <h4>P3. Rescheduling for Weather (Outdoor Sessions)</h4>
+      <p>If an outdoor session must be cancelled due to severe weather, DSM Photography will notify the client no later than 2 hours before the session start time. Light rain or overcast conditions are not grounds for cancellation.</p>
+      <h4>P4. Minor Clients (Under 18)</h4>
+      <p>Sessions involving subjects under 18 require a parent or legal guardian to sign this agreement and be physically present for the entire session.</p>
+      <h4>P5. Client Preparation</h4>
+      <p>The client is responsible for arriving session-ready including hair, makeup, and wardrobe. DSM Photography is not responsible for image results affected by unprepared subjects.</p>
+      <h4>P6. Location Permits</h4>
+      <p>The client is responsible for obtaining any required photography permits for their preferred location prior to the session date.</p>
+      <h4>P7. Image Selection and Raw Files</h4>
+      <p>DSM Photography exercises full professional discretion in selecting images for the proof sheet. Raw or unedited files are not available for release under any circumstances.</p>`;
+
+    sigBtnLabel = 'Sign Portrait Session Addendum';
+  } else {
+    fieldsHtml = `
+      <div class="section-block">
+        <span class="section-label">Event Information</span>
+        <div class="field-grid">
+          <div class="field"><label>Event Name</label><input type="text" id="a-event-name" placeholder="e.g. Links Foundation Annual Reception"></div>
+          <div class="field"><label>Event Type</label><input type="text" id="a-event-type" placeholder="e.g. Corporate Reception"></div>
+          <div class="field"><label>Event Date</label><input type="text" id="a-session-date" value="${fmtDate(b.session_date)}" readonly></div>
+          <div class="field"><label>Contracted Coverage Time</label><input type="text" id="a-coverage-time" value="${b.session_time || ''}" placeholder="e.g. 6:00 PM – 8:00 PM"></div>
+          <div class="field"><label>Venue Name</label><input type="text" id="a-venue-name" value="${b.venue || ''}"></div>
+          <div class="field"><label>Venue Address</label><input type="text" id="a-venue-address" placeholder="Full address"></div>
+          <div class="field"><label>Expected Guest Count</label><input type="text" id="a-guests" placeholder="e.g. 75"></div>
+          <div class="field"><label>Primary Contact on Day Of</label><input type="text" id="a-contact-name" placeholder="Name"></div>
+          <div class="field"><label>Primary Contact Phone</label><input type="tel" id="a-contact-phone" placeholder="(305) 000-0000"></div>
+          <div class="field">
+            <label>Indoor / Outdoor / Both</label>
+            <select id="a-indoor">
+              <option value="">Select...</option>
+              <option>Indoor</option><option>Outdoor</option><option>Both</option>
+            </select>
+          </div>
+        </div>
+      </div>`;
+
+    termsHtml = `
+      <h4>E1. Coverage Hours and Overage</h4>
+      <p>Photography coverage begins and ends at the contracted times. DSM Photography will arrive approximately 15 minutes prior. A grace period of up to 30 minutes will be extended if the event starts late. Coverage extending beyond the contracted end time will be billed at $75 per 30 minutes, due within 7 days.</p>
+      <h4>E2. Venue and Access</h4>
+      <p>The client is responsible for informing DSM Photography of any venue photography restrictions prior to the event date. Missed coverage resulting from undisclosed venue restrictions is not the responsibility of DSM Photography.</p>
+      <h4>E3. Group Photographs</h4>
+      <p>Group photographs are included in the Premier package only (up to 3 groupings). A group photo add-on is available for $75. The client is responsible for gathering participants promptly.</p>
+      <h4>E4. Guest Conduct and Alcohol</h4>
+      <p>DSM Photography reserves the right to cease coverage if the photographer is subjected to harassment, threatening behavior, or a hostile environment. No refund will be issued in such cases.</p>
+      <h4>E5. Inclement Weather (Outdoor Events)</h4>
+      <p>DSM Photography will photograph in light rain or overcast conditions. In severe weather posing a safety risk, DSM Photography reserves the right to pause or relocate coverage.</p>
+      <h4>E6. Missed Moments</h4>
+      <p>DSM Photography will use professional judgment to capture key moments but cannot guarantee coverage of every moment. DSM Photography is not liable for missed moments due to simultaneous occurrences or timeline changes made day-of.</p>
+      <h4>E7. Shot List</h4>
+      <p>Clients are encouraged to submit a completed Shot List Request Form no later than 48 hours before the event. The shot list serves as a guide and not a guarantee.</p>`;
+
+    sigBtnLabel = 'Sign Event Coverage Addendum';
+  }
+
+  const bodyHtml = `
+    <p class="contract-intro">This addendum is part of the DSM Photography Master Services Agreement and must be signed alongside it. All master terms apply in addition to those outlined below.</p>
+    ${fieldsHtml}
+    <div class="section-block">
+      <span class="section-label">Terms</span>
+      <div class="terms-box">${termsHtml}</div>
+    </div>
+    <div class="sig-block" id="sig-addendum">
+      <label class="sig-agree">
+        <input type="checkbox" id="a-agree">
+        <span class="sig-agree-text">I have read and agree to all terms of the <strong>DSM Photography ${isPortrait ? 'Portrait Session Addendum' : 'Event Coverage Addendum'}</strong>. I understand that typing my full name below constitutes my legal electronic signature.</span>
+      </label>
+      <div class="sig-name-row">
+        <div class="field">
+          <label>Type Full Name (Electronic Signature)</label>
+          <input type="text" id="a-sig-name" placeholder="Your full legal name">
+        </div>
+        <div class="field">
+          <label>Date</label>
+          <input type="text" id="a-sig-date" value="${today}" readonly>
+        </div>
+      </div>
+      <button class="btn-sign" id="btn-addendum" onclick="submitContract('${type}')">${sigBtnLabel}</button>
+      <div class="form-status" id="status-msg-addendum"></div>
+    </div>
+    <div class="signed-overlay" id="signed-addendum">
+      <div class="signed-check">✓</div>
+      <div class="signed-msg">${isPortrait ? 'Portrait Session Addendum' : 'Event Coverage Addendum'} Signed</div>
+      <div class="signed-sub" id="signed-addendum-sub"></div>
+    </div>`;
+
+  document.getElementById('addendum-body').innerHTML = bodyHtml;
+}
+
+// ── PROGRESS ─────────────────────────────────────────────
+function renderProgress(addendumType) {
+  const masterDone = !!CONTRACTS_SIGNED['master'];
+  const addendumDone = !!CONTRACTS_SIGNED[addendumType];
+  const serviceType = (BOOKING.service_type || '').toLowerCase();
+  const isEvent = serviceType === 'event' || serviceType === 'events';
+
+  const steps = [
+    { label: 'Master Agreement', done: masterDone },
+    { label: 'Service Addendum', done: addendumDone },
+    { label: 'Shot List', done: SHOT_LIST_DONE },
+  ];
+  if (isEvent) steps.push({ label: 'Client Guide', done: false });
+  steps.push({ label: 'Payment', done: !!BOOKING.deposit_paid });
+
+  document.getElementById('progress-steps').innerHTML = steps.map(s =>
+    `<div class="prog-step ${s.done ? 'done' : 'pending'}">${s.label}</div>`
+  ).join('');
+}
+
+// ── SUBMIT CONTRACT ──────────────────────────────────────
+async function submitContract(type) {
+  const isAddendum = type !== 'master';
+  const agreeId = isAddendum ? 'a-agree' : 'm-agree';
+  const sigId   = isAddendum ? 'a-sig-name' : 'm-sig-name';
+  const btnId   = isAddendum ? 'btn-addendum' : 'btn-master';
+  const statusId = isAddendum ? 'status-msg-addendum' : 'status-msg-master';
+
+  const agreed = document.getElementById(agreeId)?.checked;
+  const sigName = document.getElementById(sigId)?.value?.trim();
+
+  if (!agreed) { setStatus(statusId, 'Please check the agreement box before signing.', 'error'); return; }
+  if (!sigName) { setStatus(statusId, 'Please type your full name to sign.', 'error'); return; }
+
+  const btn = document.getElementById(btnId);
+  btn.disabled = true;
+  btn.textContent = 'Signing…';
+  setStatus(statusId, '', '');
+
+  // Collect form data
+  const formData = collectFormData(type);
+
+  try {
+    const res = await fetch('/.netlify/functions/submit-contract', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        portal_token: TOKEN,
+        booking_id: BOOKING.id,
+        contract_type: type,
+        client_name: BOOKING.client_name,
+        client_email: BOOKING.client_email,
+        signed_name: sigName,
+        form_data: formData
+      })
+    });
+
+    const json = await res.json();
+    if (!res.ok) {
+      setStatus(statusId, json.error || 'Something went wrong. Please try again.', 'error');
+      btn.disabled = false;
+      btn.textContent = isAddendum ? 'Sign Service Addendum' : 'Sign Master Agreement';
+      return;
+    }
+
+    CONTRACTS_SIGNED[type] = true;
+    showSignedState(type, sigName, json.signed_at);
+    renderProgress(type === 'master' ? (CONTRACTS_SIGNED['event'] ? 'event' : 'portrait') : type);
+
+    // Update header status badge
+    const statusBadge = type === 'master' ? 'status-master' : 'status-addendum';
+    document.getElementById(statusBadge).textContent = 'Signed';
+    document.getElementById(statusBadge).className = 'doc-status status-signed';
+
+  } catch(err) {
+    setStatus(statusId, 'Network error. Please try again.', 'error');
+    btn.disabled = false;
+    btn.textContent = 'Try Again';
+    console.error(err);
+  }
+}
+
+function showSignedState(type, sigName, signedAt) {
+  const isAddendum = type !== 'master';
+  const sigBlockId = isAddendum ? 'sig-addendum' : 'sig-master';
+  const overlayId  = isAddendum ? 'signed-addendum' : 'signed-master';
+  const subId      = isAddendum ? 'signed-addendum-sub' : 'signed-master-sub';
+
+  const sigBlock = document.getElementById(sigBlockId);
+  if (sigBlock) sigBlock.style.display = 'none';
+
+  const overlay = document.getElementById(overlayId);
+  if (overlay) overlay.classList.add('show');
+
+  if (subId && signedAt) {
+    const sub = document.getElementById(subId);
+    if (sub) sub.textContent = `Signed as "${sigName}" · ${new Date(signedAt).toLocaleString('en-US', { timeZone: 'America/New_York' })}`;
+  }
+}
+
+// ── COLLECT FORM DATA ────────────────────────────────────
+function collectFormData(type) {
+  const get = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+
+  if (type === 'master') {
+    return {
+      'Client Name': get('m-client-name'),
+      'Organization': get('m-org'),
+      'Email': get('m-email'),
+      'Phone': get('m-phone'),
+      'Referred By': get('m-referred'),
+      'Session Date': get('m-session-date'),
+      'Session Time': get('m-session-time'),
+      'Venue': get('m-venue'),
+      'Session Type': get('m-session-type'),
+      'Package': get('m-package'),
+      'Add-Ons': get('m-addons'),
+      'Deposit Due': get('m-deposit'),
+      'Total Balance': get('m-total'),
+    };
+  } else if (type === 'portrait') {
+    return {
+      'Session Type': get('a-session-type'),
+      'Session Date': get('a-session-date'),
+      'Session Time': get('a-session-time'),
+      'Location': get('a-location'),
+      'Number of Subjects': get('a-subjects'),
+      'Editing Level': get('a-editing'),
+      'Looks Included': get('a-looks'),
+      'Locations Included': get('a-locations-n'),
+      'Indoor/Outdoor': get('a-indoor'),
+      'Minor Client': get('a-minor'),
+    };
+  } else {
+    return {
+      'Event Name': get('a-event-name'),
+      'Event Type': get('a-event-type'),
+      'Event Date': get('a-session-date'),
+      'Coverage Time': get('a-coverage-time'),
+      'Venue Name': get('a-venue-name'),
+      'Venue Address': get('a-venue-address'),
+      'Guest Count': get('a-guests'),
+      'Day-Of Contact Name': get('a-contact-name'),
+      'Day-Of Contact Phone': get('a-contact-phone'),
+      'Indoor/Outdoor': get('a-indoor'),
+    };
+  }
+}
+
+// ── HELPERS ──────────────────────────────────────────────
+function setVal(id, val) {
+  const el = document.getElementById(id);
+  if (el && val) el.value = val;
+}
+
+function setStatus(id, msg, type) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'form-status' + (type ? ' ' + type : '');
+}
+
+function fmtDate(d) {
+  if (!d) return '';
+  // Handle YYYY-MM-DD
+  const match = d.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (match) {
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return months[parseInt(match[2])-1] + ' ' + parseInt(match[3]) + ', ' + match[1];
+  }
+  return d;
+}
+</script>
+</body>
+</html>
