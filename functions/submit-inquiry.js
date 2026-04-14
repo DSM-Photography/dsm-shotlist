@@ -361,15 +361,22 @@ exports.handler = async (event) => {
       status:           'new',
     };
 
-    // Save to Supabase
+   // Save to Supabase
     try {
+      console.log('Supabase URL:', process.env.SUPABASE_URL ? 'SET' : 'MISSING');
+      console.log('Supabase KEY:', process.env.SUPABASE_KEY ? 'SET' : 'MISSING');
       const supabase = getSupabase();
-      const { error: sbError } = await supabase
+      const { data: sbData, error: sbError } = await supabase
         .from('inquiries')
-        .insert(inquiryRecord);
-      if (sbError) console.error('Supabase save failed:', sbError.message);
+        .insert(inquiryRecord)
+        .select();
+      if (sbError) {
+        console.error('Supabase save failed:', JSON.stringify(sbError));
+      } else {
+        console.log('Supabase save success:', JSON.stringify(sbData));
+      }
     } catch (sbErr) {
-      console.error('Supabase exception:', sbErr.message);
+      console.error('Supabase exception:', sbErr.message, sbErr.stack);
     }
 
     // ── Send emails ───────────────────────────────────────────
