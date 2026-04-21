@@ -380,32 +380,47 @@ exports.handler = async (event) => {
     }
 
     // ── Send emails ───────────────────────────────────────────
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const sgKey = process.env.SENDGRID_API_KEY;
+    console.log('SendGrid API Key:', sgKey ? 'SET' : 'MISSING');
+    if (!sgKey) {
+      console.error('SENDGRID_API_KEY is not set — emails will not be sent');
+    }
+    sgMail.setApiKey(sgKey);
     const from = { email: 'dsmphotography21@gmail.com', name: 'DSM Photography' };
 
     const urgentFlag = isUrgent ? ' ⚑ URGENT' : '';
     const clientName = [data.firstName, data.lastName].filter(Boolean).join(' ') || 'New Client';
 
-    const messages = [
-      {
+    // Send admin notification — errors logged but do not fail the request
+    try {
+      await sgMail.send({
         to: 'dsmphotography21@gmail.com',
         from,
         subject: `[${typeCode}${urgentFlag}] ${clientName} — ${refNumber}`,
         html: buildIntakeHtml(data, refNumber, typeLabel, accentColor, isUrgent, submittedAt),
-      },
-    ];
-
-    if (data.email) {
-      messages.push({
-        to: data.email,
-        from,
-        replyTo: 'dsmphotography21@gmail.com',
-        subject: `Inquiry received — DSM Photography · ${refNumber}`,
-        html: buildConfirmationHtml(data, refNumber, typeLabel, accentColor),
       });
+      console.log('Admin email sent for', refNumber);
+    } catch (emailErr) {
+      console.error('Admin email FAILED for', refNumber, '—',
+        JSON.stringify(emailErr.response?.body ?? emailErr.message));
     }
 
-    await Promise.all(messages.map(m => sgMail.send(m)));
+    // Send client confirmation — errors logged but do not fail the request
+    if (data.email) {
+      try {
+        await sgMail.send({
+          to: data.email,
+          from,
+          replyTo: 'dsmphotography21@gmail.com',
+          subject: `Inquiry received — DSM Photography · ${refNumber}`,
+          html: buildConfirmationHtml(data, refNumber, typeLabel, accentColor),
+        });
+        console.log('Client email sent for', refNumber, 'to', data.email);
+      } catch (emailErr) {
+        console.error('Client email FAILED for', refNumber, '—',
+          JSON.stringify(emailErr.response?.body ?? emailErr.message));
+      }
+    }
 
     return {
       statusCode: 200,
@@ -413,7 +428,7 @@ exports.handler = async (event) => {
     };
 
   } catch (err) {
-    console.error('submit-inquiry error:', err.response?.body || err.message || err);
+    console.error('submit-inquiry error:', JSON.stringify(err.response?.body ?? err.message));
     return {
       statusCode: 500,
       body: JSON.stringify({ success: false, error: err.message }),
